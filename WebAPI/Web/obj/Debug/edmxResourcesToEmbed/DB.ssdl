@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Apps">
+    <Key>
+      <PropertyRef Name="AppGUID" />
+    </Key>
+    <Property Name="AppGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="DeviceID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="AppName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="OS" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Version" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="RegistrationToken" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Services">
+    <Key>
+      <PropertyRef Name="ServiceGUID" />
+    </Key>
+    <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="AuthMethod" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ServiceProviderInfo" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserGUID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DOB" Type="datetime" />
+    <Property Name="Location" Type="nvarchar(max)" />
+    <Property Name="VerificationCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="UserType" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="AccountState" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserServices">
+    <Key>
+      <PropertyRef Name="AccessID" />
+    </Key>
+    <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="AccessID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" />
+  </EntityType>
+  <Association Name="FK_Services_UserServices">
+    <End Role="Services" Type="Self.Services" Multiplicity="1" />
+    <End Role="UserServices" Type="Self.UserServices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Services">
+        <PropertyRef Name="ServiceGUID" />
+      </Principal>
+      <Dependent Role="UserServices">
+        <PropertyRef Name="ServiceGUID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_UserServices">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="UserServices" Type="Self.UserServices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserGUID" />
+      </Principal>
+      <Dependent Role="UserServices">
+        <PropertyRef Name="UserGUID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InterceptDBModelStoreContainer">
+    <EntitySet Name="Apps" EntityType="Self.Apps" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserServices" EntityType="Self.UserServices" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Services_UserServices" Association="Self.FK_Services_UserServices">
+      <End Role="Services" EntitySet="Services" />
+      <End Role="UserServices" EntitySet="UserServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_UserServices" Association="Self.FK_Users_UserServices">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserServices" EntitySet="UserServices" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
