@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MyGreenPCModelStoreContainer" CdmEntityContainer="GreenDB">
+    <EntitySetMapping Name="SoftwareUpdates">
+      <EntityTypeMapping TypeName="MyGreenPCModel.SoftwareUpdate">
+        <MappingFragment StoreEntitySet="SoftwareUpdates">
+          <ScalarProperty Name="BuildNumber" ColumnName="BuildNumber" />
+          <ScalarProperty Name="MajorVersion" ColumnName="MajorVersion" />
+          <ScalarProperty Name="MinorVersion" ColumnName="MinorVersion" />
+          <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+          <ScalarProperty Name="SoftwareType" ColumnName="SoftwareType" />
+          <ScalarProperty Name="LeastBuildRequired" ColumnName="LeastBuildRequired" />
+          <ScalarProperty Name="ReleaseNotes" ColumnName="ReleaseNotes" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccountTypes">
+      <EntityTypeMapping TypeName="MyGreenPCModel.AccountType">
+        <MappingFragment StoreEntitySet="AccountTypes">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AccountType1" ColumnName="AccountType" />
+          <ScalarProperty Name="AllowGatewayLink" ColumnName="AllowGatewayLink" />
+          <ScalarProperty Name="NumSubAccountsAllowed" ColumnName="NumSubAccountsAllowed" />
+          <ScalarProperty Name="UsageLimit" ColumnName="UsageLimit" />
+          <ScalarProperty Name="NumComputersAllowed" ColumnName="NumComputersAllowed" />
+          <ScalarProperty Name="ReferralProgram" ColumnName="ReferralProgram" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspErrors">
+      <EntityTypeMapping TypeName="MyGreenPCModel.AspError">
+        <MappingFragment StoreEntitySet="AspErrors">
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="QueryString" ColumnName="QueryString" />
+          <ScalarProperty Name="Referrer" ColumnName="Referrer" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+          <ScalarProperty Name="RemoteIP" ColumnName="RemoteIP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AuthenticationErrors">
+      <EntityTypeMapping TypeName="MyGreenPCModel.AuthenticationError">
+        <MappingFragment StoreEntitySet="AuthenticationErrors">
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="ComputerGUID" ColumnName="ComputerGUID" />
+          <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="QueryType" ColumnName="QueryType" />
+          <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Connections">
+      <EntityTypeMapping TypeName="MyGreenPCModel.Connection">
+        <MappingFragment StoreEntitySet="Connections">
+          <ScalarProperty Name="ConnectionID" ColumnName="ConnectionID" />
+          <ScalarProperty Name="UsernameID" ColumnName="UsernameID" />
+          <ScalarProperty Name="ComputerID" ColumnName="ComputerID" />
+          <ScalarProperty Name="ConnType" ColumnName="ConnType" />
+          <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+          <ScalarProperty Name="State" ColumnName="State" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CoreErrors">
+      <EntityTypeMapping TypeName="MyGreenPCModel.CoreError">
+        <MappingFragment StoreEntitySet="CoreErrors">
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ReturnValue" ColumnName="ReturnValue" />
+          <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceStatus">
+      <EntityTypeMapping TypeName="MyGreenPCModel.ServiceStatu">
+        <MappingFragment StoreEntitySet="ServiceStatus">
+          <ScalarProperty Name="GatewayStatus" ColumnName="GatewayStatus" />
+          <ScalarProperty Name="WebServerStatus" ColumnName="WebServerStatus" />
+          <ScalarProperty Name="LastGatewayCheck" ColumnName="LastGatewayCheck" />
+          <ScalarProperty Name="LastWebServerCheck" ColumnName="LastWebServerCheck" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sessions">
+      <EntityTypeMapping TypeName="MyGreenPCModel.Session">
+        <MappingFragment StoreEntitySet="Sessions">
+          <ScalarProperty Name="UsernameID" ColumnName="UsernameID" />
+          <ScalarProperty Name="ComputerID" ColumnName="ComputerID" />
+          <ScalarProperty Name="ConnectionID" ColumnName="ConnectionID" />
+          <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="CloseSession" ColumnName="CloseSession" />
+          <ScalarProperty Name="SessionType" ColumnName="SessionType" />
+          <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+          <ScalarProperty Name="IsDirect" ColumnName="IsDirect" />
+          <ScalarProperty Name="DataSentC2H" ColumnName="DataSentC2H" />
+          <ScalarProperty Name="DataSentH2C" ColumnName="DataSentH2C" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Accounts">
+      <EntityTypeMapping TypeName="MyGreenPCModel.Account">
+        <MappingFragment StoreEntitySet="Accounts">
+          <ScalarProperty Name="RootGroupID" ColumnName="RootGroupID" />
+          <ScalarProperty Name="ReferrerID" ColumnName="ReferrerID" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="PrimaryUserID" ColumnName="PrimaryUserID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Events">
+      <EntityTypeMapping TypeName="MyGreenPCModel.Event">
+        <MappingFragment StoreEntitySet="Events">
+          <ScalarProperty Name="JData" ColumnName="JData" />
+          <ScalarProperty Name="Object" ColumnName="Object" />
+          <ScalarProperty Name="Verb" ColumnName="Verb" />
+          <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Servers">
+      <EntityTypeMapping TypeName="MyGreenPCModel.Server">
+        <MappingFragment StoreEntitySet="Servers">
+          <ScalarProperty Name="IsLive" ColumnName="IsLive" />
+          <ScalarProperty Name="StopReason" ColumnName="StopReason" />
+          <ScalarProperty Name="StopTime" ColumnName="StopTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="CurrentSockets" ColumnName="CurrentSockets" />
+          <ScalarProperty Name="CurrentSessions" ColumnName="CurrentSessions" />
+          <ScalarProperty Name="MaxSockets" ColumnName="MaxSockets" />
+          <ScalarProperty Name="MaxSessions" ColumnName="MaxSessions" />
+          <ScalarProperty Name="LastHeartBeat" ColumnName="LastHeartBeat" />
+          <ScalarProperty Name="IPv6" ColumnName="IPv6" />
+          <ScalarProperty Name="IPv4" ColumnName="IPv4" />
+          <ScalarProperty Name="ZoneID" ColumnName="ZoneID" />
+          <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GeoCaches">
+      <EntityTypeMapping TypeName="MyGreenPCModel.GeoCache">
+        <MappingFragment StoreEntitySet="GeoCache">
+          <ScalarProperty Name="ContinentCode" ColumnName="ContinentCode" />
+          <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+          <ScalarProperty Name="GeoNamesID" ColumnName="GeoNamesID" />
+          <ScalarProperty Name="AvgIncome" ColumnName="AvgIncome" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="ISP" ColumnName="ISP" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="YearWeek" ColumnName="YearWeek" />
+          <ScalarProperty Name="IP" ColumnName="IP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FilterGeos">
+      <EntityTypeMapping TypeName="MyGreenPCModel.FilterGeo">
+        <MappingFragment StoreEntitySet="FilterGeo">
+          <ScalarProperty Name="RuleType" ColumnName="RuleType" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="RuleEnabled" ColumnName="RuleEnabled" />
+          <ScalarProperty Name="RuleID" ColumnName="RuleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FilterIPs">
+      <EntityTypeMapping TypeName="MyGreenPCModel.FilterIP">
+        <MappingFragment StoreEntitySet="FilterIP">
+          <ScalarProperty Name="RuleType" ColumnName="RuleType" />
+          <ScalarProperty Name="IP_End" ColumnName="IP_End" />
+          <ScalarProperty Name="IP_Start" ColumnName="IP_Start" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="RuleEnabled" ColumnName="RuleEnabled" />
+          <ScalarProperty Name="RuleID" ColumnName="RuleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccessControlLists">
+      <EntityTypeMapping TypeName="MyGreenPCModel.AccessControlList">
+        <MappingFragment StoreEntitySet="AccessControlList">
+          <ScalarProperty Name="ACL" ColumnName="ACL" />
+          <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
+          <ScalarProperty Name="ObjectID" ColumnName="ObjectID" />
+          <ScalarProperty Name="UsernameID" ColumnName="UsernameID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="IsEnabled" ColumnName="IsEnabled" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccessHistories">
+      <EntityTypeMapping TypeName="MyGreenPCModel.AccessHistory">
+        <MappingFragment StoreEntitySet="AccessHistory">
+          <ScalarProperty Name="nIPAddress" ColumnName="nIPAddress" />
+          <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+          <ScalarProperty Name="EndDateTime" ColumnName="EndDateTime" />
+          <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Groups">
+      <EntityTypeMapping TypeName="MyGreenPCModel.Group">
+        <MappingFragment StoreEntitySet="Groups">
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="ParentGroupID" ColumnName="ParentGroupID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="MyGreenPCModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UnlockAt" ColumnName="UnlockAt" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="ActivationID" ColumnName="ActivationID" />
+          <ScalarProperty Name="CreationIP" ColumnName="CreationIP" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="TimeZoneOffSet" ColumnName="TimeZoneOffSet" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="OTPExpiresAt" ColumnName="OTPExpiresAt" />
+          <ScalarProperty Name="OTP" ColumnName="OTP" />
+          <ScalarProperty Name="RequireOTP" ColumnName="RequireOTP" />
+          <ScalarProperty Name="OTPEmail" ColumnName="OTPEmail" />
+          <ScalarProperty Name="OTPPhone" ColumnName="OTPPhone" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="FailedLoginAttempts" ColumnName="FailedLoginAttempts" />
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
+          <ScalarProperty Name="UsernameGUID" ColumnName="UsernameGUID" />
+          <ScalarProperty Name="UsernameID" ColumnName="UsernameID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Devices">
+      <EntityTypeMapping TypeName="MyGreenPCModel.Device">
+        <MappingFragment StoreEntitySet="Devices">
+          <ScalarProperty Name="ExpiresAt" ColumnName="ExpiresAt" />
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+          <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+          <ScalarProperty Name="PingPort" ColumnName="PingPort" />
+          <ScalarProperty Name="PingUrlID" ColumnName="PingUrlID" />
+          <ScalarProperty Name="PingUrl" ColumnName="PingUrl" />
+          <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+          <ScalarProperty Name="MinutesOffline" ColumnName="MinutesOffline" />
+          <ScalarProperty Name="UnitCost" ColumnName="UnitCost" />
+          <ScalarProperty Name="WattsSaved" ColumnName="WattsSaved" />
+          <ScalarProperty Name="Watts" ColumnName="Watts" />
+          <ScalarProperty Name="ConnectionID" ColumnName="ConnectionID" />
+          <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+          <ScalarProperty Name="PingSentAt" ColumnName="PingSentAt" />
+          <ScalarProperty Name="PingCheck" ColumnName="PingCheck" />
+          <ScalarProperty Name="DisconnectedAt" ColumnName="DisconnectedAt" />
+          <ScalarProperty Name="ConnectedAt" ColumnName="ConnectedAt" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CurrIPAddress" ColumnName="CurrIPAddress" />
+          <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
+          <ScalarProperty Name="ComputerGUID" ColumnName="ComputerGUID" />
+          <ScalarProperty Name="ComputerID" ColumnName="ComputerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

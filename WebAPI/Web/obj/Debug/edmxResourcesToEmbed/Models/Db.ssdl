@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MyGreenPCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AccessControlList">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IsEnabled" Type="bit" Nullable="false" />
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UsernameID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ObjectID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ObjectType" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="ACL" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AccessHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="StartDateTime" Type="datetime" Nullable="false" />
+    <Property Name="EndDateTime" Type="datetime" />
+    <Property Name="ErrorCode" Type="int" Nullable="false" />
+    <Property Name="nIPAddress" Type="int" />
+  </EntityType>
+  <EntityType Name="Accounts">
+    <Key>
+      <PropertyRef Name="AccountID" />
+    </Key>
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="PrimaryUserID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Type" Type="smallint" Nullable="false" />
+    <Property Name="State" Type="smallint" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar(max)" />
+    <Property Name="ReferrerID" Type="uniqueidentifier" />
+    <Property Name="RootGroupID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MyGreenPC.dbo.AccountTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AccountTypes">
+    <Key>
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="AccountType" />
+      <PropertyRef Name="AllowGatewayLink" />
+      <PropertyRef Name="NumSubAccountsAllowed" />
+      <PropertyRef Name="UsageLimit" />
+      <PropertyRef Name="NumComputersAllowed" />
+      <PropertyRef Name="ReferralProgram" />
+    </Key>
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="AccountType" Type="smallint" Nullable="false" />
+    <Property Name="AllowGatewayLink" Type="bit" Nullable="false" />
+    <Property Name="NumSubAccountsAllowed" Type="int" Nullable="false" />
+    <Property Name="UsageLimit" Type="int" Nullable="false" />
+    <Property Name="NumComputersAllowed" Type="int" Nullable="false" />
+    <Property Name="ReferralProgram" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MyGreenPC.dbo.AspErrors' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AspErrors">
+    <Key>
+      <PropertyRef Name="Time" />
+      <PropertyRef Name="Url" />
+      <PropertyRef Name="QueryString" />
+      <PropertyRef Name="Referrer" />
+      <PropertyRef Name="Source" />
+      <PropertyRef Name="Message" />
+      <PropertyRef Name="StackTrace" />
+      <PropertyRef Name="RemoteIP" />
+    </Key>
+    <Property Name="Time" Type="datetime" Nullable="false" />
+    <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="QueryString" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Referrer" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Source" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="StackTrace" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RemoteIP" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MyGreenPC.dbo.AuthenticationErrors' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AuthenticationErrors">
+    <Key>
+      <PropertyRef Name="IPAddress" />
+      <PropertyRef Name="Time" />
+      <PropertyRef Name="QueryType" />
+      <PropertyRef Name="ServerID" />
+    </Key>
+    <Property Name="Username" Type="nvarchar" MaxLength="50" />
+    <Property Name="ComputerGUID" Type="uniqueidentifier" />
+    <Property Name="IPAddress" Type="bigint" Nullable="false" />
+    <Property Name="Time" Type="datetime" Nullable="false" />
+    <Property Name="QueryType" Type="smallint" Nullable="false" />
+    <Property Name="ServerID" Type="smallint" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MyGreenPC.dbo.Connections' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Connections">
+    <Key>
+      <PropertyRef Name="ConnectionID" />
+      <PropertyRef Name="ConnType" />
+      <PropertyRef Name="ServerID" />
+      <PropertyRef Name="State" />
+    </Key>
+    <Property Name="ConnectionID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UsernameID" Type="int" />
+    <Property Name="ComputerID" Type="int" />
+    <Property Name="ConnType" Type="tinyint" Nullable="false" />
+    <Property Name="ServerID" Type="smallint" Nullable="false" />
+    <Property Name="State" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MyGreenPC.dbo.CoreErrors' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="CoreErrors">
+    <Key>
+      <PropertyRef Name="Source" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Time" />
+    </Key>
+    <Property Name="Source" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ReturnValue" Type="bigint" />
+    <Property Name="ErrorCode" Type="bigint" />
+    <Property Name="Time" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Devices">
+    <Key>
+      <PropertyRef Name="ComputerID" />
+    </Key>
+    <Property Name="ComputerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ComputerGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="DeviceType" Type="tinyint" Nullable="false" />
+    <Property Name="CurrIPAddress" Type="bigint" Nullable="false" />
+    <Property Name="Status" Type="smallint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+    <Property Name="ConnectedAt" Type="datetime" />
+    <Property Name="DisconnectedAt" Type="datetime" />
+    <Property Name="PingCheck" Type="bit" Nullable="false" />
+    <Property Name="PingSentAt" Type="datetime" />
+    <Property Name="ServerID" Type="smallint" Nullable="false" />
+    <Property Name="ConnectionID" Type="bigint" Nullable="false" />
+    <Property Name="Watts" Type="int" Nullable="false" />
+    <Property Name="WattsSaved" Type="decimal" Precision="19" Scale="2" Nullable="false" />
+    <Property Name="UnitCost" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+    <Property Name="MinutesOffline" Type="bigint" Nullable="false" />
+    <Property Name="IsOnline" Type="bit" Nullable="false" />
+    <Property Name="PingUrl" Type="nvarchar" MaxLength="50" />
+    <Property Name="PingUrlID" Type="int" Nullable="false" />
+    <Property Name="PingPort" Type="int" Nullable="false" />
+    <Property Name="MachineName" Type="nvarchar" MaxLength="50" />
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="GroupID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExpiresAt" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MyGreenPC.dbo.Events' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Events">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Time" />
+      <PropertyRef Name="SourceID" />
+      <PropertyRef Name="Verb" />
+      <PropertyRef Name="JData" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="Time" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="SourceID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Verb" Type="int" Nullable="false" />
+    <Property Name="Object" Type="uniqueidentifier" />
+    <Property Name="JData" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FilterGeo">
+    <Key>
+      <PropertyRef Name="RuleID" />
+    </Key>
+    <Property Name="RuleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RuleType" Type="tinyint" Nullable="false" />
+    <Property Name="RuleEnabled" Type="tinyint" Nullable="false" />
+    <Property Name="AccountID" Type="uniqueidentifier" />
+    <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FilterIP">
+    <Key>
+      <PropertyRef Name="RuleID" />
+    </Key>
+    <Property Name="RuleID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RuleType" Type="tinyint" Nullable="false" />
+    <Property Name="RuleEnabled" Type="tinyint" Nullable="false" />
+    <Property Name="AccountID" Type="uniqueidentifier" />
+    <Property Name="IP_Start" Type="int" Nullable="false" />
+    <Property Name="IP_End" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GeoCache">
+    <Key>
+      <PropertyRef Name="IP" />
+      <PropertyRef Name="YearWeek" />
+    </Key>
+    <Property Name="IP" Type="int" Nullable="false" />
+    <Property Name="YearWeek" Type="int" Nullable="false" />
+    <Property Name="City" Type="nvarchar(max)" />
+    <Property Name="State" Type="nvarchar(max)" />
+    <Property Name="ISP" Type="nvarchar(max)" />
+    <Property Name="Latitude" Type="float" Nullable="false" />
+    <Property Name="Longitude" Type="float" Nullable="false" />
+    <Property Name="AvgIncome" Type="bigint" />
+    <Property Name="GeoNamesID" Type="int" />
+    <Property Name="CountryCode" Type="nchar" MaxLength="2" />
+    <Property Name="ContinentCode" Type="nchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="Groups">
+    <Key>
+      <PropertyRef Name="GroupID" />
+    </Key>
+    <Property Name="GroupID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ParentGroupID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Servers">
+    <Key>
+      <PropertyRef Name="ServerID" />
+    </Key>
+    <Property Name="ServerID" Type="smallint" Nullable="false" />
+    <Property Name="ZoneID" Type="smallint" Nullable="false" />
+    <Property Name="IPv4" Type="varchar" MaxLength="50" />
+    <Property Name="IPv6" Type="varchar" MaxLength="50" />
+    <Property Name="LastHeartBeat" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="MaxSessions" Type="int" Nullable="false" />
+    <Property Name="MaxSockets" Type="int" Nullable="false" />
+    <Property Name="CurrentSessions" Type="int" Nullable="false" />
+    <Property Name="CurrentSockets" Type="int" Nullable="false" />
+    <Property Name="StartTime" Type="datetime2" Precision="7" />
+    <Property Name="StopTime" Type="datetime2" Precision="7" />
+    <Property Name="StopReason" Type="int" />
+    <Property Name="IsLive" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MyGreenPC.dbo.ServiceStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ServiceStatus">
+    <Key>
+      <PropertyRef Name="GatewayStatus" />
+      <PropertyRef Name="WebServerStatus" />
+      <PropertyRef Name="LastGatewayCheck" />
+      <PropertyRef Name="LastWebServerCheck" />
+    </Key>
+    <Property Name="GatewayStatus" Type="smallint" Nullable="false" />
+    <Property Name="WebServerStatus" Type="smallint" Nullable="false" />
+    <Property Name="LastGatewayCheck" Type="datetime" Nullable="false" />
+    <Property Name="LastWebServerCheck" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MyGreenPC.dbo.Sessions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Sessions">
+    <Key>
+      <PropertyRef Name="UsernameID" />
+      <PropertyRef Name="ComputerID" />
+      <PropertyRef Name="ConnectionID" />
+      <PropertyRef Name="IPAddress" />
+      <PropertyRef Name="StartTime" />
+      <PropertyRef Name="CloseSession" />
+      <PropertyRef Name="SessionType" />
+      <PropertyRef Name="IsDirect" />
+      <PropertyRef Name="DataSentC2H" />
+      <PropertyRef Name="DataSentH2C" />
+      <PropertyRef Name="Duration" />
+    </Key>
+    <Property Name="UsernameID" Type="int" Nullable="false" />
+    <Property Name="ComputerID" Type="int" Nullable="false" />
+    <Property Name="ConnectionID" Type="bigint" Nullable="false" />
+    <Property Name="IPAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StartTime" Type="datetime" Nullable="false" />
+    <Property Name="EndTime" Type="datetime" />
+    <Property Name="CloseSession" Type="bit" Nullable="false" />
+    <Property Name="SessionType" Type="tinyint" Nullable="false" />
+    <Property Name="ServerID" Type="tinyint" />
+    <Property Name="IsDirect" Type="bit" Nullable="false" />
+    <Property Name="DataSentC2H" Type="bigint" Nullable="false" />
+    <Property Name="DataSentH2C" Type="bigint" Nullable="false" />
+    <Property Name="Duration" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SoftwareUpdates">
+    <Key>
+      <PropertyRef Name="BuildNumber" />
+    </Key>
+    <Property Name="BuildNumber" Type="int" Nullable="false" />
+    <Property Name="MajorVersion" Type="int" Nullable="false" />
+    <Property Name="MinorVersion" Type="int" Nullable="false" />
+    <Property Name="ReleaseDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="SoftwareType" Type="int" Nullable="false" />
+    <Property Name="LeastBuildRequired" Type="int" Nullable="false" />
+    <Property Name="ReleaseNotes" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UsernameID" />
+    </Key>
+    <Property Name="UsernameID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UsernameGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="AccessLevel" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="120" Nullable="false" />
+    <Property Name="LastLogin" Type="datetime" />
+    <Property Name="FailedLoginAttempts" Type="int" Nullable="false" />
+    <Property Name="Role" Type="nchar" MaxLength="15" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="OTPPhone" Type="nchar" MaxLength="20" />
+    <Property Name="OTPEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="RequireOTP" Type="tinyint" Nullable="false" />
+    <Property Name="OTP" Type="nvarchar" MaxLength="20" />
+    <Property Name="OTPExpiresAt" Type="datetime" />
+    <Property Name="State" Type="tinyint" Nullable="false" />
+    <Property Name="Gender" Type="tinyint" Nullable="false" />
+    <Property Name="TimeZoneOffSet" Type="smallint" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
+    <Property Name="CreationIP" Type="bigint" Nullable="false" />
+    <Property Name="ActivationID" Type="int" Nullable="false" />
+    <Property Name="AccountID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="GroupID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UnlockAt" Type="datetime" />
+  </EntityType>
+  <Association Name="FK_Sessions_Computers">
+    <End Role="Devices" Type="Self.Devices" Multiplicity="1" />
+    <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Devices">
+        <PropertyRef Name="ComputerID" />
+      </Principal>
+      <Dependent Role="Sessions">
+        <PropertyRef Name="ComputerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sessions_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UsernameID" />
+      </Principal>
+      <Dependent Role="Sessions">
+        <PropertyRef Name="UsernameID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MyGreenPCModelStoreContainer">
+    <EntitySet Name="AccessControlList" EntityType="Self.AccessControlList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AccessHistory" EntityType="Self.AccessHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Devices" EntityType="Self.Devices" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FilterGeo" EntityType="Self.FilterGeo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FilterIP" EntityType="Self.FilterIP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GeoCache" EntityType="Self.GeoCache" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Servers" EntityType="Self.Servers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SoftwareUpdates" EntityType="Self.SoftwareUpdates" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AccountTypes" EntityType="Self.AccountTypes" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [AccountTypes].[Name] AS [Name], 
+    [AccountTypes].[AccountType] AS [AccountType], 
+    [AccountTypes].[AllowGatewayLink] AS [AllowGatewayLink], 
+    [AccountTypes].[NumSubAccountsAllowed] AS [NumSubAccountsAllowed], 
+    [AccountTypes].[UsageLimit] AS [UsageLimit], 
+    [AccountTypes].[NumComputersAllowed] AS [NumComputersAllowed], 
+    [AccountTypes].[ReferralProgram] AS [ReferralProgram]
+    FROM [dbo].[AccountTypes] AS [AccountTypes]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="AspErrors" EntityType="Self.AspErrors" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [AspErrors].[Time] AS [Time], 
+    [AspErrors].[Url] AS [Url], 
+    [AspErrors].[QueryString] AS [QueryString], 
+    [AspErrors].[Referrer] AS [Referrer], 
+    [AspErrors].[Source] AS [Source], 
+    [AspErrors].[Message] AS [Message], 
+    [AspErrors].[StackTrace] AS [StackTrace], 
+    [AspErrors].[RemoteIP] AS [RemoteIP]
+    FROM [dbo].[AspErrors] AS [AspErrors]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="AuthenticationErrors" EntityType="Self.AuthenticationErrors" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [AuthenticationErrors].[Username] AS [Username], 
+    [AuthenticationErrors].[ComputerGUID] AS [ComputerGUID], 
+    [AuthenticationErrors].[IPAddress] AS [IPAddress], 
+    [AuthenticationErrors].[Time] AS [Time], 
+    [AuthenticationErrors].[QueryType] AS [QueryType], 
+    [AuthenticationErrors].[ServerID] AS [ServerID]
+    FROM [dbo].[AuthenticationErrors] AS [AuthenticationErrors]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Connections" EntityType="Self.Connections" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Connections].[ConnectionID] AS [ConnectionID], 
+    [Connections].[UsernameID] AS [UsernameID], 
+    [Connections].[ComputerID] AS [ComputerID], 
+    [Connections].[ConnType] AS [ConnType], 
+    [Connections].[ServerID] AS [ServerID], 
+    [Connections].[State] AS [State]
+    FROM [dbo].[Connections] AS [Connections]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CoreErrors" EntityType="Self.CoreErrors" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [CoreErrors].[Source] AS [Source], 
+    [CoreErrors].[Description] AS [Description], 
+    [CoreErrors].[ReturnValue] AS [ReturnValue], 
+    [CoreErrors].[ErrorCode] AS [ErrorCode], 
+    [CoreErrors].[Time] AS [Time]
+    FROM [dbo].[CoreErrors] AS [CoreErrors]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Events" EntityType="Self.Events" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Events].[ID] AS [ID], 
+    [Events].[Time] AS [Time], 
+    [Events].[SourceID] AS [SourceID], 
+    [Events].[Verb] AS [Verb], 
+    [Events].[Object] AS [Object], 
+    [Events].[JData] AS [JData]
+    FROM [dbo].[Events] AS [Events]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ServiceStatus" EntityType="Self.ServiceStatus" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ServiceStatus].[GatewayStatus] AS [GatewayStatus], 
+    [ServiceStatus].[WebServerStatus] AS [WebServerStatus], 
+    [ServiceStatus].[LastGatewayCheck] AS [LastGatewayCheck], 
+    [ServiceStatus].[LastWebServerCheck] AS [LastWebServerCheck]
+    FROM [dbo].[ServiceStatus] AS [ServiceStatus]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Sessions" EntityType="Self.Sessions" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Sessions].[UsernameID] AS [UsernameID], 
+    [Sessions].[ComputerID] AS [ComputerID], 
+    [Sessions].[ConnectionID] AS [ConnectionID], 
+    [Sessions].[IPAddress] AS [IPAddress], 
+    [Sessions].[StartTime] AS [StartTime], 
+    [Sessions].[EndTime] AS [EndTime], 
+    [Sessions].[CloseSession] AS [CloseSession], 
+    [Sessions].[SessionType] AS [SessionType], 
+    [Sessions].[ServerID] AS [ServerID], 
+    [Sessions].[IsDirect] AS [IsDirect], 
+    [Sessions].[DataSentC2H] AS [DataSentC2H], 
+    [Sessions].[DataSentH2C] AS [DataSentH2C], 
+    [Sessions].[Duration] AS [Duration]
+    FROM [dbo].[Sessions] AS [Sessions]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Sessions_Computers" Association="Self.FK_Sessions_Computers">
+      <End Role="Devices" EntitySet="Devices" />
+      <End Role="Sessions" EntitySet="Sessions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sessions_Users" Association="Self.FK_Sessions_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Sessions" EntitySet="Sessions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

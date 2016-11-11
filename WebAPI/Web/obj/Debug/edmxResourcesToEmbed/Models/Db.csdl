@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MyGreenPCModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="SoftwareUpdate">
+    <Key>
+      <PropertyRef Name="BuildNumber" />
+    </Key>
+    <Property Name="BuildNumber" Type="Int32" Nullable="false" />
+    <Property Name="MajorVersion" Type="Int32" Nullable="false" />
+    <Property Name="MinorVersion" Type="Int32" Nullable="false" />
+    <Property Name="ReleaseDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="SoftwareType" Type="Int32" Nullable="false" />
+    <Property Name="LeastBuildRequired" Type="Int32" Nullable="false" />
+    <Property Name="ReleaseNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="AccountType">
+    <Key>
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="AccountType1" />
+      <PropertyRef Name="AllowGatewayLink" />
+      <PropertyRef Name="NumSubAccountsAllowed" />
+      <PropertyRef Name="UsageLimit" />
+      <PropertyRef Name="NumComputersAllowed" />
+      <PropertyRef Name="ReferralProgram" />
+    </Key>
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AccountType1" Type="Int16" Nullable="false" />
+    <Property Name="AllowGatewayLink" Type="Boolean" Nullable="false" />
+    <Property Name="NumSubAccountsAllowed" Type="Int32" Nullable="false" />
+    <Property Name="UsageLimit" Type="Int32" Nullable="false" />
+    <Property Name="NumComputersAllowed" Type="Int32" Nullable="false" />
+    <Property Name="ReferralProgram" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspError">
+    <Key>
+      <PropertyRef Name="Time" />
+      <PropertyRef Name="Url" />
+      <PropertyRef Name="QueryString" />
+      <PropertyRef Name="Referrer" />
+      <PropertyRef Name="Source" />
+      <PropertyRef Name="Message" />
+      <PropertyRef Name="StackTrace" />
+      <PropertyRef Name="RemoteIP" />
+    </Key>
+    <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QueryString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Referrer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Source" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RemoteIP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AuthenticationError">
+    <Key>
+      <PropertyRef Name="IPAddress" />
+      <PropertyRef Name="Time" />
+      <PropertyRef Name="QueryType" />
+      <PropertyRef Name="ServerID" />
+    </Key>
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ComputerGUID" Type="Guid" />
+    <Property Name="IPAddress" Type="Int64" Nullable="false" />
+    <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="QueryType" Type="Int16" Nullable="false" />
+    <Property Name="ServerID" Type="Int16" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Connection">
+    <Key>
+      <PropertyRef Name="ConnectionID" />
+      <PropertyRef Name="ConnType" />
+      <PropertyRef Name="ServerID" />
+      <PropertyRef Name="State" />
+    </Key>
+    <Property Name="ConnectionID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsernameID" Type="Int32" />
+    <Property Name="ComputerID" Type="Int32" />
+    <Property Name="ConnType" Type="Byte" Nullable="false" />
+    <Property Name="ServerID" Type="Int16" Nullable="false" />
+    <Property Name="State" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CoreError">
+    <Key>
+      <PropertyRef Name="Source" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Time" />
+    </Key>
+    <Property Name="Source" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ReturnValue" Type="Int64" />
+    <Property Name="ErrorCode" Type="Int64" />
+    <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="ServiceStatu">
+    <Key>
+      <PropertyRef Name="GatewayStatus" />
+      <PropertyRef Name="WebServerStatus" />
+      <PropertyRef Name="LastGatewayCheck" />
+      <PropertyRef Name="LastWebServerCheck" />
+    </Key>
+    <Property Name="GatewayStatus" Type="Int16" Nullable="false" />
+    <Property Name="WebServerStatus" Type="Int16" Nullable="false" />
+    <Property Name="LastGatewayCheck" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastWebServerCheck" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="Session">
+    <Key>
+      <PropertyRef Name="UsernameID" />
+      <PropertyRef Name="ComputerID" />
+      <PropertyRef Name="ConnectionID" />
+      <PropertyRef Name="IPAddress" />
+      <PropertyRef Name="StartTime" />
+      <PropertyRef Name="CloseSession" />
+      <PropertyRef Name="SessionType" />
+      <PropertyRef Name="IsDirect" />
+      <PropertyRef Name="DataSentC2H" />
+      <PropertyRef Name="DataSentH2C" />
+      <PropertyRef Name="Duration" />
+    </Key>
+    <Property Name="UsernameID" Type="Int32" Nullable="false" />
+    <Property Name="ComputerID" Type="Int32" Nullable="false" />
+    <Property Name="ConnectionID" Type="Int64" Nullable="false" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndTime" Type="DateTime" Precision="3" />
+    <Property Name="CloseSession" Type="Boolean" Nullable="false" />
+    <Property Name="SessionType" Type="Byte" Nullable="false" />
+    <Property Name="ServerID" Type="Byte" />
+    <Property Name="IsDirect" Type="Boolean" Nullable="false" />
+    <Property Name="DataSentC2H" Type="Int64" Nullable="false" />
+    <Property Name="DataSentH2C" Type="Int64" Nullable="false" />
+    <Property Name="Duration" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="MyGreenPCModel.FK_Sessions_Users" FromRole="Session" ToRole="User" />
+    <NavigationProperty Name="Device" Relationship="MyGreenPCModel.FK_Sessions_Computers1" FromRole="Session" ToRole="Device" />
+  </EntityType>
+  <EntityContainer Name="GreenDB" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="SoftwareUpdates" EntityType="Self.SoftwareUpdate" />
+    <EntitySet Name="AccountTypes" EntityType="Self.AccountType" />
+    <EntitySet Name="AspErrors" EntityType="Self.AspError" />
+    <EntitySet Name="AuthenticationErrors" EntityType="Self.AuthenticationError" />
+    <EntitySet Name="Connections" EntityType="Self.Connection" />
+    <EntitySet Name="CoreErrors" EntityType="Self.CoreError" />
+    <EntitySet Name="ServiceStatus" EntityType="Self.ServiceStatu" />
+    <EntitySet Name="Sessions" EntityType="Self.Session" />
+    <EntitySet Name="Accounts" EntityType="MyGreenPCModel.Account" />
+    <EntitySet Name="Events" EntityType="MyGreenPCModel.Event" />
+    <EntitySet Name="Servers" EntityType="MyGreenPCModel.Server" />
+    <EntitySet Name="GeoCaches" EntityType="MyGreenPCModel.GeoCache" />
+    <EntitySet Name="FilterGeos" EntityType="MyGreenPCModel.FilterGeo" />
+    <EntitySet Name="FilterIPs" EntityType="MyGreenPCModel.FilterIP" />
+    <EntitySet Name="AccessControlLists" EntityType="MyGreenPCModel.AccessControlList" />
+    <EntitySet Name="AccessHistories" EntityType="MyGreenPCModel.AccessHistory" />
+    <EntitySet Name="Groups" EntityType="MyGreenPCModel.Group" />
+    <EntitySet Name="Users" EntityType="MyGreenPCModel.User" />
+    <AssociationSet Name="FK_Sessions_Users" Association="MyGreenPCModel.FK_Sessions_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Session" EntitySet="Sessions" />
+    </AssociationSet>
+    <EntitySet Name="Devices" EntityType="MyGreenPCModel.Device" />
+    <AssociationSet Name="FK_Sessions_Computers1" Association="MyGreenPCModel.FK_Sessions_Computers1">
+      <End Role="Device" EntitySet="Devices" />
+      <End Role="Session" EntitySet="Sessions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="AccountID" />
+    </Key>
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+    <Property Name="PrimaryUserID" Type="Guid" Nullable="false" />
+    <Property Name="Type" Type="Int16" Nullable="false" />
+    <Property Name="State" Type="Int16" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReferrerID" Type="Guid" />
+    <Property Name="RootGroupID" Type="Guid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Event">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Time" />
+      <PropertyRef Name="SourceID" />
+      <PropertyRef Name="Verb" />
+      <PropertyRef Name="JData" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Time" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="SourceID" Type="Guid" Nullable="false" />
+    <Property Name="Verb" Type="Int32" Nullable="false" />
+    <Property Name="Object" Type="Guid" />
+    <Property Name="JData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Server">
+    <Key>
+      <PropertyRef Name="ServerID" />
+    </Key>
+    <Property Name="ServerID" Type="Int16" Nullable="false" />
+    <Property Name="ZoneID" Type="Int16" Nullable="false" />
+    <Property Name="IPv4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IPv6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LastHeartBeat" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="MaxSessions" Type="Int32" Nullable="false" />
+    <Property Name="MaxSockets" Type="Int32" Nullable="false" />
+    <Property Name="CurrentSessions" Type="Int32" Nullable="false" />
+    <Property Name="CurrentSockets" Type="Int32" Nullable="false" />
+    <Property Name="StartTime" Type="DateTime" Precision="7" />
+    <Property Name="StopTime" Type="DateTime" Precision="7" />
+    <Property Name="StopReason" Type="Int32" />
+    <Property Name="IsLive" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GeoCache">
+    <Key>
+      <PropertyRef Name="IP" />
+      <PropertyRef Name="YearWeek" />
+    </Key>
+    <Property Name="IP" Type="Int32" Nullable="false" />
+    <Property Name="YearWeek" Type="Int32" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ISP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Latitude" Type="Double" Nullable="false" />
+    <Property Name="Longitude" Type="Double" Nullable="false" />
+    <Property Name="AvgIncome" Type="Int64" />
+    <Property Name="GeoNamesID" Type="Int32" />
+    <Property Name="CountryCode" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="ContinentCode" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="FilterGeo">
+    <Key>
+      <PropertyRef Name="RuleID" />
+    </Key>
+    <Property Name="RuleID" Type="Guid" Nullable="false" />
+    <Property Name="RuleEnabled" Type="Byte" Nullable="false" />
+    <Property Name="AccountID" Type="Guid" />
+    <Property Name="Location" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="RuleType" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FilterIP">
+    <Key>
+      <PropertyRef Name="RuleID" />
+    </Key>
+    <Property Name="RuleID" Type="Guid" Nullable="false" />
+    <Property Name="RuleEnabled" Type="Byte" Nullable="false" />
+    <Property Name="AccountID" Type="Guid" />
+    <Property Name="IP_Start" Type="Int32" Nullable="false" />
+    <Property Name="IP_End" Type="Int32" Nullable="false" />
+    <Property Name="RuleType" Type="Byte" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AccessControlList">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="IsEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+    <Property Name="UsernameID" Type="Guid" Nullable="false" />
+    <Property Name="ObjectID" Type="Guid" Nullable="false" />
+    <Property Name="ObjectType" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ACL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="AccessHistory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="UserGUID" Type="Guid" Nullable="false" />
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+    <Property Name="StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndDateTime" Type="DateTime" Precision="3" />
+    <Property Name="ErrorCode" Type="Int32" Nullable="false" />
+    <Property Name="nIPAddress" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="GroupID" />
+    </Key>
+    <Property Name="GroupID" Type="Guid" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ParentGroupID" Type="Guid" Nullable="false" />
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UsernameID" />
+    </Key>
+    <Property Name="UsernameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsernameGUID" Type="Guid" Nullable="false" />
+    <Property Name="AccessLevel" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="true" />
+    <Property Name="LastLogin" Type="DateTime" Precision="3" />
+    <Property Name="FailedLoginAttempts" Type="Int32" Nullable="false" />
+    <Property Name="Role" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OTPPhone" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="OTPEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RequireOTP" Type="Byte" Nullable="false" />
+    <Property Name="OTP" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="OTPExpiresAt" Type="DateTime" Precision="3" />
+    <Property Name="State" Type="Byte" Nullable="false" />
+    <Property Name="Gender" Type="Byte" Nullable="false" />
+    <Property Name="TimeZoneOffSet" Type="Int16" Nullable="false" />
+    <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreationIP" Type="Int64" Nullable="false" />
+    <Property Name="ActivationID" Type="Int32" Nullable="false" />
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+    <Property Name="GroupID" Type="Guid" Nullable="false" />
+    <Property Name="UnlockAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Sessions" Relationship="MyGreenPCModel.FK_Sessions_Users" FromRole="User" ToRole="Session" />
+  </EntityType>
+  <Association Name="FK_Sessions_Users">
+    <End Type="MyGreenPCModel.User" Role="User" Multiplicity="1" />
+    <End Type="MyGreenPCModel.Session" Role="Session" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UsernameID" />
+      </Principal>
+      <Dependent Role="Session">
+        <PropertyRef Name="UsernameID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Device">
+    <Key>
+      <PropertyRef Name="ComputerID" />
+    </Key>
+    <Property Name="ComputerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ComputerGUID" Type="Guid" Nullable="false" />
+    <Property Name="DeviceType" Type="Byte" Nullable="false" />
+    <Property Name="CurrIPAddress" Type="Int64" Nullable="false" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ConnectedAt" Type="DateTime" Precision="3" />
+    <Property Name="DisconnectedAt" Type="DateTime" Precision="3" />
+    <Property Name="PingCheck" Type="Boolean" Nullable="false" />
+    <Property Name="PingSentAt" Type="DateTime" Precision="3" />
+    <Property Name="ServerID" Type="Int16" Nullable="false" />
+    <Property Name="ConnectionID" Type="Int64" Nullable="false" />
+    <Property Name="Watts" Type="Int32" Nullable="false" />
+    <Property Name="WattsSaved" Type="Decimal" Nullable="false" Precision="19" Scale="2" />
+    <Property Name="UnitCost" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="MinutesOffline" Type="Int64" Nullable="false" />
+    <Property Name="IsOnline" Type="Boolean" Nullable="false" />
+    <Property Name="PingUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PingUrlID" Type="Int32" Nullable="false" />
+    <Property Name="PingPort" Type="Int32" Nullable="false" />
+    <Property Name="MachineName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="AccountID" Type="Guid" Nullable="false" />
+    <Property Name="GroupID" Type="Guid" Nullable="false" />
+    <Property Name="ExpiresAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Sessions" Relationship="MyGreenPCModel.FK_Sessions_Computers1" FromRole="Device" ToRole="Session" />
+  </EntityType>
+  <Association Name="FK_Sessions_Computers1">
+    <End Type="MyGreenPCModel.Device" Role="Device" Multiplicity="1" />
+    <End Type="MyGreenPCModel.Session" Role="Session" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Device">
+        <PropertyRef Name="ComputerID" />
+      </Principal>
+      <Dependent Role="Session">
+        <PropertyRef Name="ComputerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
