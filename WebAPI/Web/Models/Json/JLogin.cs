@@ -11,19 +11,20 @@ namespace Web.Models
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "The email address is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
-        public string Email { get; set; }
+        public string email { get; set; }
 
         [Required]
         [StringLength(18, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
-        public string Password { get; set; }
+        public string password { get; set; }
 
         [Display(Name = "Key")]
+        [Required]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Key is required")]
-        public string Key { get; set; }
+        public string key { get; set; }
 
         [Display(Name = "UUID")]
-        public string UUID { get; set; }    //Needed in case of User Login from App
+        public string uuid { get; set; }    //Needed in case of User Login from App
     }
 }

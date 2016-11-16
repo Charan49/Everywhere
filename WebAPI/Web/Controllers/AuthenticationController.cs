@@ -32,13 +32,13 @@ namespace Web.Controllers
                                     
 
             //Check if User Exists and Account is Available
-            var existingUser = await db.Users.FirstOrDefaultAsync(u => u.Email == loginInfo.Email && u.AccountState > (int)Models.Enums.AccountState.Available );
+            var existingUser = await db.Users.FirstOrDefaultAsync(u => u.Email == loginInfo.email && u.AccountState >= (int)Models.Enums.AccountState.Available );
             if (existingUser == null)            
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
                                    
 
             //Validate Password
-            bool bLoginSuccess = Helper.PasswordHash.ValidatePassword(loginInfo.Password, existingUser.Password);
+            bool bLoginSuccess = Helper.PasswordHash.ValidatePassword(loginInfo.password, existingUser.Password);
 
             if (bLoginSuccess)
                 bLoginSuccess = ValidateKey(loginInfo, existingUser);
@@ -84,14 +84,14 @@ namespace Web.Controllers
                 case "User":
                     {
                         Guid uuid;
-                        if (String.IsNullOrEmpty(login.UUID) || Guid.TryParse(login.UUID, out uuid) == false)
+                        if (String.IsNullOrEmpty(login.uuid) || Guid.TryParse(login.uuid, out uuid) == false)
                             return false;
 
                         var app = db.Apps.FirstOrDefault(x => x.DeviceID == uuid && x.IsDeleted == false);
                         if (app == null)
                             return false;
 
-                        if (login.Key == app.RegistrationToken)
+                        if (login.key == app.RegistrationToken)
                             return true;
                         else
                             return false;
@@ -99,7 +99,7 @@ namespace Web.Controllers
 
                 case "VideoSwitch":
                     {
-                        if (login.Key == ConfigurationManager.AppSettings.Get("DefaultKeyVideoSwitchLogin"))
+                        if (login.key == ConfigurationManager.AppSettings.Get("DefaultKeyVideoSwitchLogin"))
                             return true;
                         else
                             return false;
@@ -107,7 +107,7 @@ namespace Web.Controllers
 
                 case "Admin":
                     {
-                        if (login.Key == ConfigurationManager.AppSettings.Get("DefaultKeyAdminLogin"))
+                        if (login.key == ConfigurationManager.AppSettings.Get("DefaultKeyAdminLogin"))
                             return true;
                         else
                             return false;

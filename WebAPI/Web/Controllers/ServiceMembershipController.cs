@@ -37,6 +37,7 @@ namespace Web.Controllers
             {
                 var newUserService = new UserService
                 {
+                    AccessID = Guid.NewGuid(),
                     ServiceGUID = id,
                     UserGUID = this.ApiUser().RUser.SubjectID,
                     CreatedDate = DateTime.UtcNow,
@@ -82,7 +83,7 @@ namespace Web.Controllers
         public async Task<IEnumerable<JService>> GetServiceMembership()
         {
             var ruser = this.ApiUser().RUser;
-            return await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JService { Name = x.Service.Name, ID = x.ServiceGUID, AuthenticationMethod = x.Service.AuthMethod, ServiceProviderInfo = x.Service.ServiceProviderInfo }).ToListAsync();
+            return await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JService { name = x.Service.Name, ID = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo }).ToListAsync();
         }        
 
         private string GetHeaderValue(string header)

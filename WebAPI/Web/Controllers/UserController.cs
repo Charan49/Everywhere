@@ -34,17 +34,17 @@ namespace Web.Controllers
             User user = null;
 
             //Create First & Last Names from provided name            
-            int index = model.Name.LastIndexOf(' ');
+            int index = model.name.LastIndexOf(' ');
 
             string FirstName = "";
             string LastName = "";
 
             if (index == -1)
-                FirstName = model.Name;
+                FirstName = model.name;
             else
             {
-                FirstName = model.Name.Substring(0, index).Trim();
-                LastName = model.Name.Substring(index).Trim();
+                FirstName = model.name.Substring(0, index).Trim();
+                LastName = model.name.Substring(index).Trim();
             }
 
             user = new User
@@ -53,12 +53,13 @@ namespace Web.Controllers
                 LastName = LastName,
                 UserType = "User",
 
-                AccountState = (byte)Models.Enums.AccountState.UnconfirmedEmail,
+                AccountState = (byte)Models.Enums.AccountState.Active,
 
-                Email = model.Email,
-                Password = Helper.PasswordHash.HashPassword(model.Password),
+                Email = model.email,
+                Password = Helper.PasswordHash.HashPassword(model.password),
 
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                UserGUID = Guid.NewGuid()
             };
 
 
@@ -67,9 +68,9 @@ namespace Web.Controllers
                 try
                 {
                     //Check if a User with Same E-mail Already Exists
-                    int count = await db.Users.CountAsync(u => String.Compare(u.Email, model.Email, true) == 0 && u.AccountState != (byte)Models.Enums.AccountState.Deleted);
+                    int count = await db.Users.CountAsync(u => String.Compare(u.Email, model.email, true) == 0 && u.AccountState != (byte)Models.Enums.AccountState.Deleted);
                     if (count > 0)
-                        return Request.CreateResponse(HttpStatusCode.Conflict, "User already exists.");
+                        return Request.CreateErrorResponse(HttpStatusCode.Conflict, "User already exists.");
 
                     db.Users.Add(user);
                     db.SaveChanges();
@@ -92,12 +93,12 @@ namespace Web.Controllers
         [AllowAnonymous]
         [Route("api/v1/user/check")]
         [HttpPost]
-        public async Task<IHttpActionResult> CheckUser()
+        public async Task<IHttpActionResult> CheckUser([FromBody] JUserCheck model)
         {
-            IEnumerable<string> headerValues = Request.Headers.GetValues("Email");
-            var Email = headerValues.FirstOrDefault();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            int count = await db.Users.CountAsync(x => String.Compare(x.Email, Email, true) == 0 && x.AccountState != (byte)Models.Enums.AccountState.Deleted);
+            int count = await db.Users.CountAsync(x => String.Compare(x.Email, model.email, true) == 0 && x.AccountState != (byte)Models.Enums.AccountState.Deleted);
 
             if (count == 0)
                 return NotFound();
@@ -154,9 +155,77 @@ namespace Web.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-        
 
-        
+
+        [AllowAnonymous]
+        [Route("api/v1/user/ResetPassword/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ResetPassword([FromBody] JResetPasswordModel model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
+            if (emailAddress != null)
+            {
+                /*
+                string confirmationToken =
+                    WebSecurity.GeneratePasswordResetToken(model.Email);
+                dynamic email = new Email("ChangePasswordEmail");
+                email.To = emailAddress;
+                email.UserName = model.Email;
+                email.ConfirmationToken = confirmationToken;
+                email.Send();
+
+                emailAddress.VerificationCode = confirmationToken;
+
+                await db.SaveChangesAsync();
+                */
+                return Ok();
+            }
+            else
+                return NotFound();
+
+        }
+
+        [AllowAnonymous]
+        [Route("api/v1/users/ForgetPasswordRequest/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ForgotPasswordRequest([FromBody] JResetPasswordModel model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
+            if (emailAddress != null)
+            {
+                /*
+                string confirmationToken = WebSecurity.GeneratePasswordResetToken(model.email);
+                dynamic email = new Email("ChangePasswordEmail");
+                email.To = emailAddress;
+                email.UserName = model.Email;
+                email.ConfirmationToken = confirmationToken;
+                email.Send();
+
+                emailAddress.VerificationCode = confirmationToken;
+
+                await db.SaveChangesAsync();
+                */
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
+
+        [Route("api/v1/users/ForgetPassword/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ForgotPassword([FromBody] JForgetPassword model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
+            if (emailAddress != null && emailAddress.VerificationCode == model.verificationCode)
+            {
+                emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
 
         private string GetHeaderValue(string header)
         {

@@ -11,8 +11,8 @@
     <Property Name="Version" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
-    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
     <Property Name="RegistrationToken" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Services">
@@ -26,8 +26,8 @@
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
-    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -39,15 +39,15 @@
     <Property Name="LastName" Type="nvarchar" MaxLength="50" />
     <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="DOB" Type="datetime" />
+    <Property Name="DOB" Type="datetime2" Precision="7" />
     <Property Name="Location" Type="nvarchar(max)" />
     <Property Name="VerificationCode" Type="nvarchar" MaxLength="50" />
     <Property Name="UserType" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="AccountState" Type="int" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
-    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
   </EntityType>
   <EntityType Name="UserServices">
     <Key>
@@ -59,8 +59,8 @@
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
-    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
   </EntityType>
   <Association Name="FK_Services_UserServices">
     <End Role="Services" Type="Self.Services" Multiplicity="1" />

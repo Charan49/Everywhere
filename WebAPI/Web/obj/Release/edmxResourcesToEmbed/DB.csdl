@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InterceptDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="App">
+    <Key>
+      <PropertyRef Name="AppGUID" />
+    </Key>
+    <Property Name="AppGUID" Type="Guid" Nullable="false" />
+    <Property Name="DeviceID" Type="Guid" Nullable="false" />
+    <Property Name="AppName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="OS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Version" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="RegistrationToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Service">
+    <Key>
+      <PropertyRef Name="ServiceGUID" />
+    </Key>
+    <Property Name="ServiceGUID" Type="Guid" Nullable="false" />
+    <Property Name="AuthMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ServiceProviderInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="UserServices" Relationship="Self.FK_Services_UserServices" FromRole="Services" ToRole="UserServices" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserGUID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserGUID" Type="Guid" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DOB" Type="DateTime" Precision="3" />
+    <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VerificationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AccountState" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="UserServices" Relationship="Self.FK_Users_UserServices" FromRole="Users" ToRole="UserServices" />
+  </EntityType>
+  <EntityType Name="UserService">
+    <Key>
+      <PropertyRef Name="AccessID" />
+    </Key>
+    <Property Name="ServiceGUID" Type="Guid" Nullable="false" />
+    <Property Name="UserGUID" Type="Guid" Nullable="false" />
+    <Property Name="AccessID" Type="Guid" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK_Services_UserServices">
+    <End Role="Services" Type="Self.Service" Multiplicity="1" />
+    <End Role="UserServices" Type="Self.UserService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Services">
+        <PropertyRef Name="ServiceGUID" />
+      </Principal>
+      <Dependent Role="UserServices">
+        <PropertyRef Name="ServiceGUID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_UserServices">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="UserServices" Type="Self.UserService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserGUID" />
+      </Principal>
+      <Dependent Role="UserServices">
+        <PropertyRef Name="UserGUID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InterceptDB" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Apps" EntityType="Self.App" />
+    <EntitySet Name="Services" EntityType="Self.Service" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="UserServices" EntityType="Self.UserService" />
+    <AssociationSet Name="FK_Services_UserServices" Association="Self.FK_Services_UserServices">
+      <End Role="Services" EntitySet="Services" />
+      <End Role="UserServices" EntitySet="UserServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_UserServices" Association="Self.FK_Users_UserServices">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserServices" EntitySet="UserServices" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -26,6 +26,12 @@ namespace Web.Controllers
             return await db.Users.Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
         }
 
+        [Route("api/v1/users/{id}")]
+        [HttpGet]
+        public async Task<IEnumerable<JUser>> GetUserWithID(int id)
+        {
+            return await db.Users.Where(x => x.UserID == id).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+        }
 
         // POST: api/users
         [Route("api/v1/users")]
@@ -49,6 +55,7 @@ namespace Web.Controllers
             //Create New User
             User user = new User()
             {
+                UserGUID = Guid.NewGuid(),
                 Email = newUser.email,
                 Password = Helper.PasswordHash.HashPassword(newUser.Password),
 

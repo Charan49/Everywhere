@@ -29,11 +29,11 @@ namespace Web.Controllers
         {
             Guid uuid;
 
-            if (!ModelState.IsValid || Guid.TryParse(model.UUID, out uuid) == false)
+            if (!ModelState.IsValid || Guid.TryParse(model.uuid, out uuid) == false)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
 
             //Validate Registration Key
-            if (model.DefaultKey != ConfigurationManager.AppSettings.Get("DefaultKeyAppRegister"))
+            if (model.defaultKey != ConfigurationManager.AppSettings.Get("DefaultKeyAppRegister"))
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Registration Key");
 
 
@@ -43,10 +43,11 @@ namespace Web.Controllers
 
             app = new App
             {
+                AppGUID = Guid.NewGuid(),
                 DeviceID = uuid,
-                AppName = model.AppName,
-                OS = model.OS,
-                Version = model.Version,
+                AppName = model.appName,
+                OS = model.os,
+                Version = model.version,
 
                 RegistrationToken = Common.GetUniqueKey(50),
 
@@ -62,7 +63,7 @@ namespace Web.Controllers
                     //Check if Application Already Exists
                     int count = await db.Apps.CountAsync(u => u.DeviceID == uuid && u.IsDeleted != true);
                     if (count > 0)
-                        return Request.CreateResponse(HttpStatusCode.Conflict, "App already exists.");
+                        return Request.CreateErrorResponse(HttpStatusCode.Conflict, "App already exists.");
 
                     db.Apps.Add(app);
                     db.SaveChanges();
