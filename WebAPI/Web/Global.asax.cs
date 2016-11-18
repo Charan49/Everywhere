@@ -7,6 +7,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
+using WebMatrix.WebData;
 
 namespace Web
 {
@@ -23,5 +24,6 @@ namespace Web
             var formatters = GlobalConfiguration.Configuration.Formatters;
             formatters.Remove(formatters.XmlFormatter);
         }
+        
     }
 }

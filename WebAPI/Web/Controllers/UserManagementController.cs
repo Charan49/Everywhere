@@ -10,10 +10,14 @@ using System.Data.Entity;
 using Web.Helper;
 using Web.Models.Json;
 using System.Threading.Tasks;
+using SendGrid.Helpers.Mail;
+using WebMatrix.WebData;
+using System.Web.Http.Cors;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserManagementController : ApiController
     {
         private InterceptDB db = new InterceptDB();
@@ -133,16 +137,16 @@ namespace Web.Controllers
 
 
         // Disable
-        [Route("api/v1/users/disable/{id}")]
+        [Route("api/v1/users/disable")]
         [HttpPost]
-        public async Task<IHttpActionResult> DeleteUser(int id, [FromBody] bool disable, [FromBody] bool notify)
+        public async Task<IHttpActionResult> DeleteUser([FromBody] ParamDisable param)
         {
-            User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == id);
+            User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == param.id);
             if (user == null)
                 return NotFound();
 
             //Update State
-            if (disable)
+            if (Convert.ToBoolean(param.disable))
                 user.AccountState = (byte)Models.Enums.AccountState.Disabled;
             else
                 user.AccountState = (byte)Models.Enums.AccountState.Active;
@@ -153,6 +157,72 @@ namespace Web.Controllers
             await db.SaveChangesAsync();
 
             return Ok();
+        }
+
+
+        [Route("api/v1/users/ResetPassword/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ResetPassword([FromBody] ResetPasswordModel model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
+            if (emailAddress != null)
+            {
+                string confirmationToken =
+                    WebSecurity.GeneratePasswordResetToken(model.Email);
+                dynamic email = new Email("ChangePasswordEmail");
+                email.To = emailAddress;
+                email.UserName = model.Email;
+                email.ConfirmationToken = confirmationToken;
+                email.Send();
+
+                emailAddress.VerificationCode = confirmationToken;
+
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return NotFound();
+
+        }
+
+        [Route("api/v1/users/ForgetPasswordRequest/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ForgotPasswordRequest([FromBody] ResetPasswordModel model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
+            if (emailAddress != null)
+            {
+                string confirmationToken =
+                    WebSecurity.GeneratePasswordResetToken(model.Email);
+                dynamic email = new Email("ChangePasswordEmail");
+                email.To = emailAddress;
+                email.UserName = model.Email;
+                email.ConfirmationToken = confirmationToken;
+                email.Send();
+
+                emailAddress.VerificationCode = confirmationToken;
+
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
+
+        [Route("api/v1/users/ForgetPassword/{id}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ForgotPassword([FromBody] ForgetPassword model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
+            if (emailAddress != null && emailAddress.VerificationCode == model.VerificationCode)
+            {
+                emailAddress.Password = Helper.PasswordHash.HashPassword(model.NewPassword);
+
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return NotFound();
         }
 
         private string GetHeaderValue(string header)

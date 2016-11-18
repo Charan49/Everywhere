@@ -14,9 +14,11 @@ using Web.Helper;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Web.Http.Cors;
 
 namespace Web.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AuthenticationController : ApiController
     {
         private InterceptDB db = new InterceptDB();
