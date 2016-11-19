@@ -46,4 +46,11 @@ namespace Web.Models
         public string serviceProviderInfo { get; set; }
 
     }
+
+    public class JServiceUpdate
+    {
+        public string accessToken { get; set; }
+        public string tokenExpiresAt { get; set; }
+
+    }
 }

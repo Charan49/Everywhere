@@ -61,6 +61,8 @@
           <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AccessID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccessToken" Type="nvarchar(max)" />
+          <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
@@ -174,6 +176,8 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
           <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
+          <Property Name="AccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TokenExpiration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Services_UserServices">
           <End Role="Services" Type="Self.Service" Multiplicity="1" />
@@ -274,6 +278,8 @@
           <EntitySetMapping Name="UserServices">
             <EntityTypeMapping TypeName="InterceptDBModel.UserService">
               <MappingFragment StoreEntitySet="UserServices">
+                <ScalarProperty Name="TokenExpiration" ColumnName="TokenExpiration" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
                 <ScalarProperty Name="ServiceGUID" ColumnName="ServiceGUID" />
                 <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
                 <ScalarProperty Name="AccessID" ColumnName="AccessID" />

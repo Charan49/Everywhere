@@ -10,10 +10,12 @@ using System.Data.Entity;
 using Web.Helper;
 using Web.Models.Json;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 
 namespace Web.Controllers
 {    
     [Authorize]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ServiceMembershipController : ApiController
     {
         private InterceptDB db = new InterceptDB();
@@ -71,6 +73,29 @@ namespace Web.Controllers
                 return NotFound();
 
             entry.IsDeleted = true;
+            db.Entry(entry).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Route("api/v1/service_membership/{id}")]
+        [HttpPut]
+        public async Task<IHttpActionResult> UpdateServiceMembership(Guid id, JServiceUpdate model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var ruser = this.ApiUser().RUser;
+
+            var entry = await db.UserServices.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.ServiceGUID == id && x.IsDeleted == false);
+
+            if (entry == null)
+                return NotFound();
+
+            entry.AccessToken = model.accessToken;
+            entry.TokenExpiration = model.tokenExpiresAt;
+
             db.Entry(entry).State = EntityState.Modified;
             await db.SaveChangesAsync();
 

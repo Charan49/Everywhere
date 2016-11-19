@@ -56,6 +56,8 @@
     <EntitySetMapping Name="UserServices">
       <EntityTypeMapping TypeName="InterceptDBModel.UserService">
         <MappingFragment StoreEntitySet="UserServices">
+          <ScalarProperty Name="TokenExpiration" ColumnName="TokenExpiration" />
+          <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
           <ScalarProperty Name="ServiceGUID" ColumnName="ServiceGUID" />
           <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
           <ScalarProperty Name="AccessID" ColumnName="AccessID" />

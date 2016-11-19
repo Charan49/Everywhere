@@ -194,7 +194,7 @@
             <param name="database">The database.</param>
             <exception cref="T:System.ArgumentNullException">serializer</exception>
         </member>
-        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.#ctor(StackExchange.Redis.ConnectionMultiplexer,StackExchange.Redis.Extensions.Core.ISerializer,System.Int32)">
+        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.#ctor(StackExchange.Redis.IConnectionMultiplexer,StackExchange.Redis.Extensions.Core.ISerializer,System.Int32)">
             <summary>
                 Initializes a new instance of the <see cref="T:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient" /> class.
             </summary>
@@ -471,22 +471,6 @@
             <param name="items">The items.</param>
             <returns></returns>
         </member>
-        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetAdd(System.String,System.String)">
-            <summary>
-                Run SADD command see http://redis.io/commands/sadd
-            </summary>
-            <param name="memberName">Name of the member.</param>
-            <param name="key">The key.</param>
-            <returns></returns>
-        </member>
-        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetAddAsync(System.String,System.String)">
-            <summary>
-                Run SADD command see http://redis.io/commands/sadd
-            </summary>
-            <param name="memberName">Name of the member.</param>
-            <param name="key">The key.</param>
-            <returns></returns>
-        </member>
         <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetAdd``1(System.String,``0)">
             <summary>
                 Run SADD command http://redis.io/commands/sadd
@@ -505,13 +489,62 @@
             <param name="item"></param>
             <returns></returns>
         </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetAddAll``1(System.String,``0[])">
+            <summary>
+            Run SADD command http://redis.io/commands/sadd
+            </summary>
+            <param name="items">Name of the member.</param>
+            <param name="key">The key.</param>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetAddAllAsync``1(System.String,``0[])">
+            <summary>
+            Run SADD command http://redis.io/commands/sadd
+            </summary>
+            <param name="items">Name of the member.</param>
+            <param name="key">The key.</param>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetRemove``1(System.String,``0)">
+            <summary>
+                Run SREM command http://redis.io/commands/srem
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetRemoveAsync``1(System.String,``0)">
+            <summary>
+                Run SREM command http://redis.io/commands/srem"
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetRemoveAll``1(System.String,``0[])">
+            <summary>
+                Run SREM command http://redis.io/commands/srem
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="items"></param>
+            <returns></returns>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetRemoveAllAsync``1(System.String,``0[])">
+            <summary>
+                Run SREM command http://redis.io/commands/srem
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="items"></param>
+            <returns></returns>
+        </member>
         <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetMember(System.String)">
             <summary>
                 Run SMEMBERS command http://redis.io/commands/SMEMBERS
             </summary>
             <param name="memberName">Name of the member.</param>
             <returns></returns>
-            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetMemberAsync(System.String)">
             <summary>
@@ -519,6 +552,15 @@
             </summary>
             <param name="memberName">Name of the member.</param>
             <returns></returns>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetMembers``1(System.String)">
+            <summary>
+                Run SMEMBERS command see http://redis.io/commands/SMEMBERS
+                Deserializes the results to T
+            </summary>
+            <typeparam name="T">The type of the expected objects in the set</typeparam>
+            <param name="key">The key</param>
+            <returns>An array of objects in the set</returns>
         </member>
         <member name="M:StackExchange.Redis.Extensions.Core.StackExchangeRedisCacheClient.SetMembersAsync``1(System.String)">
             <summary>
@@ -1377,20 +1419,6 @@
             <typeparam name="T">The type of the expected object</typeparam>
             <param name="items">The items.</param>
         </member>
-        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetAdd(System.String,System.String)">
-            <summary>
-            Run SADD command see http://redis.io/commands/sadd
-            </summary>
-            <param name="memberName">Name of the member.</param>
-            <param name="key">The key.</param>
-        </member>
-        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetAddAsync(System.String,System.String)">
-            <summary>
-            Run SADD command see http://redis.io/commands/sadd
-            </summary>
-            <param name="memberName">Name of the member.</param>
-            <param name="key">The key.</param>
-        </member>
         <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetAdd``1(System.String,``0)">
             <summary>
             Run SADD command http://redis.io/commands/sadd
@@ -1405,6 +1433,52 @@
             <param name="item">Name of the member.</param>
             <param name="key">The key.</param>
         </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetAddAll``1(System.String,``0[])">
+            <summary>
+            Run SADD command http://redis.io/commands/sadd
+            </summary>
+            <param name="items">Name of the member.</param>
+            <param name="key">The key.</param>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetAddAllAsync``1(System.String,``0[])">
+            <summary>
+            Run SADD command http://redis.io/commands/sadd
+            </summary>
+            <param name="items">Name of the member.</param>
+            <param name="key">The key.</param>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetRemove``1(System.String,``0)">
+            <summary>
+            Run SREM command http://redis.io/commands/srem
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetRemoveAsync``1(System.String,``0)">
+            <summary>
+            Run SREM command http://redis.io/commands/srem"
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetRemoveAll``1(System.String,``0[])">
+            <summary>
+            Run SREM command http://redis.io/commands/srem
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="items"></param>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetRemoveAllAsync``1(System.String,``0[])">
+            <summary>
+            Run SREM command http://redis.io/commands/srem
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="items"></param>
+        </member>
         <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetMember(System.String)">
             <summary>
             Run SMEMBERS command http://redis.io/commands/SMEMBERS
@@ -1416,6 +1490,15 @@
             Run SMEMBERS command see http://redis.io/commands/SMEMBERS
             </summary>
             <param name="memberName">Name of the member.</param>
+        </member>
+        <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetMembers``1(System.String)">
+            <summary>
+                Run SMEMBERS command see http://redis.io/commands/SMEMBERS
+                Deserializes the results to T
+            </summary>
+            <typeparam name="T">The type of the expected objects in the set</typeparam>
+            <param name="key">The key</param>
+            <returns>An array of objects in the set</returns>
         </member>
         <member name="M:StackExchange.Redis.Extensions.Core.ICacheClient.SetMembersAsync``1(System.String)">
             <summary>

@@ -107,3 +107,14 @@ F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Deployment.xm
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.dll
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.pdb
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.Cors.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebMatrix.WebData.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGrid.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Cors.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebMatrix.Data.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGrid.CSharp.HTTP.Client.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.Cors.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebMatrix.WebData.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebMatrix.Data.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Facebook.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Facebook.xml

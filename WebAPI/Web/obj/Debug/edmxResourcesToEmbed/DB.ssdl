@@ -56,6 +56,8 @@
     <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="AccessID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="AccessToken" Type="nvarchar(max)" />
+    <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
