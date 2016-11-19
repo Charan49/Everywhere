@@ -54,7 +54,7 @@ namespace Web.Controllers
             {
                 FirstName = FirstName,
                 LastName = LastName,
-                UserType = "VideoSwitch",
+                UserType = "User",
 
                 AccountState = (byte)Models.Enums.AccountState.Active,
 

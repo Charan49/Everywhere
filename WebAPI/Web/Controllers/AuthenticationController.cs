@@ -85,18 +85,19 @@ namespace Web.Controllers
             {
                 case "User":
                     {
-                        Guid uuid;
-                        if (String.IsNullOrEmpty(login.uuid) || Guid.TryParse(login.uuid, out uuid) == false)
-                            return false;
+                        return true;
+                        //Guid uuid;
+                        //if (String.IsNullOrEmpty(login.uuid) || Guid.TryParse(login.uuid, out uuid) == false)
+                        //    return false;
 
-                        var app = db.Apps.FirstOrDefault(x => x.DeviceID == uuid && x.IsDeleted == false);
-                        if (app == null)
-                            return false;
+                        //var app = db.Apps.FirstOrDefault(x => x.DeviceID == uuid && x.IsDeleted == false);
+                        //if (app == null)
+                        //    return false;
 
-                        if (login.key == app.RegistrationToken)
-                            return true;
-                        else
-                            return false;
+                        //if (login.key == app.RegistrationToken)
+                        //    return true;
+                        //else
+                        //    return false;
                     }
 
                 case "VideoSwitch":

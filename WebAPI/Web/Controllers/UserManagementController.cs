@@ -11,7 +11,6 @@ using Web.Helper;
 using Web.Models.Json;
 using System.Threading.Tasks;
 using SendGrid.Helpers.Mail;
-using WebMatrix.WebData;
 using System.Web.Http.Cors;
 
 namespace Web.Controllers
@@ -167,8 +166,8 @@ namespace Web.Controllers
             User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
             if (emailAddress != null)
             {
-                string confirmationToken =
-                    WebSecurity.GeneratePasswordResetToken(model.Email);
+                string confirmationToken = "";
+                    //WebSecurity.GeneratePasswordResetToken(model.Email);
                 dynamic email = new Email("ChangePasswordEmail");
                 email.To = emailAddress;
                 email.UserName = model.Email;
@@ -192,8 +191,8 @@ namespace Web.Controllers
             User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
             if (emailAddress != null)
             {
-                string confirmationToken =
-                    WebSecurity.GeneratePasswordResetToken(model.Email);
+                string confirmationToken = "";
+                    //WebSecurity.GeneratePasswordResetToken(model.Email);
                 dynamic email = new Email("ChangePasswordEmail");
                 email.To = emailAddress;
                 email.UserName = model.Email;

@@ -81,7 +81,8 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<JService>> GetServices()
         {
-            return await db.Services.Where(x => x.CreatedBy == this.ApiUser().ID).Select(x => new JService { ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            var ret=await db.Services.Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            return ret;
         }
 
         [Route("api/v1/service/{name}")]

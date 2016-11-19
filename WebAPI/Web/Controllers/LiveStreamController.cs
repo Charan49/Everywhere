@@ -35,7 +35,7 @@ namespace Web.Controllers
                     //Create Facebook Live Stream
                     Facebook.FacebookClient client = new FacebookClient();
                     client.AccessToken = entry.AccessToken;
-                    dynamic ret = await client.PostTaskAsync("/me/live_videos");
+                    dynamic ret = await client.PostTaskAsync("/me/live_videos", new { });
 
                     list.Add(new JLiveStream
                     {

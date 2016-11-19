@@ -49,6 +49,7 @@ namespace Web.Models
 
     public class JServiceUpdate
     {
+        public Guid id { get; set; }
         public string accessToken { get; set; }
         public string tokenExpiresAt { get; set; }
 

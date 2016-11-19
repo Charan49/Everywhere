@@ -56,13 +56,13 @@
     <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="AccessID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="AccessToken" Type="nvarchar(max)" />
-    <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
     <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+    <Property Name="AccessToken" Type="nvarchar" MaxLength="200" />
+    <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <Association Name="FK_Services_UserServices">
     <End Role="Services" Type="Self.Services" Multiplicity="1" />
