@@ -21,7 +21,9 @@ namespace Web.Models
         [Required(ErrorMessage = "Service Provider Information is required")]
         [Display(Name = "ServiceProviderInfo")]
         public string serviceProviderInfo  { get; set; }
-    
+
+        public string IsDeleted { get; set; }
+
         public void Trim()
         {
             //Trim Strings

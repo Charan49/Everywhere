@@ -81,7 +81,7 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<JService>> GetServices()
         {
-            var ret=await db.Services.Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            var ret=await db.Services.Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString() }).ToListAsync();
             return ret;
         }
 
