@@ -41,4 +41,44 @@ namespace Web.Models
         [StringTrim]
         public string role;
     }
+    public class ForgetPassword
+    {
+        [Required]
+        [StringTrim]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [StringTrim]
+        public string VerificationCode { get; set; }
+
+        [Required]
+        [StringTrim]
+        [StringLength(18, MinimumLength = 8)]
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
+    }
+
+    public class ResetPasswordModel
+    {
+        [Required]
+        [StringTrim]
+        [EmailAddress]
+        public string Email { get; set; }
+    }
+
+    public class ParamDisable
+    {
+        [Required]
+        [StringTrim]
+        public int id { get; set; }
+
+        [Required]
+        [StringTrim]
+        public string disable { get; set; }
+
+        [Required]
+        [StringTrim]
+        public string notify { get; set; }
+    }
 }

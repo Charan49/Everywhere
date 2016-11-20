@@ -20,3 +20,99 @@ D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\obj\Debug\Web.Tests.csprojResolveAssemblyReference.cache
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\obj\Debug\Web.Tests.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\obj\Debug\Web.Tests.pdb
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Web.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebActivatorEx.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Swashbuckle.Core.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\EntityFramework.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\JWT.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Net.Http.Formatting.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.Extensions.Core.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Mvc.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Newtonsoft.Json.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.WebHost.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.Extensions.Jil.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Razor.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Jil.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Web.pdb
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\EntityFramework.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Net.Http.Formatting.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.Extensions.Core.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Mvc.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Newtonsoft.Json.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.WebHost.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.Extensions.Jil.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Razor.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Jil.pdb
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Jil.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.Cors.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebMatrix.WebData.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGrid.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Cors.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebMatrix.Data.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGrid.CSharp.HTTP.Client.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.Cors.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebMatrix.WebData.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\WebMatrix.Data.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Facebook.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Facebook.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.dll.config
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.pdb
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\WebActivatorEx.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Http.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Swashbuckle.Core.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\EntityFramework.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\JWT.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Http.Cors.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Net.Http.Formatting.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.Extensions.Core.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Facebook.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Mvc.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Newtonsoft.Json.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Http.WebHost.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.Extensions.Jil.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\SendGrid.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Microsoft.Web.Infrastructure.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Cors.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Razor.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Razor.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Jil.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\SendGrid.CSharp.HTTP.Client.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Deployment.dll
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.pdb
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Http.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\EntityFramework.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Http.Cors.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Net.Http.Formatting.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.Extensions.Core.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Facebook.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Mvc.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Newtonsoft.Json.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Http.WebHost.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\StackExchange.Redis.Extensions.Jil.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.Razor.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Razor.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Jil.pdb
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Jil.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Deployment.xml
+F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.csprojResolveAssemblyReference.cache
+F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.dll
+F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.pdb

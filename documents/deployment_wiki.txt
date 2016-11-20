@@ -1,0 +1,23 @@
+# Web API Deployment Instructions #
+
+## 1. Install Microsoft IIS Web Deployment tool on the production server.
+The tool can be downloaded from following url: [https://technet.microsoft.com/en-us/library/dd568996.aspx](Link URL)
+
+## 2. Create a Deployment Package in Visual Studio ##
+*Web* project contains a Publishing Profile **InterceptWebAPI**
+
+Follow the instructions at the following url: [https://msdn.microsoft.com/en-us/library/dd465323(v=vs.110).aspx](Link URL) to create a deployment Package.
+
+Included publishing profile has following defaults, which can be changed in the wizard.
+
+* Outputs deployment package to C:\Publish folder. Ensure that the path is valid.
+* Assumes the IIS sitename is *WebAPI*. If it's different in the production server then update that.
+* Has default DB connection string for *intercepteverywhere.database.windows.net*. This can be changed if needed.
+
+## 3. Deploy ##
+
+1. Copy Files from C:\Publish folder (web.sourcemanifest.xml not needed) to the production machine. 
+2. On the production machine open *Web Deploy Command Line*.
+3. Navigate to the folder where deployment files are and type command **web.deploy /y** and hit Enter.
+
+The tool will deploy all binaries to the IIS.

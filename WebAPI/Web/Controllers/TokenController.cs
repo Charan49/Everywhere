@@ -54,7 +54,7 @@ namespace Web.Controllers
             rApiUser.TokenHash = tokenhash[2];
 
             if (user.UserType == "User")
-                rApiUser.DeviceID = Guid.Parse(loginInfo.UUID);
+                rApiUser.DeviceID = Guid.Parse(loginInfo.uuid);
 
             RedisDb.RedisCache.Add<Models.Redis.RApiUser>("ApiUser:" + user.UserGUID + ":Session:" + rApiUser.SessionID, rApiUser, new TimeSpan(0, GetTokenExpireMinutes(), 0));
 

@@ -9,10 +9,12 @@ using Web.Models.Json;
 using System.Data.Entity;
 using Web.Models;
 using Web;
+using System.Web.Http.Cors;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ServiceController : ApiController
     {
         private InterceptDB db = new InterceptDB();
@@ -31,9 +33,10 @@ namespace Web.Controllers
             
             service = new Service
             {
-                Name = model.Name,
-                AuthMethod = model.AuthenticationMethod,
-                ServiceProviderInfo = model.ServiceProviderInfo,
+                ServiceGUID = Guid.NewGuid(),
+                Name = model.name,
+                AuthMethod = model.authenticationMethod,
+                ServiceProviderInfo = model.serviceProviderInfo,
                 CreatedDate = DateTime.Now,
                 CreatedBy = this.ApiUser().Email,
                 IsDeleted = false
@@ -45,7 +48,7 @@ namespace Web.Controllers
                 try
                 {
                     //Check if Application Already Exists
-                    int count = await db.Services.CountAsync(u => u.Name.ToLower().Trim() == model.Name.ToLower().Trim() && u.IsDeleted == false);
+                    int count = await db.Services.CountAsync(u => u.Name.ToLower().Trim() == model.name.ToLower().Trim() && u.IsDeleted == false);
                     if (count > 0)
                         return Request.CreateResponse(HttpStatusCode.Conflict, "Service already exists.");
 
@@ -71,14 +74,15 @@ namespace Web.Controllers
         [HttpGet]        
         public async Task<IEnumerable<JService>> GetService(string name)
         {
-            return await db.Services.Where(x => x.Name == name).Select(x => new JService { Name = x.Name, AuthenticationMethod = x.AuthMethod, ServiceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            return await db.Services.Where(x => x.Name == name).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
         }
 
         [Route("api/v1/service")]
         [HttpGet]
         public async Task<IEnumerable<JService>> GetServices()
         {
-            return await db.Services.Select(x => new JService { AuthenticationMethod = x.AuthMethod, ServiceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            var ret=await db.Services.Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString() }).ToListAsync();
+            return ret;
         }
 
         [Route("api/v1/service/{name}")]
@@ -111,8 +115,8 @@ namespace Web.Controllers
             //Update Settings
             if (String.Compare(service.ServiceProviderInfo, service.ServiceProviderInfo, true) != 0 || String.Compare(service.AuthMethod, service.AuthMethod, true) != 0)
             {
-                service.AuthMethod = jService.AuthenticationMethod;
-                service.ServiceProviderInfo = jService.ServiceProviderInfo;
+                service.AuthMethod = jService.authenticationMethod;
+                service.ServiceProviderInfo = jService.serviceProviderInfo;
                 service.ModifiedBy = this.ApiUser().Email;
                 service.ModifiedDate = DateTime.UtcNow;
             }

@@ -10,32 +10,32 @@ namespace Web.Models.Json
     {
         [Display(Name = "Application Name")]
         [Required(ErrorMessage = "The Application Name is required")]
-        public string AppName { get; set; }
+        public string appName { get; set; }
 
         [Required(ErrorMessage = "The UUID is required")]
         [Display(Name = "UUID")]
-        public string UUID { get; set; }
+        public string uuid { get; set; }
 
         [Required(ErrorMessage = "The Operating System is required")]
         [Display(Name = "Operating System")]
-        public string OS { get; set; }
+        public string os { get; set; }
 
         [Required(ErrorMessage = "The Version is required")]
         [Display(Name = "Version")]
-        public string Version { get; set; }
+        public string version { get; set; }
 
         [Required(ErrorMessage = "DefaultKey is required")]
         [Display(Name = "DefaultKey")]
-        public string DefaultKey { get; set; }
+        public string defaultKey { get; set; }
 
         public void Trim()
         {
             //Trim Strings
-            AppName = AppName.Trim();
-            UUID = UUID.Trim();
-            OS = OS.Trim();
-            Version = Version.Trim();
-            DefaultKey = DefaultKey.Trim();
+            appName = appName.Trim();
+            uuid = uuid.Trim();
+            os = os.Trim();
+            version = version.Trim();
+            defaultKey = defaultKey.Trim();
         }
     }
 }

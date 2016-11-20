@@ -12,21 +12,23 @@ namespace Web.Models
 
         [Display(Name = "Service Name")]
         [Required(ErrorMessage = "Service Name is required")]
-        public string Name { get; set; }
+        public string name { get; set; }
 
         [Display(Name = "Authentication Method")]
         [Required(ErrorMessage = "Authentication Method is required")]
-        public string AuthenticationMethod { get; set; }
+        public string authenticationMethod { get; set; }
 
         [Required(ErrorMessage = "Service Provider Information is required")]
         [Display(Name = "ServiceProviderInfo")]
-        public string ServiceProviderInfo  { get; set; }
-    
+        public string serviceProviderInfo  { get; set; }
+
+        public string IsDeleted { get; set; }
+
         public void Trim()
         {
             //Trim Strings
-            AuthenticationMethod = AuthenticationMethod.Trim();
-            ServiceProviderInfo = ServiceProviderInfo.Trim();
+            authenticationMethod = authenticationMethod.Trim();
+            serviceProviderInfo = serviceProviderInfo.Trim();
         }
     }
 
@@ -34,16 +36,24 @@ namespace Web.Models
     {
         [Display(Name = "Authentication Method")]
         [Required(ErrorMessage = "Authentication Method is required")]
-        public string AuthenticationMethod { get; set; }
+        public string authenticationMethod { get; set; }
         
     }
 
     public class JServiceEntry
     {
-        public string ID { get; set; }
-        public string Name { get; set; }
-        public string AuthenticationMethod { get; set; }
-        public string ServiceProviderInfo { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string authenticationMethod { get; set; }
+        public string serviceProviderInfo { get; set; }
+
+    }
+
+    public class JServiceUpdate
+    {
+        public Guid id { get; set; }
+        public string accessToken { get; set; }
+        public string tokenExpiresAt { get; set; }
 
     }
 }
