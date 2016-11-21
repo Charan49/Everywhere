@@ -9,6 +9,7 @@ namespace Web.Models.Json
     {
         public string token;
         public string id;
+        public string name;
     }
 
     public class JRegistrationToken

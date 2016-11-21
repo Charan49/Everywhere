@@ -56,7 +56,8 @@ namespace Web.Controllers
                 var token = new Web.Models.Json.JToken()
                 {
                     token = TokenController.CreateToken(loginInfo, existingUser),
-                    id = existingUser.UserID.ToString()
+                    id = existingUser.UserID.ToString(),
+                    name=existingUser.FirstName+" "+ existingUser.LastName
                 };
                 
                 return Request.CreateResponse(token);
