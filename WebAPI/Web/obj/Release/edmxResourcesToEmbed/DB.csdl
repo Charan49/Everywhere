@@ -11,8 +11,8 @@
     <Property Name="Version" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
     <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <Property Name="RegistrationToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="Service">
@@ -25,8 +25,8 @@
     <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
     <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="UserServices" Relationship="Self.FK_Services_UserServices" FromRole="Services" ToRole="UserServices" />
     <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
@@ -40,15 +40,15 @@
     <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="DOB" Type="DateTime" Precision="3" />
+    <Property Name="DOB" Type="DateTime" Precision="7" />
     <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="VerificationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="UserType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="AccountState" Type="Int32" Nullable="false" />
     <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="UserServices" Relationship="Self.FK_Users_UserServices" FromRole="Users" ToRole="UserServices" />
   </EntityType>
   <EntityType Name="UserService">
@@ -61,10 +61,12 @@
     <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
     <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
     <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
+    <Property Name="AccessToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="TokenExpiration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_Services_UserServices">
     <End Role="Services" Type="Self.Service" Multiplicity="1" />

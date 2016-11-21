@@ -48,5 +48,33 @@ namespace Web.Controllers
 
             return list;
         }
+
+        [Route("api/v1/livestream/start/{serviceName}")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> CreateLiveStreamUrl(string serviceName)
+        {
+            var ruser = this.ApiUser().RUser;
+            var service = await db.UserServices.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.Service.Name == serviceName && x.IsDeleted == false);
+
+            if (service == null)
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+
+            JLiveStream result = new JLiveStream();
+
+            if (service.Service.Name == "Facebook")
+            {
+                //Create Facebook Live Stream
+                Facebook.FacebookClient client = new FacebookClient();
+                client.AccessToken = service.AccessToken;
+                dynamic ret = await client.PostTaskAsync("/me/live_videos", new { });
+
+                result.serviceName = service.Service.Name;
+                result.streamId = ret.id;
+                result.streamUrl = ret.stream_url;
+                
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, result);
+        }
     }
 }

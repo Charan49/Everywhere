@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-  <parameter name="InterceptDBEntities-Web.config Connection String" description="InterceptDBEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/DB.csdl|res://*/DB.ssdl|res://*/DB.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=WINSERVER2012;initial catalog=InterceptDB;user id=intercepttest;password=]KxLYEdBE&lt;ufh,97;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="D:\\Jobs\\Iqvis\\Git\\WebAPI\\Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='InterceptDBEntities']/@connectionString" />
-  </parameter>
   <parameter name="InterceptDB-Web.config Connection String" description="InterceptDB Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/DB.csdl|res://*/DB.ssdl|res://*/DB.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=intercepteverywhere.database.windows.net;initial catalog=intercepteverywhere;persist security info=True;user id=intercepttest;password=]KxLYEdBE&lt;ufh,97;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
     <parameterEntry kind="XmlFile" scope="D:\\Jobs\\Iqvis\\Git\\WebAPI\\Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='InterceptDB']/@connectionString" />
   </parameter>

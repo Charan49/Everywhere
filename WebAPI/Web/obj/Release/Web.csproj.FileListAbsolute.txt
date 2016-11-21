@@ -75,6 +75,13 @@ D:\Jobs\Iqvis\Git\WebAPI\Web\bin\ko\System.Spatial.resources.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\ru\System.Spatial.resources.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\zh-Hans\System.Spatial.resources.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\zh-Hant\System.Spatial.resources.dll
-D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Release\Web.csprojResolveAssemblyReference.cache
 D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Release\Web.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Release\Web.pdb
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGrid.CSharp.HTTP.Client.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGrid.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Cors.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Release\Web.csprojResolveAssemblyReference.cache
