@@ -23,5 +23,6 @@ namespace Web
             var formatters = GlobalConfiguration.Configuration.Formatters;
             formatters.Remove(formatters.XmlFormatter);
         }
+        
     }
 }

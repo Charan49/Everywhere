@@ -22,6 +22,8 @@ namespace Web
         public string ModifiedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string AccessToken { get; set; }
+        public string TokenExpiration { get; set; }
     
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }

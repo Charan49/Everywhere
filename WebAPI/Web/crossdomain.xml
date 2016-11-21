@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<cross-domain-policy>
+  <allow-access-from domain="*" secure="false"/>
+  <site-control permitted-cross-domain-policies="all"/>
+  <allow-http-request-headers-from domain="*" headers="*"/>
+  <allow-https-request-headers-from domain="*" headers="*"/>
+  <allow-http-request-headers-to domain="*" headers="*"/>
+  <allow-https-request-headers-to domain="*" headers="*"/>
+</cross-domain-policy>

@@ -65,6 +65,8 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
     <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
+    <Property Name="AccessToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="TokenExpiration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_Services_UserServices">
     <End Role="Services" Type="Self.Service" Multiplicity="1" />

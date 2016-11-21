@@ -9,10 +9,12 @@ using Web.Models.Json;
 using System.Data.Entity;
 using Web.Models;
 using Web;
+using System.Web.Http.Cors;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ServiceController : ApiController
     {
         private InterceptDB db = new InterceptDB();
@@ -72,14 +74,15 @@ namespace Web.Controllers
         [HttpGet]        
         public async Task<IEnumerable<JService>> GetService(string name)
         {
-            return await db.Services.Where(x => x.Name == name).Select(x => new JService { name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            return await db.Services.Where(x => x.Name == name).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
         }
 
         [Route("api/v1/service")]
         [HttpGet]
         public async Task<IEnumerable<JService>> GetServices()
         {
-            return await db.Services.Select(x => new JService { authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            var ret=await db.Services.Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString() }).ToListAsync();
+            return ret;
         }
 
         [Route("api/v1/service/{name}")]

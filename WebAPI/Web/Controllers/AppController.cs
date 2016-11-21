@@ -15,9 +15,11 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Configuration;
 using Web.Models.Json;
+using System.Web.Http.Cors;
 
 namespace Web.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AppController : ApiController
     {
         private InterceptDB db = new InterceptDB();

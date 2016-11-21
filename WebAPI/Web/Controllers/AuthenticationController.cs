@@ -14,9 +14,11 @@ using Web.Helper;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Web.Http.Cors;
 
 namespace Web.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AuthenticationController : ApiController
     {
         private InterceptDB db = new InterceptDB();
@@ -83,18 +85,19 @@ namespace Web.Controllers
             {
                 case "User":
                     {
-                        Guid uuid;
-                        if (String.IsNullOrEmpty(login.uuid) || Guid.TryParse(login.uuid, out uuid) == false)
-                            return false;
+                        return true;
+                        //Guid uuid;
+                        //if (String.IsNullOrEmpty(login.uuid) || Guid.TryParse(login.uuid, out uuid) == false)
+                        //    return false;
 
-                        var app = db.Apps.FirstOrDefault(x => x.DeviceID == uuid && x.IsDeleted == false);
-                        if (app == null)
-                            return false;
+                        //var app = db.Apps.FirstOrDefault(x => x.DeviceID == uuid && x.IsDeleted == false);
+                        //if (app == null)
+                        //    return false;
 
-                        if (login.key == app.RegistrationToken)
-                            return true;
-                        else
-                            return false;
+                        //if (login.key == app.RegistrationToken)
+                        //    return true;
+                        //else
+                        //    return false;
                     }
 
                 case "VideoSwitch":

@@ -10,10 +10,12 @@ using System.Data.Entity;
 using Web.Helper;
 using Web.Models.Json;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 
 namespace Web.Controllers
 {    
     [Authorize]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserController : ApiController
     {
         private InterceptDB db = new InterceptDB();
@@ -22,6 +24,7 @@ namespace Web.Controllers
         [AllowAnonymous]
         [Route("api/v1/user/register")]
         [HttpPost]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public async Task<HttpResponseMessage> Register([FromBody] JRegister model)
         {
             if (!ModelState.IsValid)
@@ -211,7 +214,7 @@ namespace Web.Controllers
                 return NotFound();
         }
 
-        [Route("api/v1/users/ForgetPassword/{id}")]
+        [Route("api/v1/users/ForgetPassword")]
         [HttpPost]
         public async Task<IHttpActionResult> ForgotPassword([FromBody] JForgetPassword model)
         {

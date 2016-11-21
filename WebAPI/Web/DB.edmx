@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Apps">
           <Key>
             <PropertyRef Name="AppGUID" />
@@ -66,6 +66,8 @@
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+          <Property Name="AccessToken" Type="nvarchar" MaxLength="200" />
+          <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Services_UserServices">
           <End Role="Services" Type="Self.Services" Multiplicity="1" />
@@ -174,6 +176,8 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
           <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
+          <Property Name="AccessToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TokenExpiration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Services_UserServices">
           <End Role="Services" Type="Self.Service" Multiplicity="1" />
@@ -274,6 +278,8 @@
           <EntitySetMapping Name="UserServices">
             <EntityTypeMapping TypeName="InterceptDBModel.UserService">
               <MappingFragment StoreEntitySet="UserServices">
+                <ScalarProperty Name="TokenExpiration" ColumnName="TokenExpiration" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
                 <ScalarProperty Name="ServiceGUID" ColumnName="ServiceGUID" />
                 <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
                 <ScalarProperty Name="AccessID" ColumnName="AccessID" />
