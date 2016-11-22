@@ -11,6 +11,8 @@ using Web.Helper;
 using Web.Models.Json;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
+using Facebook;
+using System.Configuration;
 
 namespace Web.Controllers
 {
@@ -26,24 +28,49 @@ namespace Web.Controllers
         {
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+
             Guid ServiceID;
             Guid.TryParse(model.id.ToString().ToUpper(), out ServiceID);
+            
             //Check if Service is Present
-            int count = await db.Services.CountAsync(x => x.ServiceGUID == ServiceID && x.IsDeleted == false);
-            if (count == 0)
+            var service = await db.Services.FirstOrDefaultAsync(x => x.ServiceGUID == ServiceID && x.IsDeleted == false);
+            if (service == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
+
             var rUser = this.ApiUser().RUser;
+            
             //Check if the Service Entry Already Exists
             var entry = await db.UserServices.FirstOrDefaultAsync(x => x.ServiceGUID == ServiceID && x.UserGUID == rUser.SubjectID);
 
+
+            //Get Long-Term Token  
+            string tokenLongTerm = "";
+            string tokenExpiration = "";
+                     
+            if (service.Name == "Facebook")
+            {
+                //Create a Long Term Facebook Token
+                FacebookClient client = new FacebookClient();
+                client.AccessToken = model.accessToken;
+                client.AppId = ConfigurationManager.AppSettings.Get("FacebookAppId");
+                client.AppSecret = ConfigurationManager.AppSettings.Get("FacebookAppSecret");
+                
+                dynamic ret = await client.GetTaskAsync(string.Format("oauth/access_token?grant_type=fb_exchange_token&fb_exchange_token={0}&client_id={1}&client_secret={2}", model.accessToken, client.AppId, client.AppSecret), new { });
+
+                tokenLongTerm = ret.access_token;
+                tokenExpiration = DateTime.UtcNow.AddDays(60).ToString();
+            }
+
+
+            //Create New or Use Existing
             if (entry == null)
             {
                 var newUserService = new UserService
                 {
                     AccessID = Guid.NewGuid(),
                     ServiceGUID = model.id,
-                    AccessToken = model.accessToken,
-                    TokenExpiration = model.tokenExpiresAt,
+                    AccessToken = tokenLongTerm,
+                    TokenExpiration = tokenExpiration,
                     UserGUID = this.ApiUser().RUser.SubjectID,
                     CreatedDate = DateTime.UtcNow,
                     IsDeleted = false,
@@ -54,15 +81,18 @@ namespace Web.Controllers
             }
             else
             {
+                entry.AccessToken = tokenLongTerm;
+                entry.TokenExpiration = tokenExpiration;
                 entry.IsDeleted = false;
-            }
+                db.Entry(entry).State = EntityState.Modified;
+            }            
 
             //Save
             await db.SaveChangesAsync();
 
             return Request.CreateResponse(HttpStatusCode.Created);
         }
-
+                
 
         [Route("api/v1/service_membership/{id}")]
         [HttpDelete]
@@ -108,10 +138,10 @@ namespace Web.Controllers
 
         [Route("api/v1/service_membership")]
         [HttpGet]
-        public async Task<IEnumerable<JService>> GetServiceMembership()
+        public async Task<IEnumerable<JServiceMembership>> GetServiceMembership()
         {
             var ruser = this.ApiUser().RUser;
-            var ret= await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JService { name = x.Service.Name, ID = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo }).ToListAsync();
+            var ret= await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null? "" : x.StreamDate.ToString()) }).ToListAsync();
             return ret;
         }
 

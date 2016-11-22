@@ -24,6 +24,10 @@ namespace Web
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string AccessToken { get; set; }
         public string TokenExpiration { get; set; }
+        public string StreamID { get; set; }
+        public string StreamURL { get; set; }
+        public string StreamKey { get; set; }
+        public Nullable<System.DateTime> StreamDate { get; set; }
     
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }

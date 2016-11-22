@@ -18,6 +18,9 @@ namespace Web.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class LiveStreamController : ApiController
     {
+        private const string serviceFacebook = "Facebook";
+        private const string serviceYoutube = "Youtube";
+
         private InterceptDB db = new InterceptDB();
 
         [Route("api/v1/livestream/start")]
@@ -30,7 +33,7 @@ namespace Web.Controllers
 
             foreach (var entry in services)
             {
-                if (entry.Service.Name == "Facebook")
+                if (entry.Service.Name == serviceFacebook)
                 {
                     //Create Facebook Live Stream
                     Facebook.FacebookClient client = new FacebookClient();
@@ -43,6 +46,13 @@ namespace Web.Controllers
                         streamId = ret.id,
                         streamUrl = ret.stream_url
                     });
+
+                    entry.StreamID = ret.id;
+                    entry.StreamURL = ret.stream_url;
+                    entry.StreamDate = DateTime.UtcNow;
+
+                    db.Entry(entry).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
                 }
             }
 
@@ -61,8 +71,25 @@ namespace Web.Controllers
 
             JLiveStream result = new JLiveStream();
 
-            if (service.Service.Name == "Facebook")
+            if (service.Service.Name == serviceFacebook)
             {
+                //Check if Token is Valid
+                if (service.AccessToken == null)
+                    return Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access Token Missing");
+
+                //Validate that the Token is Valid
+                try
+                {
+                    //Create Facebook Live Stream
+                    Facebook.FacebookClient tempClient = new FacebookClient();
+                    tempClient.AccessToken = service.AccessToken;
+                    dynamic ret2 = await tempClient.PostTaskAsync("me", new { });                    
+                }
+                catch
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Access Token Expired");
+                }
+
                 //Create Facebook Live Stream
                 Facebook.FacebookClient client = new FacebookClient();
                 client.AccessToken = service.AccessToken;
@@ -71,7 +98,13 @@ namespace Web.Controllers
                 result.serviceName = service.Service.Name;
                 result.streamId = ret.id;
                 result.streamUrl = ret.stream_url;
-                
+
+                service.StreamID = ret.id;
+                service.StreamURL = ret.stream_url;
+                service.StreamDate = DateTime.UtcNow;
+
+                db.Entry(service).State = EntityState.Modified;
+                await db.SaveChangesAsync();
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, result);

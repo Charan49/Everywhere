@@ -74,14 +74,14 @@ namespace Web.Controllers
         [HttpGet]        
         public async Task<IEnumerable<JService>> GetService(string name)
         {
-            return await db.Services.Where(x => x.Name == name).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            return await db.Services.Where(x => x.Name == name && x.IsDeleted == false).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
         }
 
         [Route("api/v1/service")]
         [HttpGet]
         public async Task<IEnumerable<JService>> GetServices()
         {
-            var ret=await db.Services.Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString() }).ToListAsync();
+            var ret=await db.Services.Where(x => x.IsDeleted == false).Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString() }).ToListAsync();
             return ret;
         }
 

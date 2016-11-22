@@ -56,4 +56,17 @@ namespace Web.Models
         public string tokenExpiresAt { get; set; }
 
     }
+
+    public class JServiceMembership
+    {
+        public Guid id { get; set; }
+        public string name { get; set; }
+        public string authenticationMethod { get; set; }
+        public string serviceProviderInfo { get; set; }
+        public string streamId { get; set; }
+        public string streamUrl { get; set; }
+        public string streamKey { get; set; }
+        public string streamDate { get; set; }
+
+    }
 }
