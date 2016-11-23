@@ -10,5 +10,6 @@ namespace Web.Models.Json
         public string serviceName;
         public string streamId;
         public string streamUrl;
+        public DateTime streamDate;
     }
 }

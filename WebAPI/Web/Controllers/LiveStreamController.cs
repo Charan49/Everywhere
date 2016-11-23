@@ -44,7 +44,8 @@ namespace Web.Controllers
                     {
                         serviceName = entry.Service.Name,
                         streamId = ret.id,
-                        streamUrl = ret.stream_url
+                        streamUrl = ret.stream_url,
+                        streamDate = DateTime.UtcNow
                     });
 
                     entry.StreamID = ret.id;
@@ -98,6 +99,7 @@ namespace Web.Controllers
                 result.serviceName = service.Service.Name;
                 result.streamId = ret.id;
                 result.streamUrl = ret.stream_url;
+                result.streamDate = DateTime.UtcNow;
 
                 service.StreamID = ret.id;
                 service.StreamURL = ret.stream_url;
