@@ -23,7 +23,7 @@ namespace Web.Models
         public string serviceProviderInfo  { get; set; }
 
         public string IsDeleted { get; set; }
-
+        
         public void Trim()
         {
             //Trim Strings
@@ -54,6 +54,7 @@ namespace Web.Models
         public Guid id { get; set; }
         public string accessToken { get; set; }
         public string tokenExpiresAt { get; set; }
+        public string pictureURL { get; set; }
 
     }
 
@@ -67,6 +68,7 @@ namespace Web.Models
         public string streamUrl { get; set; }
         public string streamKey { get; set; }
         public string streamDate { get; set; }
+        public string pictureUrl { get; set; }
 
     }
 }

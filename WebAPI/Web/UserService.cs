@@ -28,6 +28,7 @@ namespace Web
         public string StreamURL { get; set; }
         public string StreamKey { get; set; }
         public Nullable<System.DateTime> StreamDate { get; set; }
+        public string PictureURL { get; set; }
     
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }

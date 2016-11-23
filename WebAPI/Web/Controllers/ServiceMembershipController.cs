@@ -74,7 +74,8 @@ namespace Web.Controllers
                     UserGUID = this.ApiUser().RUser.SubjectID,
                     CreatedDate = DateTime.UtcNow,
                     IsDeleted = false,
-                    CreatedBy = this.ApiUser().RUser.SubjectID.ToString()
+                    CreatedBy = this.ApiUser().RUser.SubjectID.ToString(),
+                    PictureURL = model.pictureURL
                 };
 
                 db.UserServices.Add(newUserService);
@@ -141,7 +142,7 @@ namespace Web.Controllers
         public async Task<IEnumerable<JServiceMembership>> GetServiceMembership()
         {
             var ruser = this.ApiUser().RUser;
-            var ret= await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null? "" : x.StreamDate.ToString()) }).ToListAsync();
+            var ret= await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL }).ToListAsync();
             return ret;
         }
 
