@@ -84,3 +84,4 @@ D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Cors.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.xml
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Release\Web.csprojResolveAssemblyReference.cache

@@ -58,7 +58,7 @@ namespace Web.Controllers
 
                 AccountState = (byte)Models.Enums.AccountState.Active,
 
-                Email = model.email,
+                Email = model.email.Trim(),
                 Password = Helper.PasswordHash.HashPassword(model.password),
 
                 CreatedDate = DateTime.UtcNow,
@@ -71,7 +71,7 @@ namespace Web.Controllers
                 try
                 {
                     //Check if a User with Same E-mail Already Exists
-                    int count = await db.Users.CountAsync(u => String.Compare(u.Email, model.email, true) == 0 && u.AccountState != (byte)Models.Enums.AccountState.Deleted);
+                    int count = await db.Users.CountAsync(u => String.Compare(u.Email, model.email.Trim(), true) == 0 && u.AccountState != (byte)Models.Enums.AccountState.Deleted);
                     if (count > 0)
                         return Request.CreateErrorResponse(HttpStatusCode.Conflict, "User already exists.");
 
@@ -127,6 +127,8 @@ namespace Web.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            juser.email = juser.email.Trim();
 
             var ruser = this.ApiUser().RUser;
 

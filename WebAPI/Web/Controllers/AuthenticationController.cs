@@ -34,7 +34,7 @@ namespace Web.Controllers
                                     
 
             //Check if User Exists and Account is Available
-            var existingUser = await db.Users.FirstOrDefaultAsync(u => u.Email == loginInfo.email && u.AccountState >= (int)Models.Enums.AccountState.Available );
+            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available );
             if (existingUser == null)            
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
                                    

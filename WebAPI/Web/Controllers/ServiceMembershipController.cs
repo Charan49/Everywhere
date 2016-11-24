@@ -84,7 +84,8 @@ namespace Web.Controllers
             {
                 entry.AccessToken = tokenLongTerm;
                 entry.TokenExpiration = tokenExpiration;
-                entry.IsDeleted = false;
+                entry.PictureURL = model.pictureURL;
+                entry.IsDeleted = false;                
                 db.Entry(entry).State = EntityState.Modified;
             }            
 
@@ -106,7 +107,16 @@ namespace Web.Controllers
             if (entry == null)
                 return NotFound();
 
+            //Mark as Deleted and Remove any User Info
             entry.IsDeleted = true;
+            entry.PictureURL = "";
+            entry.StreamDate = null;
+            entry.StreamID = "";
+            entry.StreamKey = "";
+            entry.StreamURL = "";
+            entry.AccessToken = "";
+            entry.TokenExpiration = "";
+
             db.Entry(entry).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
