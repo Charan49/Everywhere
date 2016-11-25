@@ -1,0 +1,476 @@
+﻿
+@{
+    ViewBag.Title = "RegisterService";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header>
+    <nav class="navbar navbar-main navbar-fixed-top affix-active" role="navigation" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-main">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar top-bar"></span>
+                    <span class="icon-bar middle-bar"></span>
+                    <span class="icon-bar bottom-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");"><img src="../images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-collapse-main">
+                <ul class="nav navbar-nav navbar-center">
+                    <li><a href = "#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Home</a></li>
+                    <li class="visible-xs"><a href = "#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
+                    <li><a href="#">How it Works</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" id="userName" data-toggle="dropdown"><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Account Settings</a></li>
+                            <li><a href="#" onclick="Logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+</header>
+<section class="bg-photo">
+    <div class="page-content">
+
+        <div style="background-color:#fafafa; height:100%; position:relative; padding-top:20px; padding-bottom:20px" class="clearfix">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                        <h1>Service Registration<button class="btn btn-default btn-lg pull-right" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</button> </h1>
+                        <p>&nbsp;</p>
+                        <br>
+                        <form action="POST" method="POST" role="form">
+
+                            <div class="form-group form-group-lg">
+                                <h5>
+                                    <label for="">Streaming Service URL</label>
+                                </h5>
+                                <select class="form-control">
+                                    <option value="">https://vs1.everywhere.live</option>
+                                    <option value="">https://vs2.everywhere.live</option>
+                                </select>
+                            </div>
+
+                            <div id="accountsRegistered" class="form-group add-accounts">
+                                <h4>
+                                    <label for="">Registered Accounts</label>
+                                </h4>
+
+                            </div>
+
+                            <div id="accounts" class="form-group add-accounts">
+                                <h4>
+                                    <label for="">Available Accounts</label>
+                                </h4>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<footer></footer>
+
+<div class="modal modal-lg fade" id="modal-schedule">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-sm-5 text-center">
+                    <h3 class="text-center margin-below">Stream Now</h3>
+                    <button type="button" class="btn btn-success btn-lg cta">Stream Now</button>
+                </div>
+
+                <div class="col-sm-7 text-center">
+                    <h3 class="text-center">Schedule Stream</h3>
+                    <form class="schedule-stream">
+                        <div class="row form-group-lg">
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="">Set Date</label>
+                                            <input type="text" class="form-control" id="" placeholder="Month">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="">&nbsp;</label>
+                                            <input type="text" class="form-control" id="" placeholder="Day">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="">&nbsp;</label>
+                                            <input type="text" class="form-control" id="" placeholder="Year">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <div class="form-group">
+                                            <label for="">Set Time</label>
+                                            <input type="text" class="form-control" id="" placeholder="11:11">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <div class="form-group">
+                                            <label for="">
+                                                AM <input type="radio" hidden id="">
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">
+                                                PM <input type="radio" hidden id="">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-success btn-lg cta">Schedule</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var fbObj = null;
+    var sID = null;
+    var sName = null;
+    window.fbAsyncInit = function () {
+        FB.init({
+            //appId: '340485602973415',
+            appId: '720765954737644',
+            xfbml: true,
+            version: 'v2.8'
+        });
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    var accessToken;
+    var profilePicture;
+    function facebookLogin() {
+        FB.login(function (response) {
+
+            if (response.authResponse) {
+                console.log(response);
+                //console.log(response); // dump complete info
+                accessToken = response.authResponse.accessToken; //get access token
+                user_id = response.authResponse.userID; //get FB UID
+                FB.api(
+                "/" + user_id + "/picture?width=146&height=124&redirect=true",
+                function (response) {
+                    if (response && !response.error) {
+                        profilePicture = response.data.url;
+                        $('#profilePic').attr('src', response.data.url);
+                        console.log(profilePicture);
+                        addRegisteredServiceRow('Facebook', profilePicture);
+                        addUserServices(accessToken, profilePicture);
+                        }
+                    }
+                );
+
+                //addLinkButton();
+
+            } else {
+                //user hit cancel button
+                console.log('User cancelled login or did not fully authorize.');
+
+            }
+        }, {
+            scope: 'publish_actions,email,publish_stream,public_profile,read_stream'
+        });
+
+
+    }
+
+
+    window.onload = function () {
+
+        if (sessionStorage.getItem('loginToken') == null)
+            location.href = '@Url.Action("Login", "Account")';
+        $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
+        //code. . .
+        getServices();
+        getMembershipServices();
+
+    }
+
+    function getServices() {
+
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://ws.everywhere.live:8080/api/v1/service/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#accounts').html('');
+                $('#accounts').append('<h4><label for="">Available Accounts</label></h4>');
+                if (data != null && data.length > 0) {
+                    $('#accounts').show();
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].IsDeleted != 'True') {
+
+                            addServiceRow(data[i].name);
+                            if(data[i].name=='Facebook')
+                            {
+                                sID = data[i].ID;
+                                sName = data[i].Name;
+                            }
+                        }
+                    }
+                }
+                else
+                    $('#accounts').hide();
+
+                return false;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+        //});
+    }
+
+    function getMembershipServices() {
+
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://ws.everywhere.live:8080/api/v1/service_membership/",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                if (data != null && data.length > 0) {
+                    $('#accountsRegistered').show();
+                    for (i = 0; i < data.length; i++) {
+                        //addServiceRow(data[i].name);
+
+                        addRegisteredServiceRow(data[i].name, data[i].pictureUrl);
+                    }
+                }
+                else
+                    $('#accountsRegistered').hide();
+
+                return false;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+        //});
+    }
+
+    function addUserServices(accessToken, picURL) {
+
+        var token = sessionStorage.getItem('loginToken');
+        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
+
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: url,
+            type: "POST",
+            crossDomain: true,
+            data: JSON.stringify({ 'id': sID, 'accessToken': accessToken, 'tokenExpiresAt': Date.now(), 'pictureURL': picURL }),
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            error: function (jqXhr, textStatus, errorThrown) {
+
+            },
+            success: function (data) {
+
+
+            }
+        });
+        //});
+    }
+
+    function removeUserServices(name) {
+
+        var token = sessionStorage.getItem('loginToken');
+        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" + sID;
+
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: url,
+            crossDomain: true,
+            type: "DELETE",
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                getServices();
+                $('#accFacebookLink').remove();
+                $('#accountsRegistered').hide();
+
+            },
+            success: function (data) {
+
+                getServices();
+                $('#acc' + sName).show();
+                $('#accFacebookLink').remove();
+
+            }
+        });
+        //});
+    }
+
+    function Logout() {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://ws.everywhere.live:8080/api/v1/signout/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            }
+        });
+    }
+
+
+    function addRegisteredServiceRow(name, picURL) {
+
+        $('#accountsRegistered').show();
+        $('#acc' + name).hide();
+        $('#accountsRegistered').append('<div id="acc' + name + 'Link" class="panel">' +
+                                    '<div class="panel-body">' +
+                                        '<div class="media">' +
+                                            '<a class="pull-left" href="#">' +
+                                                '<img class="media-object" id="profilePic" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                            '</a>' +
+                                            '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
+                                                '<h4 class="media-heading">' + name +
+                                                    '<span class="pull-right hidden-xs" style="padding-left:5px;">' +
+                                                        '<button type="button" class="btn btn-xs btn-grey"><i><img src="../images/icon-chain-xs.png"> </i> Edit</button>' +
+                                                    '</span>' +
+                                                    '<span class="pull-right hidden-xs">' +
+                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-chain-xs.png"> </i> Unlink</button>' +
+                                                    '</span>' +
+                                                '</h4>' +
+                                                '<div class="meta-des"></div>' +
+
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="visible-xs mt-15">' +
+
+                                            '<div class="row">' +
+                                                '<p class="col-xs-6">' +
+                                                '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-chain-xs.png"> </i> Unlink</button>' +
+                                               ' </p>' +
+                                               '<p class="col-xs-6">' +
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block"><i><img src="../images/icon-chain-xs.png"> </i> Edit</button>' +
+                                               ' </p>' +
+                                           ' </div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>');
+        $('#profilePic').attr('src',picURL);
+    }
+
+    function addServiceRow(name, picURL) {
+
+        $('#accounts').show();
+        $('#accounts').append('<div id="acc' + name + '" class="panel">'+
+                                    '<div class="panel-body">'+
+                                        '<div class="media">'+
+                                            '<a class="pull-left greyscale" href="#">'+
+                                                '<img class="media-object" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                            '</a>'+
+                                            '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
+                                                '<h4 class="media-heading">' + name +
+                                                    '<span class="pull-right hidden-xs">'+
+                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                                    '</span>'+
+                                                '</h4>' +
+                                                '<div class="meta-des"></div>'+
+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="visible-xs mt-15">'+
+                                            '<div class="row">'+
+                                                '<p class="col-xs-6 col-xs-offset-3">'+
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                               ' </p>'+
+                                           ' </div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>');
+
+    }
+
+</script>
+
