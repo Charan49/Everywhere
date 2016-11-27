@@ -1,0 +1,474 @@
+﻿
+@{
+    ViewBag.Title = "RegisterService";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header>
+    <nav class="navbar navbar-main navbar-fixed-top affix-active" role="navigation" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-main">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar top-bar"></span>
+                    <span class="icon-bar middle-bar"></span>
+                    <span class="icon-bar bottom-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="~/images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-collapse-main">
+                <ul class="nav navbar-nav navbar-center">
+                    <li><a href="#">Home</a></li>
+                    <li class="visible-xs"><a href="#">Dashboard</a></li>
+                    <li><a href="#">How it Works</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">John Johnson <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Account Settings</a></li>
+                            <li><a href="#" onclick="Logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+</header>
+<section class="bg-photo">
+    <div class="page-content">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                    <h1>Service Registration <button class="btn btn-default btn-lg pull-right">Add Services</button> </h1>
+                    <p>&nbsp;</p>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div style="background-color:#fafafa; height:100%; position:relative; padding-top:20px; padding-bottom:20px" class="clearfix">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                        <form action="POST" method="POST" role="form">
+
+                            <div class="form-group form-group-lg">
+                                <h5>
+                                    <label for="">Streaming Service URL</label>
+                                </h5>
+                                <select class="form-control">
+                                    <option value="">https://</option>
+                                </select>
+                            </div>
+
+                            <div id="accountsRegistered" class="form-group add-accounts">
+                                <h4>
+                                    <label for="">Registered Accounts</label>
+                                </h4>
+
+                            </div>
+
+                            <div id="accounts" class="form-group add-accounts">
+                                <h4>
+                                    <label for="">Available Accounts</label>
+                                </h4>
+                                
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<footer></footer>
+
+
+<div class="modal modal-lg fade" id="modal-schedule">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-sm-5 text-center">
+                    <h3 class="text-center margin-below">Stream Now</h3>
+                    <button type="button" class="btn btn-success btn-lg cta">Stream Now</button>
+                </div>
+
+                <div class="col-sm-7 text-center">
+                    <h3 class="text-center">Schedule Stream</h3>
+                    <form class="schedule-stream">
+                        <div class="row form-group-lg">
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="">Set Date</label>
+                                            <input type="text" class="form-control" id="" placeholder="Month">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="">&nbsp;</label>
+                                            <input type="text" class="form-control" id="" placeholder="Day">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="">&nbsp;</label>
+                                            <input type="text" class="form-control" id="" placeholder="Year">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <div class="form-group">
+                                            <label for="">Set Time</label>
+                                            <input type="text" class="form-control" id="" placeholder="11:11">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <div class="form-group">
+                                            <label for="">
+                                                AM <input type="radio" hidden id="">
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">
+                                                PM <input type="radio" hidden id="">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-success btn-lg cta">Schedule</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var obj = null;
+    var fbObj = null;
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '340485602973415',
+            xfbml: true,
+            version: 'v2.8'
+        });
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    var accessToken;
+
+    function facebookLogin() {
+        FB.login(function (response) {
+
+            if (response.authResponse) {
+                console.log('Welcome!  Fetching your information.... ');
+                //console.log(response); // dump complete info
+                accessToken = response.authResponse.accessToken; //get access token
+                user_id = response.authResponse.userID; //get FB UID
+
+                FB.api('/me', function (response) {
+                    user_email = response.email; //get user email
+                    // you can store this data into your database
+                });
+                
+                //addLinkButton();
+                addRegisteredServiceRow('Facebook');
+                addUserServices(accessToken);
+            } else {
+                //user hit cancel button
+                console.log('User cancelled login or did not fully authorize.');
+
+            }
+        }, {
+            scope: 'publish_actions,public_profile,email'
+        });
+        
+    }
+    
+    
+
+    function Generate() {
+        alert(accessToken);
+        FB.api(
+    "/me/live_videos?access_token=" + accessToken, "POST",
+    function (response) {
+        
+        if (response && !response.error) {
+           // alert(response.stream_url);
+           // document.write(response.stream_url);
+            alert(response.stream_url);
+        }
+    }
+    );
+    }
+    
+    window.onload = function () {
+        //code. . .
+        getServices();
+        getMembershipServices();
+        
+    }
+
+    function getServices() {
+        
+        var token = localStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "https://ws.everywhere.live/api/v1/service/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                
+                if (data != null && data.length > 0) {
+                    $('#accounts').show();
+                    for (i = 0; i < data.length; i++) {
+                        obj = data;
+                        addServiceRow(data[i].name);
+                    }
+                }
+                else
+                    $('#accounts').hide();
+                
+                return false;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                
+                alert(jqXhr.statusText);
+            }
+        });
+        //});
+    }
+
+    function getMembershipServices() {
+        
+        var token = localStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "https://ws.everywhere.live/api/v1/service_membership/",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                
+                if (data != null && data.length > 0) {
+                    $('#accountsRegistered').show();
+                    for (i = 0; i < data.length; i++) {
+                        //addServiceRow(data[i].name);
+                        addRegisteredServiceRow(data[i].name);
+                    }
+                }
+                else
+                    $('#accountsRegistered').hide();
+
+                return false;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                
+                alert(jqXhr.statusText);
+            }
+        });
+        //});
+    }
+
+    function addUserServices(accessToken) {
+        
+        
+        fbObj = $.grep(obj, function (e) { return e.name == 'Facebook'; });
+        var token = localStorage.getItem('loginToken');
+        var url = "https://ws.everywhere.live/api/v1/service_membership/AddServiceMembership";
+        
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: url,
+            type: "POST",
+            crossDomain: true,
+            data: JSON.stringify({ 'id': fbObj[0].ID, 'accessToken': accessToken, 'tokenExpiresAt': Date.now() }),
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            error: function (jqXhr, textStatus, errorThrown) {
+                
+                alert(fbObj[0].ID);
+            },
+            success: function (data) {
+
+
+            }
+        });
+        //});
+    }
+
+    function removeUserServices(name) {
+
+        
+        fbObj = $.grep(obj, function (e) { return e.name == 'Facebook'; });
+        var token = localStorage.getItem('loginToken');
+        var url = "https://ws.everywhere.live/api/v1/service_membership/RemoveServiceMembership?id=" + fbObj[0].ID;
+
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: url,
+            crossDomain: true,
+            type: "DELETE",
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            error: function (jqXhr, textStatus, errorThrown) {
+                
+                $('#acc' + fbObj[0].name).show();
+                $('#acc' + fbObj[0].name+'Link').remove();
+                $('#accountsRegistered').hide();
+                
+            },
+            success: function (data) {
+
+                
+                $('#acc' + fbObj[0].name).show();
+                $('#acc' + fbObj[0].name + 'Link').hide();
+                
+            }
+        });
+        //});
+    }
+
+    function Logout() {
+        var token = localStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "https://ws.everywhere.live/api/v1/signout/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            }
+        });
+    }
+
+
+    function addRegisteredServiceRow(name) {
+        
+        $('#accountsRegistered').show();
+        $('#acc' + name).hide();
+        $('#accountsRegistered').append('<div id="acc' + name + 'Link" class="panel">' +
+                                    '<div class="panel-body">' +
+                                        '<div class="media">' +
+                                            '<a class="pull-left greyscale" href="#">' +
+                                                '<img class="media-object" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                            '</a>' +
+                                            '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
+                                                '<h4 class="media-heading">' + name +
+                                                    '<span class="pull-right hidden-xs" style="padding-left:5px;">' +
+                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Edit</button>' +
+                                                    '</span>' +
+                                                    '<span class="pull-right hidden-xs">' +
+                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-chain-xs.png"> </i> Unlink</button>' +
+                                                    '</span>' +
+                                                '</h4>' +
+                                                '<div class="meta-des">Are you one of the thousands of iPhone owners who has no idea that they can get free.</div>' +
+
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="visible-xs mt-15">' +
+                                            '<div class="row">' +
+                                                '<p class="col-xs-6 col-xs-offset-3">' +
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                               ' </p>' +
+                                           ' </div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>');
+    }
+
+    function addServiceRow(name) {
+        
+        $('#accounts').show();
+        $('#accounts').append('<div id="acc' + name + '" class="panel">'+
+                                    '<div class="panel-body">'+
+                                        '<div class="media">'+
+                                            '<a class="pull-left greyscale" href="#">'+
+                                                '<img class="media-object" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                            '</a>'+
+                                            '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
+                                                '<h4 class="media-heading">' + name +
+                                                    '<span class="pull-right hidden-xs">'+
+                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                                    '</span>'+
+                                                '</h4>' +
+                                                '<div class="meta-des">Are you one of the thousands of iPhone owners who has no idea that they can get free.</div>'+
+
+                                            '</div>'+
+                                        '</div>'+
+                                        '<div class="visible-xs mt-15">'+
+                                            '<div class="row">'+
+                                                '<p class="col-xs-6 col-xs-offset-3">'+
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                               ' </p>'+
+                                           ' </div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>');
+    }
+
+</script>
+
