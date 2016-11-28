@@ -245,6 +245,7 @@ D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.xml
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web\bin\Web.dll.config
 F:\Final Everywhere\WebAPI\Web\bin\Web.dll
 F:\Final Everywhere\WebAPI\Web\bin\Web.pdb
@@ -257,8 +258,10 @@ F:\Final Everywhere\WebAPI\Web\bin\Microsoft.Data.Edm.dll
 F:\Final Everywhere\WebAPI\Web\bin\Microsoft.Data.OData.dll
 F:\Final Everywhere\WebAPI\Web\bin\Microsoft.Web.Infrastructure.dll
 F:\Final Everywhere\WebAPI\Web\bin\Newtonsoft.Json.dll
+F:\Final Everywhere\WebAPI\Web\bin\NLog.dll
 F:\Final Everywhere\WebAPI\Web\bin\SendGrid.CSharp.HTTP.Client.dll
-F:\Final Everywhere\WebAPI\Web\bin\SendGrid.dll
+F:\Final Everywhere\WebAPI\Web\bin\SendGrid.SmtpApi.dll
+F:\Final Everywhere\WebAPI\Web\bin\SendGridMail.dll
 F:\Final Everywhere\WebAPI\Web\bin\Sigil.dll
 F:\Final Everywhere\WebAPI\Web\bin\StackExchange.Redis.dll
 F:\Final Everywhere\WebAPI\Web\bin\StackExchange.Redis.Extensions.Core.dll
@@ -286,6 +289,7 @@ F:\Final Everywhere\WebAPI\Web\bin\Jil.xml
 F:\Final Everywhere\WebAPI\Web\bin\Microsoft.Data.Edm.xml
 F:\Final Everywhere\WebAPI\Web\bin\Microsoft.Data.OData.xml
 F:\Final Everywhere\WebAPI\Web\bin\Newtonsoft.Json.xml
+F:\Final Everywhere\WebAPI\Web\bin\NLog.xml
 F:\Final Everywhere\WebAPI\Web\bin\Sigil.xml
 F:\Final Everywhere\WebAPI\Web\bin\StackExchange.Redis.xml
 F:\Final Everywhere\WebAPI\Web\bin\StackExchange.Redis.Extensions.Core.xml
@@ -332,4 +336,3 @@ F:\Final Everywhere\WebAPI\Web\bin\zh-Hant\System.Spatial.resources.dll
 F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.dll
 F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.pdb
-D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache

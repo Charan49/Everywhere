@@ -80,7 +80,7 @@
                                     @*<label for="uPass">Password</label>
                                         <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
                                     <p>
-                                        <a href=""><small class="text-muted">Forgot Password?</small></a>
+                                        <a href="@Url.Action("ForgotPassword", "Account")"><small class="text-muted">Forgot Password?</small></a>
                                     </p>
                                 </div>
 
@@ -109,7 +109,7 @@
             var key = 'APP_REGISTER_KEY';
             var uuid = '00001310-0000-0000-1012-000000000000';
             $.ajax({
-                url: "http://ws.everywhere.live:8080/api/v1/authenticate/",
+                url: "http://localhost:8577/api/v1/authenticate/",
                 type: "POST",
                 crossDomain: true,
                 data: JSON.stringify({ 'email':email, 'Password': password, 'key': key, 'uuid': uuid }),

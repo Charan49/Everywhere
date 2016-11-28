@@ -133,6 +133,6 @@ F:\VideoStreamApi\EverywhereWeb - Copy\EverywhereWeb\bin\Microsoft.Owin.Security
 F:\VideoStreamApi\EverywhereWeb - Copy\EverywhereWeb\bin\Microsoft.Owin.Security.Google.xml
 F:\VideoStreamApi\EverywhereWeb - Copy\EverywhereWeb\bin\Microsoft.Owin.Security.Twitter.xml
 F:\VideoStreamApi\EverywhereWeb - Copy\EverywhereWeb\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-F:\VideoStreamApi\EverywhereWeb - Copy\EverywhereWeb\obj\Debug\EverywhereWeb.csprojResolveAssemblyReference.cache
 F:\VideoStreamApi\EverywhereWeb - Copy\EverywhereWeb\obj\Debug\EverywhereWeb.dll
 F:\VideoStreamApi\EverywhereWeb - Copy\EverywhereWeb\obj\Debug\EverywhereWeb.pdb
+F:\VideoStreamApi\EverywhereWeb - Copy\EverywhereWeb\obj\Debug\EverywhereWeb.csprojResolveAssemblyReference.cache

@@ -11,6 +11,7 @@
     <WebStackScaffolding_DbContextTypeFullName>Web.Models.DB</WebStackScaffolding_DbContextTypeFullName>
     <UseIISExpress>true</UseIISExpress>
     <NameOfLastUsedPublishProfile>InterceptWebAPI</NameOfLastUsedPublishProfile>
+    <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
