@@ -265,6 +265,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Error Helper\ApiBusinessException.cs" />
+    <Compile Include="Error Helper\ApiDataException.cs" />
+    <Compile Include="Error Helper\ApiException.cs" />
+    <Compile Include="Error Helper\IApiExceptions.cs" />
     <Compile Include="Filters\AuthenticationFilter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Filters\StrimTrimModelBinder.cs" />
@@ -279,9 +283,12 @@
     <Compile Include="Helper\ApiControllerExtensions.cs" />
     <Compile Include="Helper\Common.cs" />
     <Compile Include="Helper\GenerateCode.cs" />
+    <Compile Include="Helper\GlobalExceptionAttribute.cs" />
+    <Compile Include="Helper\JSONHelper.cs" />
     <Compile Include="Helper\LoggingFilterAttribute.cs" />
     <Compile Include="Helper\NLogger.cs" />
     <Compile Include="Helper\SendConfirmationEmail.cs" />
+    <Compile Include="Helper\ServiceStatus.cs" />
     <Compile Include="Logic\PasswordHash.cs" />
     <Compile Include="Helper\RedisDb.cs" />
     <Compile Include="Helper\Win32.cs" />

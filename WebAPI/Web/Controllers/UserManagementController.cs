@@ -17,6 +17,7 @@ using Exceptions;
 using System.Text;
 using SendGrid.SmtpApi;
 using System.Web.Http.Tracing;
+using WebApi.ErrorHelper;
 
 namespace Web.Controllers
 {
@@ -27,32 +28,40 @@ namespace Web.Controllers
         private InterceptDB db = new InterceptDB();
 
         [Route("api/v1/users")]
-        [HttpGet]
+        [HttpGet]        
         public async Task<IEnumerable<JUser>> GetUsers()
-        {
-            return await db.Users.Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+        {            
+            var users= await db.Users.Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            if (users.Count > 0)
+                return users;
+            throw new ApiDataException(1000, "Users not found", HttpStatusCode.NotFound);
         }
 
         [Route("api/v1/users/{id}")]
         [HttpGet]
         public async Task<IEnumerable<JUser>> GetUserWithID(int id)
         {
-            return await db.Users.Where(x => x.UserID == id).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            var users= await db.Users.Where(x => x.UserID == id).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            if(users.Count>0)
+                return users;
+            throw new ApiDataException(1001, "No user found for this id.", HttpStatusCode.NotFound);
         }
 
         // POST: api/users
         [Route("api/v1/users")]
-        [HttpPost]
+        [HttpPost]        
         public async Task<HttpResponseMessage> PostUser(JUserAdd newUser)
         {
             if (!ModelState.IsValid)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
             }
 
             if (Enum.IsDefined(typeof(Models.Enums.UserType), newUser.role))
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Role Not Supported");
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Role Not Supported" };
             }
 
 
@@ -62,8 +71,9 @@ namespace Web.Controllers
             if (count != 0)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Already Exists");
+                throw new ApiDataException(1002, "User is already exist in system.", HttpStatusCode.Conflict);
             }
-
+            
 
             //Create New User
             User user = new User()
@@ -75,21 +85,20 @@ namespace Web.Controllers
                 FirstName = newUser.firstName,
                 LastName = newUser.lastName,
 
-                AccountState = (byte)Models.Enums.AccountState.Active,
+                AccountState = (byte)Models.Enums.AccountState.Active,                                
                 UserType = newUser.role,
-
+                                
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = this.ApiUser().Email
             };
 
             db.Users.Add(user);
-            try
-            {
+            try {
                 await db.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Cannot registered the user.");
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.ExpectationFailed, ErrorDescription = "Cannot add the user" };
             }
             return Request.CreateResponse(HttpStatusCode.Created, user.UserID);
         }
@@ -101,12 +110,18 @@ namespace Web.Controllers
         public async Task<IHttpActionResult> PutUser(int id, [FromBody] JUser juser)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
-
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
+            
 
             User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == id);
             if (user == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Update Settings
             if (String.Compare(user.Email, juser.email, true) != 0)
@@ -115,7 +130,10 @@ namespace Web.Controllers
                 int count = await db.Users.CountAsync(x => String.Compare(x.Email, juser.email, true) == 0 && x.AccountState != (byte)Models.Enums.AccountState.Deleted);
 
                 if (count != 0)
+                {
                     return Conflict();  //An Account with this Email Already Exists
+                    throw new ApiDataException(1002, "An Account with this Email Already Exists.", HttpStatusCode.Conflict);
+                }
                 else
                     user.Email = juser.email;
             }
@@ -141,7 +159,10 @@ namespace Web.Controllers
         {
             User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == id);
             if (user == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Mark as Deleted
             user.AccountState = (byte)Models.Enums.AccountState.Deleted;
@@ -158,7 +179,10 @@ namespace Web.Controllers
         {
             User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == param.id);
             if (user == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Update State
             if (Convert.ToBoolean(param.disable))
@@ -173,6 +197,6 @@ namespace Web.Controllers
 
             return Ok();
         }
-
+        
     }
 }

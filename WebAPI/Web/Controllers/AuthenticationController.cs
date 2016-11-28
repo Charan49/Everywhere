@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -16,8 +14,10 @@ using System.Threading.Tasks;
 using System.Configuration;
 using System.Web.Http.Cors;
 using SendGrid;
+using Exceptions;
 using Web.Models.Json;
 using System.Web.Http.Tracing;
+using WebApi.ErrorHelper;
 
 namespace Web.Controllers
 {
@@ -35,16 +35,18 @@ namespace Web.Controllers
             if (!ModelState.IsValid)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
             }
-
+                                    
 
             //Check if User Exists and Account is Available
-            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available);
+            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available );
             if (existingUser == null)
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.Unauthorized, ErrorDescription = "User is not authorized" };
             }
-
+                                   
 
             //Validate Password
             bool bLoginSuccess = Helper.PasswordHash.ValidatePassword(loginInfo.password, existingUser.Password);
@@ -57,6 +59,7 @@ namespace Web.Controllers
             if (bLoginSuccess == false)
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                throw new ApiDataException(1002, "User is not authorized.", HttpStatusCode.Unauthorized);
             }
             else
             {
@@ -68,19 +71,20 @@ namespace Web.Controllers
                         id = existingUser.UserID.ToString(),
                         name = existingUser.FirstName + " " + existingUser.LastName
                     };
-
+                    
                     return Request.CreateResponse(token);
                 }
                 catch (Exception ex)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Cannot login user.");
+                    throw new ApiDataException(1002, "Cannot login user.", HttpStatusCode.InternalServerError);
                 }
             }
         }
 
 
-
-
+        
+                
         [Route("api/v1/signout")]
         [HttpGet]
         public async Task<IHttpActionResult> SignOut()
@@ -110,14 +114,18 @@ namespace Web.Controllers
                 myMessage.Subject = "Reset Password";
                 myMessage.Text = "Please reset your password by clicking on this link. " + callbackUrl;
                 myMessage.Html = "";
+
                 await SendConfirmationEmail.sendMail(myMessage);
-                
+
                 emailAddress.VerificationCode = vCode;
                 await db.SaveChangesAsync();
                 return Ok();
             }
             else
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
         }
 
         [AllowAnonymous]
@@ -134,7 +142,10 @@ namespace Web.Controllers
                 return Ok();
             }
             else
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
         }
 
         [AllowAnonymous]
@@ -151,7 +162,10 @@ namespace Web.Controllers
                 return Ok();
             }
             else
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
         }
 

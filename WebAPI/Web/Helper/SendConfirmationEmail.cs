@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using WebApi.ErrorHelper;
 
 namespace Web.Helper
 {
@@ -42,12 +43,13 @@ namespace Web.Helper
                         detalle.Append(" -- Error #" + i.ToString() + " : " + ex.Errors[i]);
                     }
 
-                    throw new ApplicationException(detalle.ToString(), ex);
+                    throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Bad Request...  "+ ex.InnerException };
                 }
             }
             else
             {
                 return Task.FromResult(0);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.Unauthorized, ErrorDescription = "Bad Request..." };
             }
         }
     }

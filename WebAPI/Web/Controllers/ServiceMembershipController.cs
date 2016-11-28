@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using Facebook;
 using System.Configuration;
+using WebApi.ErrorHelper;
 
 namespace Web.Controllers
 {
@@ -27,18 +28,24 @@ namespace Web.Controllers
         public async Task<HttpResponseMessage> AddServiceMembership([FromBody] JServiceUpdate model)    //Service GUID
         {
             if (!ModelState.IsValid)
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
 
             Guid ServiceID;
             Guid.TryParse(model.id.ToString().ToUpper(), out ServiceID);
-
+            
             //Check if Service is Present
             var service = await db.Services.FirstOrDefaultAsync(x => x.ServiceGUID == ServiceID && x.IsDeleted == false);
             if (service == null)
+            {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             var rUser = this.ApiUser().RUser;
-
+            
             //Check if the Service Entry Already Exists
             var entry = await db.UserServices.FirstOrDefaultAsync(x => x.ServiceGUID == ServiceID && x.UserGUID == rUser.SubjectID);
 
@@ -46,7 +53,7 @@ namespace Web.Controllers
             //Get Long-Term Token  
             string tokenLongTerm = "";
             string tokenExpiration = "";
-
+                     
             if (service.Name == "Facebook")
             {
                 //Create a Long Term Facebook Token
@@ -54,7 +61,7 @@ namespace Web.Controllers
                 client.AccessToken = model.accessToken;
                 client.AppId = ConfigurationManager.AppSettings.Get("FacebookAppId");
                 client.AppSecret = ConfigurationManager.AppSettings.Get("FacebookAppSecret");
-
+                
                 dynamic ret = await client.GetTaskAsync(string.Format("oauth/access_token?grant_type=fb_exchange_token&fb_exchange_token={0}&client_id={1}&client_secret={2}", model.accessToken, client.AppId, client.AppSecret), new { });
 
                 tokenLongTerm = ret.access_token;
@@ -85,16 +92,16 @@ namespace Web.Controllers
                 entry.AccessToken = tokenLongTerm;
                 entry.TokenExpiration = tokenExpiration;
                 entry.PictureURL = model.pictureURL;
-                entry.IsDeleted = false;
+                entry.IsDeleted = false;                
                 db.Entry(entry).State = EntityState.Modified;
-            }
+            }            
 
             //Save
             await db.SaveChangesAsync();
 
             return Request.CreateResponse(HttpStatusCode.Created);
         }
-
+                
 
         [Route("api/v1/service_membership/{id}")]
         [HttpDelete]
@@ -105,7 +112,10 @@ namespace Web.Controllers
             var entry = await db.UserServices.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.ServiceGUID == id && x.IsDeleted == false);
 
             if (entry == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Mark as Deleted and Remove any User Info
             entry.IsDeleted = true;
@@ -128,14 +138,20 @@ namespace Web.Controllers
         public async Task<IHttpActionResult> UpdateServiceMembership(Guid id, JServiceUpdate model)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
 
             var ruser = this.ApiUser().RUser;
 
             var entry = await db.UserServices.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.ServiceGUID == id && x.IsDeleted == false);
 
             if (entry == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             entry.AccessToken = model.accessToken;
             entry.TokenExpiration = model.tokenExpiresAt;
@@ -152,7 +168,7 @@ namespace Web.Controllers
         public async Task<IEnumerable<JServiceMembership>> GetServiceMembership()
         {
             var ruser = this.ApiUser().RUser;
-            var ret = await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null ? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL }).ToListAsync();
+            var ret= await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL }).ToListAsync();
             return ret;
         }
 
