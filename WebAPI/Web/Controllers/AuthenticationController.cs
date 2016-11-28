@@ -15,6 +15,9 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Web.Http.Cors;
+using SendGrid;
+using Web.Models.Json;
+using System.Web.Http.Tracing;
 
 namespace Web.Controllers
 {
@@ -22,7 +25,7 @@ namespace Web.Controllers
     public class AuthenticationController : ApiController
     {
         private InterceptDB db = new InterceptDB();
-        
+
         [AllowAnonymous]
         [Route("api/v1/authenticate")]
         [HttpPost]
@@ -30,14 +33,18 @@ namespace Web.Controllers
         {
             //Validate Model
             if (!ModelState.IsValid)
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-                                    
+            }
+
 
             //Check if User Exists and Account is Available
-            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available );
-            if (existingUser == null)            
+            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available);
+            if (existingUser == null)
+            {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
-                                   
+            }
+
 
             //Validate Password
             bool bLoginSuccess = Helper.PasswordHash.ValidatePassword(loginInfo.password, existingUser.Password);
@@ -53,20 +60,27 @@ namespace Web.Controllers
             }
             else
             {
-                var token = new Web.Models.Json.JToken()
+                try
                 {
-                    token = TokenController.CreateToken(loginInfo, existingUser),
-                    id = existingUser.UserID.ToString(),
-                    name=existingUser.FirstName+" "+ existingUser.LastName
-                };
-                
-                return Request.CreateResponse(token);
+                    var token = new Web.Models.Json.JToken()
+                    {
+                        token = TokenController.CreateToken(loginInfo, existingUser),
+                        id = existingUser.UserID.ToString(),
+                        name = existingUser.FirstName + " " + existingUser.LastName
+                    };
+
+                    return Request.CreateResponse(token);
+                }
+                catch (Exception ex)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Cannot login user.");
+                }
             }
         }
 
 
-        
-                
+
+
         [Route("api/v1/signout")]
         [HttpGet]
         public async Task<IHttpActionResult> SignOut()
@@ -77,8 +91,69 @@ namespace Web.Controllers
 
             return Ok();
         }
-        
 
+        [AllowAnonymous]
+        [Route("api/v1/ForgotPassword")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ForgotPassword([FromBody] JForgetPassword model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
+            if (emailAddress != null)
+            {
+                //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+                string vCode = GenerateCode.CreateRandomCode(8);
+                var callbackUrl = Url.Link("Default", new { Controller = "Account", Action = "ResetPassword", email = model.email });
+                var myMessage = new SendGridMessage();
+                myMessage.AddTo(model.email);
+                myMessage.From = new System.Net.Mail.MailAddress(
+                                    "Everywherewebvideo@gmail.com");
+                myMessage.Subject = "Reset Password";
+                myMessage.Text = "Please reset your password by clicking on this link. " + callbackUrl;
+                myMessage.Html = "";
+                await SendConfirmationEmail.sendMail(myMessage);
+                
+                emailAddress.VerificationCode = vCode;
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
+
+        [AllowAnonymous]
+        [Route("api/v1/ConfirmEmail")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ConfirmEmail([FromBody] JConfirmEmail code)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.VerificationCode == code.code);
+            if (emailAddress != null)
+            {
+                emailAddress.AccountState = (byte)Models.Enums.AccountState.Active;
+                emailAddress.VerificationCode = string.Empty;
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return NotFound();
+        }
+
+        [AllowAnonymous]
+        [Route("api/v1/ResetPassword/{email}")]
+        [HttpPut]
+        public async Task<IHttpActionResult> ResetPassword(string email, [FromBody] ResetPasswordModel model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
+            if (emailAddress != null)
+            {
+                emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+                return NotFound();
+
+        }
 
         private bool ValidateKey(JLogin login, User user)
         {

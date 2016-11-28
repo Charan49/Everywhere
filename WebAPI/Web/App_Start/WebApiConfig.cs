@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.ModelBinding;
 using System.Web.Http.Cors;
+using System.Web.Configuration;
+using System.Configuration;
+using WebApi.ActionFilters;
+
 namespace Web
 {
     public static class WebApiConfig
@@ -29,7 +33,12 @@ namespace Web
             config.Filters.Add(new AuthorizeAttribute());
             
             //Validate All Input Models
-            config.Filters.Add(new ValidateModelAttribute());            
+            config.Filters.Add(new ValidateModelAttribute());
+            config.Filters.Add(new LoggingFilterAttribute());
+            IncludeErrorDetailPolicy errorDetailPolicy = IncludeErrorDetailPolicy.Always;
+
+            GlobalConfiguration.Configuration.IncludeErrorDetailPolicy
+                = errorDetailPolicy;
         }
     }
 }

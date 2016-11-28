@@ -11,9 +11,15 @@ using Web.Helper;
 using Web.Models.Json;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
+using System.Configuration;
+using SendGrid;
+using System.Net.Mail;
+using System.Web.Services.Description;
+using Exceptions;
+using System.Text;
 
 namespace Web.Controllers
-{    
+{
     [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserController : ApiController
@@ -30,7 +36,7 @@ namespace Web.Controllers
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
 
-
+            string vCode = GenerateCode.CreateRandomCode(4);
 
             //Create user and save to database
             //////////////////////////////////
@@ -56,11 +62,11 @@ namespace Web.Controllers
                 LastName = LastName,
                 UserType = "User",
 
-                AccountState = (byte)Models.Enums.AccountState.Active,
+                AccountState = (byte)Models.Enums.AccountState.UnconfirmedEmail,
 
                 Email = model.email.Trim(),
                 Password = Helper.PasswordHash.HashPassword(model.password),
-
+                VerificationCode = vCode,
                 CreatedDate = DateTime.UtcNow,
                 UserGUID = Guid.NewGuid()
             };
@@ -75,6 +81,15 @@ namespace Web.Controllers
                     if (count > 0)
                         return Request.CreateErrorResponse(HttpStatusCode.Conflict, "User already exists.");
 
+                    var url = this.Url.Link("Default", new { Controller = "VerifyCode", Action = "Account", code = vCode, email = user.Email });
+                    var myMessage = new SendGridMessage();
+                    myMessage.AddTo(model.email);
+                    myMessage.From = new System.Net.Mail.MailAddress(
+                                        "Everywherewebvideo@gmail.com");
+                    myMessage.Subject = "Confirmation Email";
+                    myMessage.Text = "Your verification code is " + vCode + ".";
+                    myMessage.Html = "";
+                    await SendConfirmationEmail.sendMail(myMessage);
                     db.Users.Add(user);
                     db.SaveChanges();
 
@@ -111,14 +126,14 @@ namespace Web.Controllers
 
 
         [Route("api/v1/user")]
-        [HttpGet]        
+        [HttpGet]
         public async Task<IEnumerable<JUser>> GetUserInfo()
         {
             var ruser = this.ApiUser().RUser;
             return await db.Users.Where(x => x.UserGUID == ruser.SubjectID).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
         }
 
-        
+
 
         // PUT
         [Route("api/v1/user")]
@@ -161,80 +176,12 @@ namespace Web.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-
-        [AllowAnonymous]
-        [Route("api/v1/user/ResetPassword/{id}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ResetPassword([FromBody] JResetPasswordModel model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
-            if (emailAddress != null)
-            {
-                /*
-                string confirmationToken =
-                    WebSecurity.GeneratePasswordResetToken(model.Email);
-                dynamic email = new Email("ChangePasswordEmail");
-                email.To = emailAddress;
-                email.UserName = model.Email;
-                email.ConfirmationToken = confirmationToken;
-                email.Send();
-
-                emailAddress.VerificationCode = confirmationToken;
-
-                await db.SaveChangesAsync();
-                */
-                return Ok();
-            }
-            else
-                return NotFound();
-
-        }
-
-        [AllowAnonymous]
-        [Route("api/v1/users/ForgetPasswordRequest/{id}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ForgotPasswordRequest([FromBody] JResetPasswordModel model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
-            if (emailAddress != null)
-            {
-                /*
-                string confirmationToken = WebSecurity.GeneratePasswordResetToken(model.email);
-                dynamic email = new Email("ChangePasswordEmail");
-                email.To = emailAddress;
-                email.UserName = model.Email;
-                email.ConfirmationToken = confirmationToken;
-                email.Send();
-
-                emailAddress.VerificationCode = confirmationToken;
-
-                await db.SaveChangesAsync();
-                */
-                return Ok();
-            }
-            else
-                return NotFound();
-        }
-
-        [Route("api/v1/users/ForgetPassword")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ForgotPassword([FromBody] JForgetPassword model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
-            if (emailAddress != null && emailAddress.VerificationCode == model.verificationCode)
-            {
-                emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
-
-                await db.SaveChangesAsync();
-                return Ok();
-            }
-            else
-                return NotFound();
-        }
-
         private string GetHeaderValue(string header)
         {
-            return Request.Headers.GetValues(header).FirstOrDefault();            
+            return Request.Headers.GetValues(header).FirstOrDefault();
         }
+
+
+
     }
 }

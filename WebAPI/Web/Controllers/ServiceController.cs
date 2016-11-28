@@ -18,19 +18,19 @@ namespace Web.Controllers
     public class ServiceController : ApiController
     {
         private InterceptDB db = new InterceptDB();
-                
+
         [Route("api/v1/service")]
         [HttpPost]
         public async Task<HttpResponseMessage> AddNewService([FromBody] JService model)
         {
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-            
+
 
             //Create Service and save to database
             /////////////////////////////////////
             Service service = null;
-            
+
             service = new Service
             {
                 ServiceGUID = Guid.NewGuid(),
@@ -71,17 +71,17 @@ namespace Web.Controllers
         }
 
         [Route("api/v1/service/{name}")]
-        [HttpGet]        
+        [HttpGet]
         public async Task<IEnumerable<JService>> GetService(string name)
         {
-            return await db.Services.Where(x => x.Name == name && x.IsDeleted == false).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            return await db.Services.Where(x => x.Name == name && x.IsDeleted == false).Select(x => new JService { ID = x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
         }
 
         [Route("api/v1/service")]
         [HttpGet]
         public async Task<IEnumerable<JService>> GetServices()
         {
-            var ret=await db.Services.Where(x => x.IsDeleted == false).Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString() }).ToListAsync();
+            var ret = await db.Services.Where(x => x.IsDeleted == false).Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted = x.IsDeleted.ToString() }).ToListAsync();
             return ret;
         }
 
@@ -120,7 +120,7 @@ namespace Web.Controllers
                 service.ModifiedBy = this.ApiUser().Email;
                 service.ModifiedDate = DateTime.UtcNow;
             }
-            
+
             db.Entry(service).State = EntityState.Modified;
             await db.SaveChangesAsync();
 

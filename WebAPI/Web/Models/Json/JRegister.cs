@@ -9,7 +9,7 @@ namespace Web.Models
     public class JRegister
     {
         [Display(Name = "Name")]
-        [Required(ErrorMessage = "Name is required")]        
+        [Required(ErrorMessage = "Name is required")]
         public string name { get; set; }
 
         [Display(Name = "Email address")]
@@ -18,13 +18,14 @@ namespace Web.Models
         public string email { get; set; }
 
         [Required]
-        [StringLength(18, MinimumLength=8, ErrorMessage = "{0} must be at least {2} characters long.")]        
+        [StringLength(18, MinimumLength = 8, ErrorMessage = "{0} must be at least {2} characters long.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string password { get; set; }
 
-        public string dob { get; set; }        
+        public string dob { get; set; }
         public string location { get; set; }
+        public string url { get; set; }
 
         public void Trim()
         {
