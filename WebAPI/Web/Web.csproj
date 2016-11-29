@@ -249,6 +249,7 @@
     <Compile Include="Controllers\LiveStreamController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMembershipController.cs" />
+    <Compile Include="Controllers\TestUsersController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DB.Context.cs">
       <AutoGen>True</AutoGen>
@@ -301,12 +302,16 @@
     <Compile Include="Models\Json\JLogin.cs" />
     <Compile Include="Models\Json\JRegister.cs" />
     <Compile Include="Models\Json\JService.cs" />
+    <Compile Include="Models\Json\JTestUser.cs" />
     <Compile Include="Models\Json\JToken.cs" />
     <Compile Include="Models\Json\JUserCheck.cs" />
     <Compile Include="Models\Json\JUser.cs" />
     <Compile Include="Models\Redis\RApiUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestUser.cs">
       <DependentUpon>DB.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
