@@ -29,5 +29,6 @@ namespace Web
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserService> UserServices { get; set; }
+        public virtual DbSet<TestUser> TestUsers { get; set; }
     }
 }
