@@ -18,7 +18,6 @@ namespace Web
         public User()
         {
             this.UserServices = new HashSet<UserService>();
-            this.TestUsers = new HashSet<TestUser>();
         }
     
         public int UserID { get; set; }
@@ -39,7 +38,5 @@ namespace Web
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserService> UserServices { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TestUser> TestUsers { get; set; }
     }
 }

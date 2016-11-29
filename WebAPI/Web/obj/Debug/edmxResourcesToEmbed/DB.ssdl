@@ -29,17 +29,6 @@
     <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
   </EntityType>
-  <EntityType Name="TestUsers">
-    <Key>
-      <PropertyRef Name="TestUserID" />
-    </Key>
-    <Property Name="TestUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="EmailID" Type="nvarchar(max)" />
-    <Property Name="Password" Type="nvarchar(max)" />
-    <Property Name="Name" Type="nvarchar(max)" />
-    <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
-  </EntityType>
   <EntityType Name="Users">
     <Key>
       <PropertyRef Name="UserGUID" />
@@ -67,13 +56,13 @@
     <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="AccessID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="AccessToken" Type="nvarchar(max)" />
-    <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
     <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+    <Property Name="AccessToken" Type="nvarchar" MaxLength="200" />
+    <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
     <Property Name="StreamID" Type="nvarchar(max)" />
     <Property Name="StreamURL" Type="nvarchar(max)" />
     <Property Name="StreamKey" Type="nvarchar(max)" />
@@ -92,18 +81,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Users_TestUsers">
-    <End Role="Users" Type="Self.Users" Multiplicity="1" />
-    <End Role="TestUsers" Type="Self.TestUsers" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Users">
-        <PropertyRef Name="UserGUID" />
-      </Principal>
-      <Dependent Role="TestUsers">
-        <PropertyRef Name="UserGUID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Users_UserServices">
     <End Role="Users" Type="Self.Users" Multiplicity="1" />
     <End Role="UserServices" Type="Self.UserServices" Multiplicity="*" />
@@ -119,16 +96,11 @@
   <EntityContainer Name="InterceptDBModelStoreContainer">
     <EntitySet Name="Apps" EntityType="Self.Apps" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="TestUsers" EntityType="Self.TestUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserServices" EntityType="Self.UserServices" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Services_UserServices" Association="Self.FK_Services_UserServices">
       <End Role="Services" EntitySet="Services" />
       <End Role="UserServices" EntitySet="UserServices" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Users_TestUsers" Association="Self.FK_Users_TestUsers">
-      <End Role="Users" EntitySet="Users" />
-      <End Role="TestUsers" EntitySet="TestUsers" />
     </AssociationSet>
     <AssociationSet Name="FK_Users_UserServices" Association="Self.FK_Users_UserServices">
       <End Role="Users" EntitySet="Users" />
