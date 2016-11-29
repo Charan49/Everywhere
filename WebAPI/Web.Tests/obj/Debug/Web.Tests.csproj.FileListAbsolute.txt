@@ -116,3 +116,6 @@ F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Deployment.xm
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.dll
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.pdb
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.config
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Debug.config
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Release.config

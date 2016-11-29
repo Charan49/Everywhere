@@ -19,6 +19,7 @@ using Exceptions;
 using System.Text;
 using WebApi.ErrorHelper;
 using System.Text.RegularExpressions;
+using NLog;
 
 namespace Web.Controllers
 {
@@ -27,7 +28,7 @@ namespace Web.Controllers
     public class UserController : ApiController
     {
         private InterceptDB db = new InterceptDB();
-
+        
 
         [AllowAnonymous]
         [Route("api/v1/user/register")]
@@ -60,23 +61,28 @@ namespace Web.Controllers
                 FirstName = model.name.Substring(0, index).Trim();
                 LastName = model.name.Substring(index).Trim();
             }
+            try {
+                user = new User
+                {
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    UserType = "User",
 
-            user = new User
+                    AccountState = (byte)Models.Enums.AccountState.UnconfirmedEmail,
+
+                    Email = model.email.Trim(),
+                    Password = Helper.PasswordHash.HashPassword(model.password),
+                    ConfirmationCode = vCode,
+                    ConfirmationDueDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
+                    UserGUID = Guid.NewGuid()
+                };
+            }
+            catch(Exception ex)
             {
-                FirstName = FirstName,
-                LastName = LastName,
-                UserType = "User",
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = ex.InnerException.Message };
 
-                AccountState = (byte)Models.Enums.AccountState.UnconfirmedEmail,
-
-                Email = model.email.Trim(),
-                Password = Helper.PasswordHash.HashPassword(model.password),
-                ConfirmationCode = vCode,
-                ConfirmationDueDate = DateTime.Now,
-                CreatedDate = DateTime.UtcNow,
-                UserGUID = Guid.NewGuid()
-            };
-
+            }
 
             using (var transaction = db.Database.BeginTransaction())
             {

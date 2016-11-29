@@ -115,7 +115,7 @@
             var email = $('#uEmail').val();
             var password = $('#uPass').val();
             var dob = $('#txtMonth').val() + '/' + $('#txtDay').val() + '/' + $('#txtYear').val();
-            var callbackURL = "http://localhost:9178/Account/VerifyCode";
+            var callbackURL = "http://ws.everywhere.live/Account/VerifyCode";
 
             $.ajax({
                 url: "http://ws.everywhere.live:8080/api/v1/user/register/",
@@ -130,7 +130,9 @@
                     // perform your save call here
 
                     if (data.statusText=="Created") {
-                        alert("Done");
+                        e.preventDefault();
+                        var url = $("#RedirectTo").val();
+                        location.href = url;
                     } else {
 
                         alert(url);
