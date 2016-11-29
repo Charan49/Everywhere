@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using SendGrid;
 using System.Configuration;
-using Exceptions;
 using System.Text;
 using SendGrid.SmtpApi;
 using System.Web.Http.Tracing;
