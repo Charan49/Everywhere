@@ -11,6 +11,8 @@
         <EntityTypeShape EntityType="InterceptDBModel.UserService" Width="1.5" PointX="3.5" PointY="1.125" IsExpanded="true" />
         <AssociationConnector Association="InterceptDBModel.FK_Services_UserServices" ManuallyRouted="false" />
         <AssociationConnector Association="InterceptDBModel.FK_Users_UserServices" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="InterceptDBModel.TestUser" Width="1.5" PointX="8.5" PointY="6" />
+        <AssociationConnector Association="InterceptDBModel.FK_Users_TestUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
