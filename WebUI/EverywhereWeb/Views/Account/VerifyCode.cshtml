@@ -14,7 +14,7 @@
                     <span class="icon-bar middle-bar"></span>
                     <span class="icon-bar bottom-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="img/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+                <a class="navbar-brand" href="#"><img src="~/images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -74,7 +74,7 @@
                             <p class="small">If you did not recieve email for verification code then please click this <a href="#">link</a> to start signup process again.</p>
                             
                         }
-                        @Html.Hidden("loginURL", Url.Action("Login", "Account"));
+                        @Html.Hidden("loginURL", Url.Action("ConfirmRegistration", "Account"));
                         @*</form>*@
 
                     </div>
@@ -87,11 +87,11 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
     function confirmEmail(e) {
-        debugger;
+        
         //$('#btnSignIn').click(function (e) {
         var id = $('#txtCode').val();
         $.ajax({
-            url: "http://localhost:8577/api/v1/ConfirmEmail/",
+            url: "http://ws.everywhere.live:8080/api/v1/ConfirmEmail/",
             type: "POST",
             crossDomain: true,
             data: JSON.stringify({ 'code': id }),
@@ -106,14 +106,17 @@
 
             },
             error: function (jqXhr, textStatus, errorThrown) {
-                debugger;
+                
                 if (jqXhr.statusText == "OK") {
                     e.preventDefault();
                     var url = $("#loginURL").val();
                     window.location.href = url;
                 }
-                else
+                else {
+                    e.preventDefault();
+                    alert('Incorrect Confirmation code');
                     $('#validSummary').show();
+                }
             }
         });
         //});

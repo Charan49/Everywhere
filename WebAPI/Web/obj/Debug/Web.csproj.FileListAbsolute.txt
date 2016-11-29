@@ -244,6 +244,11 @@ D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.xml
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\NLog.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGrid.SmtpApi.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGridMail.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\NLog.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web\bin\Web.dll.config
 F:\Final Everywhere\WebAPI\Web\bin\Web.dll
 F:\Final Everywhere\WebAPI\Web\bin\Web.pdb
@@ -331,11 +336,5 @@ F:\Final Everywhere\WebAPI\Web\bin\ko\System.Spatial.resources.dll
 F:\Final Everywhere\WebAPI\Web\bin\ru\System.Spatial.resources.dll
 F:\Final Everywhere\WebAPI\Web\bin\zh-Hans\System.Spatial.resources.dll
 F:\Final Everywhere\WebAPI\Web\bin\zh-Hant\System.Spatial.resources.dll
-F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.dll
 F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.pdb
-D:\Jobs\Iqvis\Git\WebAPI\Web\bin\NLog.dll
-D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGrid.SmtpApi.dll
-D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGridMail.dll
-D:\Jobs\Iqvis\Git\WebAPI\Web\bin\NLog.xml
-D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache

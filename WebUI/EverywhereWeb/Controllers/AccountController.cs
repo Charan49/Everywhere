@@ -94,9 +94,9 @@ namespace EverywhereWeb.Controllers
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
-        public ActionResult VerifyCode(string code, string returnUrl)
+        public ActionResult VerifyCode()
         {
-            return View(new VerifyCodeViewModel { Code = code});
+            return View();
         }
 
         //
@@ -168,6 +168,12 @@ namespace EverywhereWeb.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        public ActionResult ConfirmRegistration()
+        {
+            return View();
+        }
+
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
@@ -228,9 +234,9 @@ namespace EverywhereWeb.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string email)
+        public ActionResult ResetPassword()
         {
-            return email == null ? View("Error") : View();
+            return View();
         }
 
         //

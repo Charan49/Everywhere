@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Apps">
           <Key>
             <PropertyRef Name="AppGUID" />
@@ -34,17 +34,6 @@
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <EntityType Name="TestUsers">
-          <Key>
-            <PropertyRef Name="TestUserID" />
-          </Key>
-          <Property Name="TestUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="EmailID" Type="nvarchar(max)" />
-          <Property Name="Password" Type="nvarchar(max)" />
-          <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
-        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="UserGUID" />
@@ -57,13 +46,14 @@
           <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DOB" Type="datetime2" Precision="7" />
           <Property Name="Location" Type="nvarchar(max)" />
-          <Property Name="VerificationCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ConfirmationCode" Type="nvarchar" MaxLength="50" />
           <Property Name="UserType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AccountState" Type="int" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+          <Property Name="ConfirmationDueDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="UserServices">
           <Key>
@@ -72,13 +62,13 @@
           <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AccessID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="AccessToken" Type="nvarchar(max)" />
-          <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+          <Property Name="AccessToken" Type="nvarchar" MaxLength="200" />
+          <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
           <Property Name="StreamID" Type="nvarchar(max)" />
           <Property Name="StreamURL" Type="nvarchar(max)" />
           <Property Name="StreamKey" Type="nvarchar(max)" />
@@ -97,18 +87,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Users_TestUsers">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="TestUsers" Type="Self.TestUsers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserGUID" />
-            </Principal>
-            <Dependent Role="TestUsers">
-              <PropertyRef Name="UserGUID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Users_UserServices">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserServices" Type="Self.UserServices" Multiplicity="*" />
@@ -124,16 +102,11 @@
         <EntityContainer Name="InterceptDBModelStoreContainer">
           <EntitySet Name="Apps" EntityType="Self.Apps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TestUsers" EntityType="Self.TestUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserServices" EntityType="Self.UserServices" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Services_UserServices" Association="Self.FK_Services_UserServices">
             <End Role="Services" EntitySet="Services" />
             <End Role="UserServices" EntitySet="UserServices" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Users_TestUsers" Association="Self.FK_Users_TestUsers">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="TestUsers" EntitySet="TestUsers" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_UserServices" Association="Self.FK_Users_UserServices">
             <End Role="Users" EntitySet="Users" />
@@ -195,6 +168,8 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="UserServices" Relationship="Self.FK_Users_UserServices" FromRole="Users" ToRole="UserServices" />
           <NavigationProperty Name="TestUsers" Relationship="InterceptDBModel.FK_Users_TestUsers" FromRole="User" ToRole="TestUser" />
+          <Property Name="ConfirmationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmationDueDate" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="UserService">
           <Key>
@@ -210,7 +185,7 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
           <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
-          <Property Name="AccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AccessToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="TokenExpiration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StreamID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="StreamURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -325,6 +300,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="InterceptDBModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="ConfirmationDueDate" ColumnName="ConfirmationDueDate" />
+                <ScalarProperty Name="ConfirmationCode" ColumnName="ConfirmationCode" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -333,7 +310,6 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="VerificationCode" ColumnName="VerificationCode" />
                 <ScalarProperty Name="UserType" ColumnName="UserType" />
                 <ScalarProperty Name="AccountState" ColumnName="AccountState" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -361,18 +337,6 @@
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TestUsers">
-            <EntityTypeMapping TypeName="InterceptDBModel.TestUser">
-              <MappingFragment StoreEntitySet="TestUsers">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
-                <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
-                <ScalarProperty Name="TestUserID" ColumnName="TestUserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -41,13 +41,14 @@
     <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DOB" Type="datetime2" Precision="7" />
     <Property Name="Location" Type="nvarchar(max)" />
-    <Property Name="VerificationCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ConfirmationCode" Type="nvarchar" MaxLength="50" />
     <Property Name="UserType" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="AccountState" Type="int" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
     <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+    <Property Name="ConfirmationDueDate" Type="datetime2" Precision="7" />
   </EntityType>
   <EntityType Name="UserServices">
     <Key>

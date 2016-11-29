@@ -26,7 +26,7 @@ namespace Web.Models.Json
 
         [Required]
         [StringTrim]
-        public string verificationCode { get; set; }
+        public string ConfirmationCode { get; set; }
 
         [Required]
         [StringTrim]

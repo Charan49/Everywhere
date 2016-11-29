@@ -18,6 +18,7 @@ using Exceptions;
 using Web.Models.Json;
 using System.Web.Http.Tracing;
 using WebApi.ErrorHelper;
+using System.Text.RegularExpressions;
 
 namespace Web.Controllers
 {
@@ -37,16 +38,16 @@ namespace Web.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
             }
-                                    
+
 
             //Check if User Exists and Account is Available
-            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available );
+            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available);
             if (existingUser == null)
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.Unauthorized, ErrorDescription = "User is not authorized" };
             }
-                                   
+
 
             //Validate Password
             bool bLoginSuccess = Helper.PasswordHash.ValidatePassword(loginInfo.password, existingUser.Password);
@@ -71,7 +72,7 @@ namespace Web.Controllers
                         id = existingUser.UserID.ToString(),
                         name = existingUser.FirstName + " " + existingUser.LastName
                     };
-                    
+
                     return Request.CreateResponse(token);
                 }
                 catch (Exception ex)
@@ -83,8 +84,8 @@ namespace Web.Controllers
         }
 
 
-        
-                
+
+
         [Route("api/v1/signout")]
         [HttpGet]
         public async Task<IHttpActionResult> SignOut()
@@ -105,19 +106,19 @@ namespace Web.Controllers
             if (emailAddress != null)
             {
                 //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
-                string vCode = GenerateCode.CreateRandomCode(8);
-                var callbackUrl = Url.Link("Default", new { Controller = "Account", Action = "ResetPassword", email = model.email });
+                string vCode = GenerateCode.CreateRandomCode(4);
                 var myMessage = new SendGridMessage();
                 myMessage.AddTo(model.email);
                 myMessage.From = new System.Net.Mail.MailAddress(
                                     "Everywherewebvideo@gmail.com");
                 myMessage.Subject = "Reset Password";
-                myMessage.Text = "Please reset your password by clicking on this link. " + callbackUrl;
+                myMessage.Text = "Please reset your password by entring this " + vCode + " code. ";
                 myMessage.Html = "";
 
                 await SendConfirmationEmail.sendMail(myMessage);
-
-                emailAddress.VerificationCode = vCode;
+                emailAddress.ConfirmationDueDate = DateTime.Now;
+                emailAddress.ModifiedDate = DateTime.Now;
+                emailAddress.ConfirmationCode = vCode;
                 await db.SaveChangesAsync();
                 return Ok();
             }
@@ -133,11 +134,18 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> ConfirmEmail([FromBody] JConfirmEmail code)
         {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.VerificationCode == code.code);
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.ConfirmationCode == code.code);
             if (emailAddress != null)
             {
+                TimeSpan ts = DateTime.Now.Subtract(Convert.ToDateTime(emailAddress.ConfirmationDueDate));
+
+                if (Convert.ToInt32(ts.TotalDays) > 7)
+                {
+                    return NotFound();
+                    throw new ApiDataException(1002, "Verification code expired...", HttpStatusCode.NotAcceptable);
+                }
                 emailAddress.AccountState = (byte)Models.Enums.AccountState.Active;
-                emailAddress.VerificationCode = string.Empty;
+                emailAddress.ConfirmationCode = string.Empty;
                 await db.SaveChangesAsync();
                 return Ok();
             }
@@ -149,15 +157,22 @@ namespace Web.Controllers
         }
 
         [AllowAnonymous]
-        [Route("api/v1/ResetPassword/{email}")]
+        [Route("api/v1/ResetPassword/{code}")]
         [HttpPut]
-        public async Task<IHttpActionResult> ResetPassword(string email, [FromBody] ResetPasswordModel model)
+        public async Task<IHttpActionResult> ResetPassword(string code, [FromBody] ResetPasswordModel model)
         {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.ConfirmationCode == code);
             if (emailAddress != null)
             {
-                emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+                TimeSpan ts = DateTime.Now.Subtract(Convert.ToDateTime(emailAddress.ConfirmationDueDate));
 
+                if (Convert.ToInt32(ts.TotalDays) > 7)
+                {
+                    return NotFound();
+                    throw new ApiDataException(1002, "Verification code expired...", HttpStatusCode.NotAcceptable);
+                }
+                emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+                emailAddress.ConfirmationCode = string.Empty;
                 await db.SaveChangesAsync();
                 return Ok();
             }

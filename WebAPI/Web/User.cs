@@ -18,6 +18,7 @@ namespace Web
         public User()
         {
             this.UserServices = new HashSet<UserService>();
+            this.TestUsers = new HashSet<TestUser>();
         }
     
         public int UserID { get; set; }
@@ -28,15 +29,18 @@ namespace Web
         public string Password { get; set; }
         public Nullable<System.DateTime> DOB { get; set; }
         public string Location { get; set; }
-        public string VerificationCode { get; set; }
+        public string ConfirmationCode { get; set; }
         public string UserType { get; set; }
         public int AccountState { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<System.DateTime> ConfirmationDueDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserService> UserServices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TestUser> TestUsers { get; set; }
     }
 }

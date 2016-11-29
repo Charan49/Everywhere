@@ -60,6 +60,10 @@ D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Cors.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\System.Web.Http.Cors.xml
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Facebook.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\Facebook.xml
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\NLog.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGridMail.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGrid.SmtpApi.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\NLog.xml
 F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.dll.config
 F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.dll
 F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.pdb
@@ -112,7 +116,3 @@ F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Deployment.xm
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.dll
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.pdb
-D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\NLog.dll
-D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGridMail.dll
-D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGrid.SmtpApi.dll
-D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\NLog.xml

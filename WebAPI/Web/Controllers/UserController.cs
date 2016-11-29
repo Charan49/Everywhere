@@ -18,9 +18,10 @@ using System.Web.Services.Description;
 using Exceptions;
 using System.Text;
 using WebApi.ErrorHelper;
+using System.Text.RegularExpressions;
 
 namespace Web.Controllers
-{    
+{
     [Authorize]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserController : ApiController
@@ -70,7 +71,8 @@ namespace Web.Controllers
 
                 Email = model.email.Trim(),
                 Password = Helper.PasswordHash.HashPassword(model.password),
-                VerificationCode = vCode,
+                ConfirmationCode = vCode,
+                ConfirmationDueDate = DateTime.Now,
                 CreatedDate = DateTime.UtcNow,
                 UserGUID = Guid.NewGuid()
             };
@@ -86,15 +88,15 @@ namespace Web.Controllers
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.Conflict, "User already exists.");
                         throw new ApiDataException(1002, "User is already exist in system.", HttpStatusCode.Conflict);
+
                     }
 
-                    var url = this.Url.Link("Default", new { Controller = "VerifyCode", Action = "Account", code=vCode, email=user.Email });
                     var myMessage = new SendGridMessage();
                     myMessage.AddTo(model.email);
                     myMessage.From = new System.Net.Mail.MailAddress(
                                         "Everywherewebvideo@gmail.com");
                     myMessage.Subject = "Confirmation Email";
-                    myMessage.Text = "Your verification code is "+ vCode + ".";
+                    myMessage.Text = "Your verification code is " + vCode + ".";
                     myMessage.Html = "";
                     await SendConfirmationEmail.sendMail(myMessage);
                     db.Users.Add(user);
@@ -142,18 +144,18 @@ namespace Web.Controllers
 
 
         [Route("api/v1/user")]
-        [HttpGet]        
+        [HttpGet]
         public async Task<IEnumerable<JUser>> GetUserInfo()
         {
             var ruser = this.ApiUser().RUser;
-            var users= await db.Users.Where(x => x.UserGUID == ruser.SubjectID).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            var users = await db.Users.Where(x => x.UserGUID == ruser.SubjectID).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
             if (users.Count > 0)
                 return users;
             else
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
         }
 
-        
+
 
         // PUT
         [Route("api/v1/user")]
@@ -207,10 +209,10 @@ namespace Web.Controllers
 
         private string GetHeaderValue(string header)
         {
-            return Request.Headers.GetValues(header).FirstOrDefault();            
+            return Request.Headers.GetValues(header).FirstOrDefault();
         }
 
-        
+
 
     }
 }

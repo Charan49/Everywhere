@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using SendGrid;
 using System.Configuration;
+using Exceptions;
 using System.Text;
 using SendGrid.SmtpApi;
 using System.Web.Http.Tracing;
@@ -27,10 +28,10 @@ namespace Web.Controllers
         private InterceptDB db = new InterceptDB();
 
         [Route("api/v1/users")]
-        [HttpGet]        
+        [HttpGet]
         public async Task<IEnumerable<JUser>> GetUsers()
-        {            
-            var users= await db.Users.Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+        {
+            var users = await db.Users.Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
             if (users.Count > 0)
                 return users;
             throw new ApiDataException(1000, "Users not found", HttpStatusCode.NotFound);
@@ -40,15 +41,15 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<JUser>> GetUserWithID(int id)
         {
-            var users= await db.Users.Where(x => x.UserID == id).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
-            if(users.Count>0)
+            var users = await db.Users.Where(x => x.UserID == id).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            if (users.Count > 0)
                 return users;
             throw new ApiDataException(1001, "No user found for this id.", HttpStatusCode.NotFound);
         }
 
         // POST: api/users
         [Route("api/v1/users")]
-        [HttpPost]        
+        [HttpPost]
         public async Task<HttpResponseMessage> PostUser(JUserAdd newUser)
         {
             if (!ModelState.IsValid)
@@ -72,7 +73,7 @@ namespace Web.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Already Exists");
                 throw new ApiDataException(1002, "User is already exist in system.", HttpStatusCode.Conflict);
             }
-            
+
 
             //Create New User
             User user = new User()
@@ -84,18 +85,19 @@ namespace Web.Controllers
                 FirstName = newUser.firstName,
                 LastName = newUser.lastName,
 
-                AccountState = (byte)Models.Enums.AccountState.Active,                                
+                AccountState = (byte)Models.Enums.AccountState.Active,
                 UserType = newUser.role,
-                                
+
                 CreatedDate = DateTime.UtcNow,
                 CreatedBy = this.ApiUser().Email
             };
 
             db.Users.Add(user);
-            try {
+            try
+            {
                 await db.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.ExpectationFailed, ErrorDescription = "Cannot add the user" };
             }
@@ -113,7 +115,7 @@ namespace Web.Controllers
                 return BadRequest(ModelState);
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
             }
-            
+
 
             User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == id);
             if (user == null)
@@ -196,6 +198,6 @@ namespace Web.Controllers
 
             return Ok();
         }
-        
+
     }
 }
