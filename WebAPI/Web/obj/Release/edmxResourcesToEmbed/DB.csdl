@@ -42,7 +42,6 @@
     <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="DOB" Type="DateTime" Precision="7" />
     <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="VerificationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="UserType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="AccountState" Type="Int32" Nullable="false" />
     <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -50,6 +49,9 @@
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="UserServices" Relationship="Self.FK_Users_UserServices" FromRole="Users" ToRole="UserServices" />
+    <Property Name="ConfirmationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ConfirmationDueDate" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="TestUsers" Relationship="InterceptDBModel.FK_Users_TestUsers" FromRole="User" ToRole="TestUser" />
   </EntityType>
   <EntityType Name="UserService">
     <Key>
@@ -65,7 +67,7 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
     <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
-    <Property Name="AccessToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="AccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="TokenExpiration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="StreamID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="StreamURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -110,5 +112,34 @@
       <End Role="Users" EntitySet="Users" />
       <End Role="UserServices" EntitySet="UserServices" />
     </AssociationSet>
+    <EntitySet Name="TestUsers" EntityType="InterceptDBModel.TestUser" />
+    <AssociationSet Name="FK_Users_TestUsers" Association="InterceptDBModel.FK_Users_TestUsers">
+      <End Role="User" EntitySet="Users" />
+      <End Role="TestUser" EntitySet="TestUsers" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="TestUser">
+    <Key>
+      <PropertyRef Name="TestUserID" />
+    </Key>
+    <Property Name="TestUserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserGUID" Type="Guid" Nullable="false" />
+    <Property Name="EmailID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="User" Relationship="InterceptDBModel.FK_Users_TestUsers" FromRole="TestUser" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Users_TestUsers">
+    <End Type="InterceptDBModel.User" Role="User" Multiplicity="1" />
+    <End Type="InterceptDBModel.TestUser" Role="TestUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserGUID" />
+      </Principal>
+      <Dependent Role="TestUser">
+        <PropertyRef Name="UserGUID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

@@ -35,6 +35,8 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="InterceptDBModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="ConfirmationDueDate" ColumnName="ConfirmationDueDate" />
+          <ScalarProperty Name="ConfirmationCode" ColumnName="ConfirmationCode" />
           <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -43,7 +45,6 @@
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="DOB" ColumnName="DOB" />
           <ScalarProperty Name="Location" ColumnName="Location" />
-          <ScalarProperty Name="VerificationCode" ColumnName="VerificationCode" />
           <ScalarProperty Name="UserType" ColumnName="UserType" />
           <ScalarProperty Name="AccountState" ColumnName="AccountState" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -71,6 +72,18 @@
           <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TestUsers">
+      <EntityTypeMapping TypeName="InterceptDBModel.TestUser">
+        <MappingFragment StoreEntitySet="TestUsers">
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+          <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
+          <ScalarProperty Name="TestUserID" ColumnName="TestUserID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
