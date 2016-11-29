@@ -126,7 +126,7 @@
 
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
-
+                    e.preventDefault();
                     if (jqXhr.statusText == "Created") {
                         var url = $("#RedirectTo").val();
                         location.href = url;

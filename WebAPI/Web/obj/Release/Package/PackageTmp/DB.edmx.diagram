@@ -7,10 +7,12 @@
       <Diagram DiagramId="f02801cbb6db485dac9e21b296c88e48" Name="Diagram1">
         <EntityTypeShape EntityType="InterceptDBModel.App" Width="1.5" PointX="9.625" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="InterceptDBModel.Service" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="InterceptDBModel.User" Width="1.5" PointX="6.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="InterceptDBModel.User" Width="1.625" PointX="6.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="InterceptDBModel.UserService" Width="1.5" PointX="3.5" PointY="1.125" IsExpanded="true" />
         <AssociationConnector Association="InterceptDBModel.FK_Services_UserServices" ManuallyRouted="false" />
         <AssociationConnector Association="InterceptDBModel.FK_Users_UserServices" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="InterceptDBModel.TestUser" Width="1.5" PointX="8.5" PointY="5.125" />
+        <AssociationConnector Association="InterceptDBModel.FK_Users_TestUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
