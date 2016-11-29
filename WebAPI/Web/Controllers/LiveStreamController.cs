@@ -11,6 +11,7 @@ using Web.Models;
 using Web;
 using System.Web.Http.Cors;
 using Facebook;
+using WebApi.ErrorHelper;
 
 namespace Web.Controllers
 {
@@ -76,7 +77,10 @@ namespace Web.Controllers
             {
                 //Check if Token is Valid
                 if (service.AccessToken == null)
+                {
                     return Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access Token Missing");
+                    throw new ApiDataException(1002, "Access Token Missing.", HttpStatusCode.Forbidden);
+                }
 
                 //Validate that the Token is Valid
                 try
@@ -89,6 +93,7 @@ namespace Web.Controllers
                 catch
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Access Token Expired");
+                    throw new ApiDataException(1002, "Access Token Expired.", HttpStatusCode.Unauthorized);
                 }
 
                 //Create Facebook Live Stream

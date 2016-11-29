@@ -13,6 +13,17 @@ namespace Web.Models.Json
         [EmailAddress]
         public string email { get; set; }
 
+
+    }
+
+    public class JResetPasswordModel
+    {
+
+        [Required]
+        [StringTrim]
+        [EmailAddress]
+        public string email { get; set; }
+
         [Required]
         [StringTrim]
         public string verificationCode { get; set; }
@@ -22,13 +33,5 @@ namespace Web.Models.Json
         [StringLength(18, MinimumLength = 8)]
         [DataType(DataType.Password)]
         public string newPassword { get; set; }
-    }
-
-    public class JResetPasswordModel
-    {
-        [Required]
-        [StringTrim]
-        [EmailAddress]
-        public string email { get; set; }
     }
 }

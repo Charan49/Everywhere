@@ -10,8 +10,13 @@ using System.Data.Entity;
 using Web.Helper;
 using Web.Models.Json;
 using System.Threading.Tasks;
-using SendGrid.Helpers.Mail;
 using System.Web.Http.Cors;
+using SendGrid;
+using System.Configuration;
+using System.Text;
+using SendGrid.SmtpApi;
+using System.Web.Http.Tracing;
+using WebApi.ErrorHelper;
 
 namespace Web.Controllers
 {
@@ -21,19 +26,24 @@ namespace Web.Controllers
     {
         private InterceptDB db = new InterceptDB();
 
-
         [Route("api/v1/users")]
         [HttpGet]        
         public async Task<IEnumerable<JUser>> GetUsers()
         {            
-            return await db.Users.Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            var users= await db.Users.Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            if (users.Count > 0)
+                return users;
+            throw new ApiDataException(1000, "Users not found", HttpStatusCode.NotFound);
         }
 
         [Route("api/v1/users/{id}")]
         [HttpGet]
         public async Task<IEnumerable<JUser>> GetUserWithID(int id)
         {
-            return await db.Users.Where(x => x.UserID == id).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            var users= await db.Users.Where(x => x.UserID == id).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            if(users.Count>0)
+                return users;
+            throw new ApiDataException(1001, "No user found for this id.", HttpStatusCode.NotFound);
         }
 
         // POST: api/users
@@ -42,17 +52,26 @@ namespace Web.Controllers
         public async Task<HttpResponseMessage> PostUser(JUserAdd newUser)
         {
             if (!ModelState.IsValid)
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-                       
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
+
             if (Enum.IsDefined(typeof(Models.Enums.UserType), newUser.role))
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Role Not Supported");
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Role Not Supported" };
+            }
 
 
             //Check if Already Exists
             int count = await db.Users.CountAsync(x => String.Compare(x.Email, newUser.email, true) == 0);
 
             if (count != 0)
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Already Exists");
+                throw new ApiDataException(1002, "User is already exist in system.", HttpStatusCode.Conflict);
+            }
             
 
             //Create New User
@@ -73,8 +92,13 @@ namespace Web.Controllers
             };
 
             db.Users.Add(user);
-            await db.SaveChangesAsync();
-
+            try {
+                await db.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.ExpectationFailed, ErrorDescription = "Cannot add the user" };
+            }
             return Request.CreateResponse(HttpStatusCode.Created, user.UserID);
         }
 
@@ -85,12 +109,18 @@ namespace Web.Controllers
         public async Task<IHttpActionResult> PutUser(int id, [FromBody] JUser juser)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
             
 
             User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == id);
             if (user == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Update Settings
             if (String.Compare(user.Email, juser.email, true) != 0)
@@ -99,7 +129,10 @@ namespace Web.Controllers
                 int count = await db.Users.CountAsync(x => String.Compare(x.Email, juser.email, true) == 0 && x.AccountState != (byte)Models.Enums.AccountState.Deleted);
 
                 if (count != 0)
+                {
                     return Conflict();  //An Account with this Email Already Exists
+                    throw new ApiDataException(1002, "An Account with this Email Already Exists.", HttpStatusCode.Conflict);
+                }
                 else
                     user.Email = juser.email;
             }
@@ -125,7 +158,10 @@ namespace Web.Controllers
         {
             User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == id);
             if (user == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Mark as Deleted
             user.AccountState = (byte)Models.Enums.AccountState.Deleted;
@@ -142,7 +178,10 @@ namespace Web.Controllers
         {
             User user = await db.Users.FirstOrDefaultAsync(x => x.UserID == param.id);
             if (user == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Update State
             if (Convert.ToBoolean(param.disable))
@@ -157,76 +196,6 @@ namespace Web.Controllers
 
             return Ok();
         }
-
-
-        [Route("api/v1/users/ResetPassword/{id}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ResetPassword([FromBody] ResetPasswordModel model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
-            if (emailAddress != null)
-            {
-                string confirmationToken = "";
-                    //WebSecurity.GeneratePasswordResetToken(model.Email);
-                dynamic email = new Email("ChangePasswordEmail");
-                email.To = emailAddress;
-                email.UserName = model.Email;
-                email.ConfirmationToken = confirmationToken;
-                email.Send();
-
-                emailAddress.VerificationCode = confirmationToken;
-
-                await db.SaveChangesAsync();
-                return Ok();
-            }
-            else
-                return NotFound();
-
-        }
-
-        [Route("api/v1/users/ForgetPasswordRequest/{id}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ForgotPasswordRequest([FromBody] ResetPasswordModel model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
-            if (emailAddress != null)
-            {
-                string confirmationToken = "";
-                    //WebSecurity.GeneratePasswordResetToken(model.Email);
-                dynamic email = new Email("ChangePasswordEmail");
-                email.To = emailAddress;
-                email.UserName = model.Email;
-                email.ConfirmationToken = confirmationToken;
-                email.Send();
-
-                emailAddress.VerificationCode = confirmationToken;
-
-                await db.SaveChangesAsync();
-                return Ok();
-            }
-            else
-                return NotFound();
-        }
-
-        [Route("api/v1/users/ForgetPassword/{id}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ForgotPassword([FromBody] ForgetPassword model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.Email);
-            if (emailAddress != null && emailAddress.VerificationCode == model.VerificationCode)
-            {
-                emailAddress.Password = Helper.PasswordHash.HashPassword(model.NewPassword);
-
-                await db.SaveChangesAsync();
-                return Ok();
-            }
-            else
-                return NotFound();
-        }
-
-        private string GetHeaderValue(string header)
-        {
-            return Request.Headers.GetValues(header).FirstOrDefault();            
-        }
+        
     }
 }

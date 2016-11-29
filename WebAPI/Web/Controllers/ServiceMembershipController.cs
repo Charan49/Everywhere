@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using Facebook;
 using System.Configuration;
+using WebApi.ErrorHelper;
 
 namespace Web.Controllers
 {
@@ -27,7 +28,10 @@ namespace Web.Controllers
         public async Task<HttpResponseMessage> AddServiceMembership([FromBody] JServiceUpdate model)    //Service GUID
         {
             if (!ModelState.IsValid)
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
 
             Guid ServiceID;
             Guid.TryParse(model.id.ToString().ToUpper(), out ServiceID);
@@ -35,7 +39,10 @@ namespace Web.Controllers
             //Check if Service is Present
             var service = await db.Services.FirstOrDefaultAsync(x => x.ServiceGUID == ServiceID && x.IsDeleted == false);
             if (service == null)
+            {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             var rUser = this.ApiUser().RUser;
             
@@ -105,7 +112,10 @@ namespace Web.Controllers
             var entry = await db.UserServices.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.ServiceGUID == id && x.IsDeleted == false);
 
             if (entry == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Mark as Deleted and Remove any User Info
             entry.IsDeleted = true;
@@ -128,14 +138,20 @@ namespace Web.Controllers
         public async Task<IHttpActionResult> UpdateServiceMembership(Guid id, JServiceUpdate model)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
 
             var ruser = this.ApiUser().RUser;
 
             var entry = await db.UserServices.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.ServiceGUID == id && x.IsDeleted == false);
 
             if (entry == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             entry.AccessToken = model.accessToken;
             entry.TokenExpiration = model.tokenExpiresAt;

@@ -79,9 +79,12 @@ D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Release\Web.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Release\Web.pdb
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGrid.CSharp.HTTP.Client.dll
-D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGrid.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Cors.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\Facebook.xml
 D:\Jobs\Iqvis\Git\WebAPI\Web\bin\System.Web.Http.Cors.xml
 D:\Jobs\Iqvis\Git\WebAPI\Web\obj\Release\Web.csprojResolveAssemblyReference.cache
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\NLog.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGrid.SmtpApi.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\SendGridMail.dll
+D:\Jobs\Iqvis\Git\WebAPI\Web\bin\NLog.xml

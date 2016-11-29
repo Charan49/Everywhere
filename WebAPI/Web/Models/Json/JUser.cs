@@ -24,11 +24,11 @@ namespace Web.Models
         [StringTrim]
         [EmailAddress]
         public string email;
-        
+
         [Required]
         [StringTrim]
         public string firstName;
-        
+
         [StringTrim]
         public string lastName;
 
@@ -46,25 +46,21 @@ namespace Web.Models
         [Required]
         [StringTrim]
         [EmailAddress]
-        public string Email { get; set; }
+        public string ConfirmationCode { get; set; }
 
-        [Required]
-        [StringTrim]
-        public string VerificationCode { get; set; }
-
-        [Required]
-        [StringTrim]
-        [StringLength(18, MinimumLength = 8)]
-        [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
     }
 
     public class ResetPasswordModel
     {
         [Required]
-        [StringTrim]
-        [EmailAddress]
-        public string Email { get; set; }
+        [StringLength(18, MinimumLength = 8)]
+        [DataType(DataType.Password)]
+        public string newPassword;
+
+        [Required]
+        [StringLength(18, MinimumLength = 8)]
+        [DataType(DataType.Password)]
+        public string confirmPassword { get; set; }
     }
 
     public class ParamDisable
@@ -80,5 +76,13 @@ namespace Web.Models
         [Required]
         [StringTrim]
         public string notify { get; set; }
+    }
+
+    public class JConfirmEmail
+    {
+        [Required]
+        [StringTrim]
+        public string code { get; set; }
+
     }
 }

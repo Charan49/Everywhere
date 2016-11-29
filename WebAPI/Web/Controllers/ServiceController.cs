@@ -10,6 +10,7 @@ using System.Data.Entity;
 using Web.Models;
 using Web;
 using System.Web.Http.Cors;
+using WebApi.ErrorHelper;
 
 namespace Web.Controllers
 {
@@ -24,7 +25,10 @@ namespace Web.Controllers
         public async Task<HttpResponseMessage> AddNewService([FromBody] JService model)
         {
             if (!ModelState.IsValid)
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
             
 
             //Create Service and save to database
@@ -50,7 +54,10 @@ namespace Web.Controllers
                     //Check if Application Already Exists
                     int count = await db.Services.CountAsync(u => u.Name.ToLower().Trim() == model.name.ToLower().Trim() && u.IsDeleted == false);
                     if (count > 0)
+                    {
                         return Request.CreateResponse(HttpStatusCode.Conflict, "Service already exists.");
+                        throw new ApiDataException(1002, "Service already exists.", HttpStatusCode.Conflict);
+                    }
 
                     db.Services.Add(service);
                     db.SaveChanges();
@@ -66,6 +73,7 @@ namespace Web.Controllers
                     transaction.Rollback();
 
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Please try again");
+                    throw new ApiDataException(1002, "Please try again.", HttpStatusCode.InternalServerError);
                 }
             }
         }
@@ -74,7 +82,10 @@ namespace Web.Controllers
         [HttpGet]        
         public async Task<IEnumerable<JService>> GetService(string name)
         {
-            return await db.Services.Where(x => x.Name == name && x.IsDeleted == false).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            var services= await db.Services.Where(x => x.Name == name && x.IsDeleted == false).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+            return services;
+            throw new ApiDataException(1002, "Service not found.", HttpStatusCode.NotFound);
+
         }
 
         [Route("api/v1/service")]
@@ -83,6 +94,7 @@ namespace Web.Controllers
         {
             var ret=await db.Services.Where(x => x.IsDeleted == false).Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString() }).ToListAsync();
             return ret;
+            throw new ApiDataException(1002, "Service not found.", HttpStatusCode.NotFound);
         }
 
         [Route("api/v1/service/{name}")]
@@ -91,7 +103,10 @@ namespace Web.Controllers
         {
             Service service = await db.Services.FirstOrDefaultAsync(x => x.Name == name);
             if (service == null)
+            {
                 return NotFound();
+                throw new ApiDataException(1002, "Service not found.", HttpStatusCode.NotFound);
+            }
 
             //Mark as Deleted
             service.IsDeleted = true;
@@ -105,12 +120,18 @@ namespace Web.Controllers
         public async Task<IHttpActionResult> PutService(string name, [FromBody] JService jService)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
 
 
             Service service = await db.Services.FirstOrDefaultAsync(x => x.Name == name);
             if (service == null)
+            {
                 return NotFound();
+                throw new ApiDataException(1002, "Service not found.", HttpStatusCode.NotFound);
+            }
 
             //Update Settings
             if (String.Compare(service.ServiceProviderInfo, service.ServiceProviderInfo, true) != 0 || String.Compare(service.AuthMethod, service.AuthMethod, true) != 0)

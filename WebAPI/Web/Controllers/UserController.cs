@@ -11,6 +11,13 @@ using Web.Helper;
 using Web.Models.Json;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
+using System.Configuration;
+using SendGrid;
+using System.Net.Mail;
+using System.Web.Services.Description;
+using Exceptions;
+using System.Text;
+using WebApi.ErrorHelper;
 
 namespace Web.Controllers
 {    
@@ -28,9 +35,12 @@ namespace Web.Controllers
         public async Task<HttpResponseMessage> Register([FromBody] JRegister model)
         {
             if (!ModelState.IsValid)
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
 
-
+            string vCode = GenerateCode.CreateRandomCode(4);
 
             //Create user and save to database
             //////////////////////////////////
@@ -56,11 +66,11 @@ namespace Web.Controllers
                 LastName = LastName,
                 UserType = "User",
 
-                AccountState = (byte)Models.Enums.AccountState.Active,
+                AccountState = (byte)Models.Enums.AccountState.UnconfirmedEmail,
 
                 Email = model.email.Trim(),
                 Password = Helper.PasswordHash.HashPassword(model.password),
-
+                VerificationCode = vCode,
                 CreatedDate = DateTime.UtcNow,
                 UserGUID = Guid.NewGuid()
             };
@@ -73,8 +83,20 @@ namespace Web.Controllers
                     //Check if a User with Same E-mail Already Exists
                     int count = await db.Users.CountAsync(u => String.Compare(u.Email, model.email.Trim(), true) == 0 && u.AccountState != (byte)Models.Enums.AccountState.Deleted);
                     if (count > 0)
+                    {
                         return Request.CreateErrorResponse(HttpStatusCode.Conflict, "User already exists.");
+                        throw new ApiDataException(1002, "User is already exist in system.", HttpStatusCode.Conflict);
+                    }
 
+                    var url = this.Url.Link("Default", new { Controller = "VerifyCode", Action = "Account", code=vCode, email=user.Email });
+                    var myMessage = new SendGridMessage();
+                    myMessage.AddTo(model.email);
+                    myMessage.From = new System.Net.Mail.MailAddress(
+                                        "Everywherewebvideo@gmail.com");
+                    myMessage.Subject = "Confirmation Email";
+                    myMessage.Text = "Your verification code is "+ vCode + ".";
+                    myMessage.Html = "";
+                    await SendConfirmationEmail.sendMail(myMessage);
                     db.Users.Add(user);
                     db.SaveChanges();
 
@@ -88,7 +110,7 @@ namespace Web.Controllers
                     //Rollback
                     transaction.Rollback();
 
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Please try again");
+                    throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Please try again...  " };
                 }
             }
         }
@@ -99,14 +121,23 @@ namespace Web.Controllers
         public async Task<IHttpActionResult> CheckUser([FromBody] JUserCheck model)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
 
             int count = await db.Users.CountAsync(x => String.Compare(x.Email, model.email, true) == 0 && x.AccountState != (byte)Models.Enums.AccountState.Deleted);
 
             if (count == 0)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
             else
+            {
                 return Conflict();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.Conflict, ErrorDescription = "Bad Request..." };
+            }
         }
 
 
@@ -115,7 +146,11 @@ namespace Web.Controllers
         public async Task<IEnumerable<JUser>> GetUserInfo()
         {
             var ruser = this.ApiUser().RUser;
-            return await db.Users.Where(x => x.UserGUID == ruser.SubjectID).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            var users= await db.Users.Where(x => x.UserGUID == ruser.SubjectID).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName }).ToListAsync();
+            if (users.Count > 0)
+                return users;
+            else
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
         }
 
         
@@ -126,7 +161,10 @@ namespace Web.Controllers
         public async Task<IHttpActionResult> PutUser([FromBody] JUser juser)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
 
             juser.email = juser.email.Trim();
 
@@ -134,7 +172,10 @@ namespace Web.Controllers
 
             User user = await db.Users.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID);
             if (user == null)
+            {
                 return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
 
             //Update Settings
             if (String.Compare(user.Email, juser.email, true) != 0)
@@ -143,7 +184,10 @@ namespace Web.Controllers
                 int count = await db.Users.CountAsync(x => String.Compare(x.Email, juser.email, true) == 0 && x.AccountState != (byte)Models.Enums.AccountState.Deleted);
 
                 if (count != 0)
+                {
                     return Conflict();  //An Account with this Email Already Exists
+                    throw new ApiDataException(1002, "User is already exist in system.", HttpStatusCode.Conflict);
+                }
                 else
                     user.Email = juser.email;
             }
@@ -161,80 +205,12 @@ namespace Web.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-
-        [AllowAnonymous]
-        [Route("api/v1/user/ResetPassword/{id}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ResetPassword([FromBody] JResetPasswordModel model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
-            if (emailAddress != null)
-            {
-                /*
-                string confirmationToken =
-                    WebSecurity.GeneratePasswordResetToken(model.Email);
-                dynamic email = new Email("ChangePasswordEmail");
-                email.To = emailAddress;
-                email.UserName = model.Email;
-                email.ConfirmationToken = confirmationToken;
-                email.Send();
-
-                emailAddress.VerificationCode = confirmationToken;
-
-                await db.SaveChangesAsync();
-                */
-                return Ok();
-            }
-            else
-                return NotFound();
-
-        }
-
-        [AllowAnonymous]
-        [Route("api/v1/users/ForgetPasswordRequest/{id}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ForgotPasswordRequest([FromBody] JResetPasswordModel model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
-            if (emailAddress != null)
-            {
-                /*
-                string confirmationToken = WebSecurity.GeneratePasswordResetToken(model.email);
-                dynamic email = new Email("ChangePasswordEmail");
-                email.To = emailAddress;
-                email.UserName = model.Email;
-                email.ConfirmationToken = confirmationToken;
-                email.Send();
-
-                emailAddress.VerificationCode = confirmationToken;
-
-                await db.SaveChangesAsync();
-                */
-                return Ok();
-            }
-            else
-                return NotFound();
-        }
-
-        [Route("api/v1/users/ForgetPassword")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ForgotPassword([FromBody] JForgetPassword model)
-        {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
-            if (emailAddress != null && emailAddress.VerificationCode == model.verificationCode)
-            {
-                emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
-
-                await db.SaveChangesAsync();
-                return Ok();
-            }
-            else
-                return NotFound();
-        }
-
         private string GetHeaderValue(string header)
         {
             return Request.Headers.GetValues(header).FirstOrDefault();            
         }
+
+        
+
     }
 }

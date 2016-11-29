@@ -1,0 +1,148 @@
+﻿@model EverywhereWeb.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+
+<header>
+    <nav class="navbar navbar-main navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-main">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar top-bar"></span>
+                    <span class="icon-bar middle-bar"></span>
+                    <span class="icon-bar bottom-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="~/images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-collapse-main">
+                <ul class="nav navbar-nav navbar-center">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">How it Works</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+
+                <div class="navbar-right">
+                    <p class="navbar-text">Don't have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");" >Login</button>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+    </nav>
+</header>
+
+<section class="bg-photo bg-photo-4">
+    <div class="bg-opac-dark page-content">
+        <div class="container body-content">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+
+                        <div class="well well-lg well-white row">
+
+                            @*<form action="POST" method="POST" role="form" class="col-sm-10 col-sm-offset-1 form-group-lg">*@
+                            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form", @class="col-sm-10 col-sm-offset-1 form-group-lg", id="rForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-head">
+                                    <h2>Get started for free</h2>
+                                    <p>Please fill out the info below to create an new account</p>
+                                </div>
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "John Stewart", id = "uName" })
+                                    @*<input type="text" class="form-control" id="uName" placeholder="John Stewart">*@
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "john.s@company.co", id = "uEmail" })
+                                    @*<label for="uEmail">Email</label>
+                                    <input type="email" class="form-control" id="uEmail" placeholder="john.s@company.co">*@
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "6+ characters", id = "uPass", type="password" })
+                                    @*<label for="uPass">Password</label>
+                                    <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">Date of Birth</label>
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <input type="text" class="form-control text-center" id="txtMonth" placeholder="Month">
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <input type="text" class="form-control text-center" id="txtDay" placeholder="Day">
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <input type="text" class="form-control text-center" id="txtYear" placeholder="Year">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" id="btnSignUP" onclick="callRegisterAPI(this);" class="btn btn-success cta btn-lg" >Sign Up</button>
+                                <p class="text-center text-muted"><small>By clicking “Sign Up” I agree to Everywhere’s Terms of Service.</small></p>
+                            }
+                            @*</form>*@
+                            
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    //document.getElementById("btnSignUP").addEventListener("click", callRegisterAPI, false);
+
+    function callRegisterAPI(e) {
+        debugger;
+            var name = $('#uName').val();
+            var email = $('#uEmail').val();
+            var password = $('#uPass').val();
+            var dob = $('#txtMonth').val() + '/' + $('#txtDay').val() + '/' + $('#txtYear').val();
+
+            $.ajax({
+                url: "https://ws.everywhere.live/api/v1/user/register/",
+                type: "POST",
+                crossDomain: true,
+                data: JSON.stringify({ 'Name': name, 'Email': email, 'Password': password, 'DOB': dob, 'Location': '' }),
+                dataType: "json",
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    // perform your save call here
+
+                    if (data.statusText=="Created") {
+                        alert("Done");
+                    } else {
+
+                        alert(url);
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    debugger;
+                    if (jqXhr.statusText == "Created")
+                    {
+                        location.href = '/Account/Login';
+                        
+                    }
+                }
+            });
+        }
+</script>
