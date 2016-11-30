@@ -265,13 +265,13 @@
             success: function (data) {
                 if (data != null && data.length > 0) {
 
-                    $('#message').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account");
-                    $('#username').text("Email :"+data[0].email);
-                    $('#password').text("Password :" + data[0].password);
+                    //$('#message').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account");
+                    //$('#username').text("Email :"+data[0].email);
+                    //$('#password').text("Password :" + data[0].password);
 
-                    $('#messagesm').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account");
-                    $('#usernamesm').text("Email :" + data[0].email);
-                    $('#passwordsm').text("Password :" + data[0].password);
+                    //$('#messagesm').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account");
+                    //$('#usernamesm').text("Email :" + data[0].email);
+                    //$('#passwordsm').text("Password :" + data[0].password);
 
                     $("#facebook").show();
                     $("#facebooktestUserbtn").hide();
@@ -280,8 +280,8 @@
                     $("#facebooktestUserbtnsm").hide();
 
 
-
-                    alert("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account Email:"+data[0].email+" and Password:"+data[0].password);
+                    alert("An Everywhere Facebook account has been created and emailed to you. Please check your email with the subject \"Everywhere Facebook account\". Follow the procedure in the email to Login with Facebook and allow Everywhere to publish your live streams.");
+                    //alert("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account Email:"+data[0].email+" and Password:"+data[0].password);
 
 
                 }

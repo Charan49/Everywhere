@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using Facebook;
 using System.Configuration;
+using SendGrid;
 
 namespace Web.Controllers
 {
@@ -22,7 +23,7 @@ namespace Web.Controllers
     public class TestUsersController : ApiController
     {
         private InterceptDB db = new InterceptDB();
-           
+
         [Route("api/v1/TestUsers")]
         [HttpGet]
         public async Task<List<JTestUser>> CreateTestUser()    //Service GUID
@@ -40,10 +41,10 @@ namespace Web.Controllers
             });
 
             client.AccessToken = result[0];
-            dynamic result1 = await client.PostTaskAsync(client.AppId+ "/accounts/test-users?installed=true&permissions=read_stream&name="+ rUser.Name+" "+rUser.LastName, new
+            dynamic result1 = await client.PostTaskAsync(client.AppId + "/accounts/test-users?installed=true&permissions=read_stream&name=" + rUser.Name + " " + rUser.LastName, new
             {
                 access_token = result[0],
- 
+
             });
 
             //dynamic result2 = await client.PostTaskAsync(result1[0], new
@@ -55,7 +56,7 @@ namespace Web.Controllers
             list.Add(new JTestUser { id = result1[0], access_token = result1[1], login_url = result1[2], email = result1[3], password = result1[4] });
             TestUser testUser = null;
 
-        
+
             testUser = new TestUser
             {
                 EmailID = result1[3],
@@ -63,10 +64,10 @@ namespace Web.Controllers
                 FaceBookID = result1[0],
                 UserGUID = rUser.SubjectID,
                 Name = rUser.Name,
-                IsDeleted=false,
-                IsLinked =false,
+                IsDeleted = false,
+                IsLinked = false,
                 ModifiedDate = DateTime.UtcNow
-                
+
             };
 
             using (var transaction = db.Database.BeginTransaction())
@@ -81,18 +82,38 @@ namespace Web.Controllers
                     //Complete Transaction
                     transaction.Commit();
 
-                   
+
                 }
                 catch
                 {
                     //Rollback
                     transaction.Rollback();
                     System.Diagnostics.EventLog.WriteEntry("Desktop Window Manager", "error");
-                   
+
                 }
             }
+           
+            var myMessage = new SendGridMessage();
+            myMessage.AddTo(rUser.Email);
+            myMessage.From = new System.Net.Mail.MailAddress(
+                                "Everywherewebvideo@gmail.com");
+            myMessage.Subject = "Everywhere Facebook account ";
+            //myMessage.Text = "Please reset your password by entring this " + vCode + " code. ";
+            myMessage.Text = "Here is your Everywhere Facebook account"
+                            + "Email: " + result1[3] + " Password: " + result1[3] +
+            "Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
+            "1 - Got to http://web.everywhere.live and login." +
+            "2 - Logout of Facebook if you already logged in." +
+            "3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
 
-            
+            "Best regards Team Everywhere Everywhere.live";
+
+            myMessage.Html = "";
+
+            await SendConfirmationEmail.sendMail(myMessage);
+
+        
+
             return list;
 
         }
