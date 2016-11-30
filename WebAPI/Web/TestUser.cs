@@ -20,6 +20,9 @@ namespace Web
         public string Password { get; set; }
         public string Name { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string FaceBookID { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsLinked { get; set; }
     
         public virtual User User { get; set; }
     }
