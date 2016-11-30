@@ -54,20 +54,6 @@
                                     <p>Please fill out the info below to create an new account</p>
                                 </div>
                                 @Html.ValidationSummary("", new { @class = "text-danger" })
-
-                                <div id="regValidSummary" hidden>
-                                    <div class="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                        <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! email is either exist or not valid.</span>
-                                    </div>
-                                </div>
-                                if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
-                                {
-                                    <div class="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                        <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! email is either exist or not valid.</span>
-                                    </div>
-                                }
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Name, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "John Smith", id = "uName" })
@@ -129,7 +115,7 @@
             var email = $('#uEmail').val();
             var password = $('#uPass').val();
             var dob = $('#txtMonth').val() + '/' + $('#txtDay').val() + '/' + $('#txtYear').val();
-            var callbackURL = "http://ws.everywhere.live/Account/VerifyCode";
+            var callbackURL = "http://localhost:9178/Account/VerifyCode";
 
             $.ajax({
                 url: "http://ws.everywhere.live:8080/api/v1/user/register/",
@@ -144,26 +130,20 @@
                     // perform your save call here
 
                     if (data.statusText=="Created") {
-                        e.preventDefault();
-                        var url = $("#RedirectTo").val();
-                        location.href = url;
+                        alert("Done");
                     } else {
 
                         alert(url);
                     }
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
-                    e.preventDefault();
+
                     if (jqXhr.statusText == "Created")
                     {
-                        
+                        e.preventDefault();
                         var url = $("#RedirectTo").val();
                         location.href = url;
 
-                    }
-                    else
-                    {
-                        $('#regValidSummary').show();
                     }
                 }
             });
