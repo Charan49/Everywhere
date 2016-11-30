@@ -40,7 +40,7 @@ namespace Web.Controllers
             });
 
             client.AccessToken = result[0];
-            dynamic result1 = await client.PostTaskAsync(client.AppId+ "/accounts/test-users?installed=true&permissions=read_stream&name="+ rUser.Name+rUser.LastName, new
+            dynamic result1 = await client.PostTaskAsync(client.AppId+ "/accounts/test-users?installed=true&permissions=read_stream&name="+ rUser.Name+" "+rUser.LastName, new
             {
                 access_token = result[0],
  
@@ -55,14 +55,16 @@ namespace Web.Controllers
             list.Add(new JTestUser { id = result1[0], access_token = result1[1], login_url = result1[2], email = result1[3], password = result1[4] });
             TestUser testUser = null;
 
-            Guid fb =new Guid("1687D96E-BFDC-472D-AF9F-2AE31CCFAC35");
-
+        
             testUser = new TestUser
             {
                 EmailID = result1[3],
                 Password = result1[4],
+                FaceBookID = result1[0],
                 UserGUID = rUser.SubjectID,
                 Name = rUser.Name,
+                IsDeleted=false,
+                IsLinked =false,
                 ModifiedDate = DateTime.UtcNow
                 
             };

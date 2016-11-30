@@ -40,9 +40,12 @@
           </Key>
           <Property Name="TestUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FaceBookID" Type="nvarchar(max)" />
           <Property Name="EmailID" Type="nvarchar(max)" />
           <Property Name="Password" Type="nvarchar(max)" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsLinked" Type="bit" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="Users">
@@ -274,6 +277,9 @@
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="User" Relationship="InterceptDBModel.FK_Users_TestUsers" FromRole="TestUser" ToRole="User" />
+          <Property Name="FaceBookID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsLinked" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Users_TestUsers">
           <End Type="InterceptDBModel.User" Role="User" Multiplicity="1" />
@@ -370,6 +376,9 @@
           <EntitySetMapping Name="TestUsers">
             <EntityTypeMapping TypeName="InterceptDBModel.TestUser">
               <MappingFragment StoreEntitySet="TestUsers">
+                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="FaceBookID" ColumnName="FaceBookID" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

@@ -99,6 +99,10 @@ namespace Web.Controllers
             //Save
             await db.SaveChangesAsync();
 
+            var testUsers = db.TestUsers.LastOrDefault(x => x.UserGUID == rUser.SubjectID && x.IsDeleted == false);
+            testUsers.IsLinked = true;
+            await db.SaveChangesAsync();
+
             return Request.CreateResponse(HttpStatusCode.Created);
         }
                 
@@ -128,6 +132,29 @@ namespace Web.Controllers
             entry.TokenExpiration = "";
 
             db.Entry(entry).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+
+            var testUsers = await db.TestUsers.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.IsDeleted==false);
+
+
+            FacebookClient client = new FacebookClient();
+            client.AppId = ConfigurationManager.AppSettings.Get("FacebookAppId");
+            client.AppSecret = ConfigurationManager.AppSettings.Get("FacebookAppSecret");
+            dynamic result = await client.GetTaskAsync("oauth/access_token", new
+            {
+                client_id = client.AppId,
+                client_secret = client.AppSecret,
+                grant_type = "client_credentials",
+            });
+
+
+            client.AccessToken = result[0];
+            dynamic result1 = client.Delete(testUsers.FaceBookID, new
+            {
+                access_token = result[0],
+
+            });
+            testUsers.IsDeleted = true;
             await db.SaveChangesAsync();
 
             return Ok();

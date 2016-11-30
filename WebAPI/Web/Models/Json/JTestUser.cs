@@ -14,7 +14,7 @@ namespace Web.Models
         public string login_url;
         public string email;
         public string password;
-
+        public string facebookid;
     }
 
    
