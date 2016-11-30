@@ -66,6 +66,7 @@
 
                             <div id="testAccounts" class="form-group add-accounts">
                                 <h4>
+                                    <label id="message" style="text-transform:none !important;" for=""></label>
                                     <label id="username" for=""></label>
                                     <br />
                                     <label id="password" for=""></label>
@@ -233,32 +234,33 @@
         //code. . .
         getServices();
 
-        var unwanted = $("#facebook");
-        
-        //unwanted.style.display = 'none';
-       
+
+
         $("#facebook").hide();
+        $("#facebooksm").hide();
         $("#youtubetestUserbtn").hide();
-        
+        $("#youtubetestUserbtnsm").hide();
+
         getMembershipServices();
         $('#username').text("");
         $('#password').text("");
 
 
-        
-
     }
 
  function CreateNewTestAccount()
-    {
+ {
+     $("#youtubetestUserbtn").hide();
+     $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
+
             url: "http://ws.everywhere.live:8080/api/v1/TestUsers/",
-            //url: "http://ws.everywhere.live:8080/api/v1/TestUsers",
+
             type: "GET",
             data: {},
             dataType: "json",
@@ -268,12 +270,18 @@
             success: function (data) {
                 if (data != null && data.length > 0) {
 
+                    $('#message').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account")
                     $('#username').text("Email :"+data[0].email);
                     $('#password').text("Password :" + data[0].password);
                     $("#facebook").show();
                     $("#facebooktestUserbtn").hide();
 
-                    alert("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account")
+                    $("#facebooksm").show();
+                    $("#facebooktestUserbtnsm").hide();
+
+
+
+                    alert("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account Email:"+data[0].email+" and Password:"+data[0].password);
 
 
                 }
@@ -289,7 +297,8 @@
     }
 
     function getServices() {
-
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
@@ -313,6 +322,9 @@
                         if (data[i].IsDeleted != 'True') {
 
                             addServiceRow(data[i].name);
+                             $("#youtubetestUserbtn").hide();
+                             $("#youtubetestUserbtnsm").hide();
+
                             if(data[i].name=='Facebook')
                             {
                                 sID = data[i].ID;
@@ -335,7 +347,8 @@
     }
 
     function getMembershipServices() {
-
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
@@ -373,7 +386,8 @@
     }
 
     function addUserServices(accessToken, picURL) {
-
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
         var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
 
@@ -402,7 +416,8 @@
     }
 
     function removeUserServices(name) {
-
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
         var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" + sID;
 
@@ -410,6 +425,13 @@
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
+	alert("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm");
+
+
+
+            $('#message').text("");
+            $('#username').text("");
+            $('#password').text("");
         $.ajax({
             url: url,
             crossDomain: true,
@@ -425,6 +447,7 @@
                 $('#accFacebookLink').remove();
                 $('#accountsRegistered').hide();
                 $("#facebook").hide();
+                $("#facebooksm").hide();
 
             },
             success: function (data) {
@@ -436,6 +459,7 @@
             }
         });
         //});
+
     }
 
     function Logout() {
@@ -466,7 +490,8 @@
 
 
     function addRegisteredServiceRow(name, picURL) {
-
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
         $('#accountsRegistered').show();
         $('#acc' + name).hide();
         $('#accountsRegistered').append('<div id="acc' + name + 'Link" class="panel">' +
@@ -515,7 +540,11 @@
                                             '</a>'+
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +
-                                                    '<span class="pull-right hidden-xs">'+
+                                                    '<span class="pull-right hidden-xs">' +
+                                                     '<label id="message" style="text-transform:none !important;" for=""></label>'+
+                                    '<label id="username" style="text-transform:none !important;" for=""></label>' +
+                                    '<br />'+
+                                    '<label id="password" style="text-transform:none !important;" for=""></label>' +
                                                         '<button type="button" class="btn btn-xs btn-grey" id="' + name.toLowerCase().trim()+'testUserbtn" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
                                                         '<button type="button" class="btn btn-xs btn-grey"  id="' + name.toLowerCase().trim()+'"  onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
                                                     '</span>'+
@@ -526,8 +555,11 @@
                                         '</div>'+
                                         '<div class="visible-xs mt-15">'+
                                             '<div class="row">'+
-                                                '<p class="col-xs-6 col-xs-offset-3">'+
-                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                                '<p class="col-xs-6">' +
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'testUserbtnsm" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
+                                                    ' </p>' +
+                                                    '<p class="col-xs-6">' +
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim()+'sm" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
                                                ' </p>'+
                                            ' </div>'+
                                         '</div>'+
