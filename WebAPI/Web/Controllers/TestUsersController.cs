@@ -40,7 +40,7 @@ namespace Web.Controllers
             });
 
             client.AccessToken = result[0];
-            dynamic result1 = await client.PostTaskAsync(client.AppId+ "/accounts/test-users?installed=true&permissions=read_stream&name="+ rUser.Name+rUser.LastName, new
+            dynamic result1 = await client.PostTaskAsync(client.AppId+ "/accounts/test-users?installed=true&permissions=read_stream&name="+ rUser.Name+" "+rUser.LastName, new
             {
                 access_token = result[0],
  
