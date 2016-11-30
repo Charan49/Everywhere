@@ -65,12 +65,7 @@
                             </div>
 
                             <div id="testAccounts" class="form-group add-accounts">
-                                <h4>
-                                    <label id="message" style="text-transform:none !important;" for=""></label>
-                                    <label id="username" for=""></label>
-                                    <br />
-                                    <label id="password" for=""></label>
-                                </h4>
+                              
 
                             </div>
 
@@ -270,9 +265,14 @@
             success: function (data) {
                 if (data != null && data.length > 0) {
 
-                    $('#message').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account")
+                    $('#message').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account");
                     $('#username').text("Email :"+data[0].email);
                     $('#password').text("Password :" + data[0].password);
+
+                    $('#messagesm').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account");
+                    $('#usernamesm').text("Email :" + data[0].email);
+                    $('#passwordsm').text("Password :" + data[0].password);
+
                     $("#facebook").show();
                     $("#facebooktestUserbtn").hide();
 
@@ -432,6 +432,10 @@
             $('#message').text("");
             $('#username').text("");
             $('#password').text("");
+            $('#messagesm').text("");
+            $('#usernamesm').text("");
+            $('#passwordsm').text("");
+
         $.ajax({
             url: url,
             crossDomain: true,
@@ -554,7 +558,14 @@
                                             '</div>'+
                                         '</div>'+
                                         '<div class="visible-xs mt-15">'+
-                                            '<div class="row">'+
+                                            '<div class="row">' +
+                                            '<p class="col-xs-6">' +
+                                             '<label id="messagesm" style="text-transform:none !important;" for=""></label>' +
+                                    '<label id="usernamesm" style="text-transform:none !important;" for=""></label>' +
+                                    '<br />' +
+                                    '<label id="passwordsm" style="text-transform:none !important;" for=""></label>' +
+'<br />' +
+ ' </p>' +
                                                 '<p class="col-xs-6">' +
                                                     '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'testUserbtnsm" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
                                                     ' </p>' +
