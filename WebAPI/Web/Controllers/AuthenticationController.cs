@@ -44,6 +44,9 @@ namespace Web.Controllers
             var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available);
             if (existingUser == null)
             {
+                var unconfirmed = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState == (int)Models.Enums.AccountState.UnconfirmedEmail);
+                if (unconfirmed != null)
+                    return Request.CreateResponse(HttpStatusCode.Found);
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.Unauthorized, ErrorDescription = "User is not authorized" };
             }
@@ -111,9 +114,12 @@ namespace Web.Controllers
                 myMessage.AddTo(model.email);
                 myMessage.From = new System.Net.Mail.MailAddress(
                                     "Everywherewebvideo@gmail.com");
-                myMessage.Subject = "Reset Password";
-                myMessage.Text = "Please reset your password by entring this " + vCode + " code. ";
-                myMessage.Html = "";
+                myMessage.Subject = "Everywhere password reset";
+                myMessage.Text = "";
+                myMessage.Html = "Don’t fret. Please enter the following verification code: <b>" + vCode + "</b> in the portal/app to reset your password. You can then continue with live streaming of videos through Everywhere platform.< br /><br />" +
+                                        "Best regards<br />" +
+                                        "Team Everywhere<br />" +
+                                        "www.Everywhere.live<br /> ";
 
                 await SendConfirmationEmail.sendMail(myMessage);
                 emailAddress.ConfirmationDueDate = DateTime.Now;

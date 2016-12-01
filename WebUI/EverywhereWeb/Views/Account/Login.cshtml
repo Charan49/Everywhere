@@ -89,6 +89,7 @@
                                 @*</form>*@
                             }
                             @Html.Hidden("RedirectTo", Url.Action("Dashboard", "Home"));
+                            @Html.Hidden("RedirectToConfirm", Url.Action("VerifyCode", "Account"));
                         </div>
 
                     </div>
@@ -127,8 +128,14 @@
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
                     e.preventDefault();
+                    debugger;
                     if (jqXhr.statusText == "Created") {
                         var url = $("#RedirectTo").val();
+                        location.href = url;
+                    }
+                    if (jqXhr.statusText == "Found")
+                    {
+                        var url = $("#RedirectToConfirm").val();
                         location.href = url;
                     }
                     else

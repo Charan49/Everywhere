@@ -61,28 +61,23 @@ namespace Web.Controllers
                 FirstName = model.name.Substring(0, index).Trim();
                 LastName = model.name.Substring(index).Trim();
             }
-            try {
-                user = new User
-                {
-                    FirstName = FirstName,
-                    LastName = LastName,
-                    UserType = "User",
 
-                    AccountState = (byte)Models.Enums.AccountState.UnconfirmedEmail,
-
-                    Email = model.email.Trim(),
-                    Password = Helper.PasswordHash.HashPassword(model.password),
-                    ConfirmationCode = vCode,
-                    ConfirmationDueDate = DateTime.Now,
-                    CreatedDate = DateTime.UtcNow,
-                    UserGUID = Guid.NewGuid()
-                };
-            }
-            catch(Exception ex)
+            user = new User
             {
-                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = ex.InnerException.Message };
+                FirstName = FirstName,
+                LastName = LastName,
+                UserType = "User",
 
-            }
+                AccountState = (byte)Models.Enums.AccountState.UnconfirmedEmail,
+
+                Email = model.email.Trim(),
+                Password = Helper.PasswordHash.HashPassword(model.password),
+                ConfirmationCode = vCode,
+                ConfirmationDueDate = DateTime.Now,
+                CreatedDate = DateTime.UtcNow,
+                UserGUID = Guid.NewGuid()
+            };
+
 
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -101,9 +96,12 @@ namespace Web.Controllers
                     myMessage.AddTo(model.email);
                     myMessage.From = new System.Net.Mail.MailAddress(
                                         "Everywherewebvideo@gmail.com");
-                    myMessage.Subject = "Confirmation Email";
-                    myMessage.Text = "Your verification code is " + vCode + ".";
-                    myMessage.Html = "";
+                    myMessage.Subject = "Everywhere signup confirmation";
+                    myMessage.Text = "";
+                    myMessage.Html = "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform.<br /><br />" +
+                                        "Best regards<br />" +
+                                        "Team Everywhere<br />" +
+                                        "www.Everywhere.live<br /> ";
                     await SendConfirmationEmail.sendMail(myMessage);
                     db.Users.Add(user);
                     db.SaveChanges();
