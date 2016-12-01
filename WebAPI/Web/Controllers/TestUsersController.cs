@@ -18,7 +18,7 @@ using SendGrid;
 
 namespace Web.Controllers
 {
-   
+
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class TestUsersController : ApiController
     {
@@ -92,7 +92,7 @@ namespace Web.Controllers
 
                 }
             }
-           
+
             var myMessage = new SendGridMessage();
             myMessage.AddTo(rUser.Email);
             myMessage.From = new System.Net.Mail.MailAddress(
@@ -112,7 +112,7 @@ namespace Web.Controllers
 
             await SendConfirmationEmail.sendMail(myMessage);
 
-        
+
 
             return list;
 
