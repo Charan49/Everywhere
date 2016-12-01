@@ -99,16 +99,16 @@ namespace Web.Controllers
                                 "Everywherewebvideo@gmail.com");
             myMessage.Subject = "Everywhere Facebook account ";
             //myMessage.Text = "Please reset your password by entring this " + vCode + " code. ";
-            myMessage.Text = "Here is your Everywhere Facebook account"
-                            + "Email: " + result1[3] + " Password: " + result1[3] +
-            "Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
-            "1 - Got to http://web.everywhere.live and login." +
-            "2 - Logout of Facebook if you already logged in." +
-            "3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
+            myMessage.Text = "";
+            myMessage.Html = "Here is your Everywhere Facebook account"
+                            + "<br />Email: " + result1[3] + " <br />Password: " + result1[4] +
+            "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
+            "<br />1 - Got to http://web.everywhere.live and login." +
+            "<br />2 - Logout of Facebook if you already logged in." +
+            "<br />3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
 
-            "Best regards Team Everywhere Everywhere.live";
+            "<br /><br />Best regards Team Everywhere Everywhere.live";
 
-            myMessage.Html = "";
 
             await SendConfirmationEmail.sendMail(myMessage);
 
