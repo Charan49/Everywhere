@@ -6,6 +6,8 @@ using System.Web;
 
 namespace Web.Models
 {
+
+
     public class JService
     {
         public Guid ID { get; set; }
@@ -25,6 +27,8 @@ namespace Web.Models
         public string AccessToken { get; set; }
 
         public string IsDeleted { get; set; }
+        public bool IsTestUsersExists { get; set; }
+      
         public void Trim()
         {
             //Trim Strings

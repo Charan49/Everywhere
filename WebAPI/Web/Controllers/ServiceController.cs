@@ -82,7 +82,9 @@ namespace Web.Controllers
         [HttpGet]        
         public async Task<IEnumerable<JService>> GetService(string name)
         {
-            var services= await db.Services.Where(x => x.Name == name && x.IsDeleted == false).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo }).ToListAsync();
+          
+            var services = await db.Services.Where(x => x.Name == name && x.IsDeleted == false).Select(x => new JService { ID=x.ServiceGUID, name = x.Name, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsTestUsersExists= false, }).ToListAsync();
+            
             return services;
             throw new ApiDataException(1002, "Service not found.", HttpStatusCode.NotFound);
 
@@ -92,7 +94,19 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<JService>> GetServices()
         {
-            var ret=await db.Services.Where(x => x.IsDeleted == false).Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString() }).ToListAsync();
+            var rUser = this.ApiUser().RUser;
+            bool IsTestUsers = true;
+            var testUsers = await db.TestUsers.FirstOrDefaultAsync(x => x.UserGUID == rUser.SubjectID && x.IsDeleted == false && x.IsLinked == false);
+            if (testUsers != null)
+            {
+                if (string.IsNullOrEmpty(testUsers.FaceBookID))
+                {
+                    IsTestUsers = false;
+                }
+            }
+            else { IsTestUsers = false; }
+
+            var ret=await db.Services.Where(x => x.IsDeleted == false).Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString(), IsTestUsersExists=IsTestUsers }).ToListAsync();
             return ret;
             throw new ApiDataException(1002, "Service not found.", HttpStatusCode.NotFound);
         }
