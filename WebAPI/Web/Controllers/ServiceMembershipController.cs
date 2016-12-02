@@ -99,8 +99,9 @@ namespace Web.Controllers
             //Save
             await db.SaveChangesAsync();
 
-            var testUsers = db.TestUsers.LastOrDefault(x => x.UserGUID == rUser.SubjectID && x.IsDeleted == false);
+            var testUsers = db.TestUsers.FirstOrDefault(x => x.UserGUID == rUser.SubjectID && x.IsDeleted == false && x.IsLinked==false);
             testUsers.IsLinked = true;
+            db.Entry(testUsers).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
             return Request.CreateResponse(HttpStatusCode.Created);
@@ -154,7 +155,11 @@ namespace Web.Controllers
                 access_token = result[0],
 
             });
+
+          
             testUsers.IsDeleted = true;
+            testUsers.IsLinked = false;
+            db.Entry(testUsers).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
             return Ok();

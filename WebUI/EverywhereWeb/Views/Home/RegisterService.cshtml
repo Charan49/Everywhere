@@ -231,8 +231,8 @@
 
 
 
-        $("#facebook").hide();
-        $("#facebooksm").hide();
+       // $("#facebook").hide();
+       // $("#facebooksm").hide();
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
 
@@ -329,6 +329,22 @@
                             {
                                 sID = data[i].ID;
                                 sName = data[i].Name;
+                                if (data[i].IsTestUsersExists) {
+                                    $("#facebook").show();
+                                    $("#facebooktestUserbtn").hide();
+
+                                    $("#facebooksm").show();
+                                    $("#facebooktestUserbtnsm").hide();
+
+                                }
+                                else {
+                                    $("#facebook").hide();
+                                    $("#facebooktestUserbtn").show();
+
+                                    $("#facebooksm").hide();
+                                    $("#facebooktestUserbtnsm").show();
+                                }
+                                
                             }
                         }
                     }
