@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="~/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="~/images/favicon.ico" type="image/x-icon">
     <title>Everywhere</title>
     @Styles.Render("~/Styles/bootstrap.min.css")
     @Styles.Render("~/Styles/style.css")
@@ -14,6 +16,8 @@
     @RenderBody()
     
     @Scripts.Render("http://ajax.microsoft.com/ajax/jquery/jquery-1.6.2.min.js")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/jquery.min.js")
     @Scripts.Render("~/Scripts/bootstrap.min.js")
     

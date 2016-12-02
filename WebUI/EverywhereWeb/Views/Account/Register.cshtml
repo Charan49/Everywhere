@@ -63,12 +63,14 @@
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Name, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "John Smith", id = "uName" })
+                                    
                                     @*<input type="text" class="form-control" id="uName" placeholder="John Stewart">*@
                                 </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Email, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "john.s@company.co", id = "uEmail" })
+                                    
                                     @*<label for="uEmail">Email</label>
                                         <input type="email" class="form-control" id="uEmail" placeholder="john.s@company.co">*@
                                 </div>
@@ -76,6 +78,7 @@
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Password, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "6+ characters", id = "uPass", type = "password" })
+                                    
                                     @*<label for="uPass">Password</label>
                                         <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
                                 </div>
@@ -84,13 +87,16 @@
                                     <label for="">Date of Birth</label>
                                     <div class="row">
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtMonth" placeholder="Month" required pattern="[0-9]{1,2}">
+                                            @*<input type="text" class="form-control text-center" id="txtMonth" placeholder="Month">*@
+                                            @Html.TextBoxFor(m => m.Month, new { @class = "form-control text-center", placeholder = "Month", id = "txtMonth" })
                                         </div>
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtDay" placeholder="Day" required pattern="[0-9]{1,2}">
+                                            @*<input type="text" class="form-control text-center" id="txtDay" placeholder="Day">*@
+                                            @Html.TextBoxFor(m => m.Day, new { @class = "form-control text-center", placeholder = "Day", id = "txtDay" })
                                         </div>
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtYear" placeholder="Year" required pattern="[0-9]{1,4}">
+                                            @*<input type="text" class="form-control text-center" id="txtYear" placeholder="Year">*@
+                                            @Html.TextBoxFor(m => m.Year, new { @class = "form-control text-center", placeholder = "Year", id = "txtYear" })
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +117,7 @@
         </div>
     </div>
 </section>
-
+<script src="~/Scripts/jquery.validate.min.js"></script>
 <script type="text/javascript">
 
     //document.getElementById("btnSignUP").addEventListener("click", callRegisterAPI, false);
@@ -153,7 +159,7 @@
 
                     }
                     else if (jqXhr.statusText == "Conflict") {
-                        alert('User already exist.');
+                        alert('A User exists with this email. Please check and try again.');
                     }
                     else {
                         $('#regValidSummary').html('<div class="alert">'+

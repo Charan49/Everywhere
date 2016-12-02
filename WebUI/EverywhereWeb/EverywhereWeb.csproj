@@ -193,6 +193,7 @@
     <Content Include="images\bg-photo-4.jpg" />
     <Content Include="images\bg-photo-5.jpg" />
     <Content Include="images\everywhere_logo.png" />
+    <Content Include="images\favicon.ico" />
     <Content Include="images\icon-broken-chain-xs.png" />
     <Content Include="images\icon-chain-xs.png" />
     <Content Include="images\icon-circular-clock-xs.png" />

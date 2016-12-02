@@ -140,12 +140,6 @@ namespace Web.Controllers
             if (emailAddress != null)
             {
                 
-                //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
-                var callbackURL = Url.Link("Default", new { controller = "VerifyCode", action = "Account" });
-                UriBuilder builder = new UriBuilder(callbackURL);
-                string newUri = builder.Uri.ToString().Replace(":8080","");
-
-
                 string vCode = GenerateCode.CreateRandomCode(4);
                 var myMessage = new SendGridMessage();
                 myMessage.AddTo(email);
@@ -153,9 +147,8 @@ namespace Web.Controllers
                                     "Everywherewebvideo@gmail.com");
                 myMessage.Subject = "Everywhere signup confirmation";
                 myMessage.Text = "";
-                myMessage.Html = "Hi " + emailAddress.FirstName + ", <br><br>" +
+                myMessage.Html = "Hi " + emailAddress.FirstName + ", <br>" +
                                         "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform. <br>" +
-                                        "Please click on the link "+ newUri + " to complete the registration. <br>" +
                                         "Best regards <br>" +
                                         "Team Everywhere <br>" +
                                         "www.Everywhere.live <br>";

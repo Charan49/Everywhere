@@ -65,11 +65,25 @@ namespace EverywhereWeb.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-        
+
+        [Required]
+        [Display(Name = "Day")]
+        [Range(1,31, ErrorMessage = "Invalid day.")]
+        public int Day { get; set; }
+
+        [Required]
+        [Display(Name = "Month")]
+        [Range(1, 12, ErrorMessage = "Invalid month.")]
+        public int Month { get; set; }
+
+        [Required]
+        [Display(Name = "Year")]
+        [Range(1, 3000, ErrorMessage = "Invalid year.")]
+        public int Year { get; set; }
     }
 
     public class ResetPasswordViewModel
