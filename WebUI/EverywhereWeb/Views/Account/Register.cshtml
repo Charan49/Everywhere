@@ -53,6 +53,12 @@
                                     <h2>Get started for free</h2>
                                     <p>Please fill out the info below to create an new account</p>
                                 </div>
+                                <div id="regValidSummary" hidden>
+                                    <div class="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">User already exist.</span>
+                                    </div>
+                                </div>
                                 @Html.ValidationSummary("", new { @class = "text-danger" })
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Name, new { @class = "control-label" })
@@ -78,17 +84,18 @@
                                     <label for="">Date of Birth</label>
                                     <div class="row">
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtMonth" placeholder="Month">
+                                            <input type="text" class="form-control text-center" id="txtMonth" placeholder="Month" required pattern="[0-9]{1,2}">
                                         </div>
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtDay" placeholder="Day">
+                                            <input type="text" class="form-control text-center" id="txtDay" placeholder="Day" required pattern="[0-9]{1,2}">
                                         </div>
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtYear" placeholder="Year">
+                                            <input type="text" class="form-control text-center" id="txtYear" placeholder="Year" required pattern="[0-9]{1,4}">
                                         </div>
                                     </div>
                                 </div>
                                 @Html.Hidden("RedirectTo", Url.Action("VerifyCode", "Account"));
+                                @Html.Hidden("RedirectToLogin", Url.Action("Login", "Account"));
                                 <button type="submit" id="btnSignUP" class="btn btn-success cta btn-lg">Sign Up</button>
                                 <p class="text-center text-muted"><small>By clicking “Sign Up” I agree to Everywhere’s Terms of Service.</small></p>
                             }
@@ -114,6 +121,7 @@
             var name = $('#uName').val();
             var email = $('#uEmail').val();
             var password = $('#uPass').val();
+            sessionStorage.setItem('signUpEmail', email);
             var dob = $('#txtMonth').val() + '/' + $('#txtDay').val() + '/' + $('#txtYear').val();
             var callbackURL = "http://localhost:9178/Account/VerifyCode";
 
@@ -137,13 +145,23 @@
                     }
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
-
+                    e.preventDefault();
                     if (jqXhr.statusText == "Created")
                     {
-                        e.preventDefault();
                         var url = $("#RedirectTo").val();
                         location.href = url;
 
+                    }
+                    else if (jqXhr.statusText == "Conflict") {
+                        alert('User already exist.');
+                    }
+                    else {
+                        $('#regValidSummary').html('<div class="alert">'+
+                                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                                        '<strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Please try again....</span>'+
+                                    '</div>');
+                        $('#regValidSummary').show();
+                        
                     }
                 }
             });

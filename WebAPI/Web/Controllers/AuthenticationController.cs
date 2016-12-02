@@ -109,6 +109,11 @@ namespace Web.Controllers
             if (emailAddress != null)
             {
                 //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+
+                var callbackURL = Url.Link("Default", new { controller = "ResetPassword", action = "Account" });
+                UriBuilder builder = new UriBuilder(callbackURL);
+                string newUri = builder.Uri.ToString().Replace(":8080", "");
+
                 string vCode = GenerateCode.CreateRandomCode(4);
                 var myMessage = new SendGridMessage();
                 myMessage.AddTo(model.email);
@@ -116,10 +121,14 @@ namespace Web.Controllers
                                     "Everywherewebvideo@gmail.com");
                 myMessage.Subject = "Everywhere password reset";
                 myMessage.Text = "";
-                myMessage.Html = "Don’t fret. Please enter the following verification code: <b>" + vCode + "</b> in the portal/app to reset your password. You can then continue with live streaming of videos through Everywhere platform.< br /><br />" +
-                                        "Best regards<br />" +
-                                        "Team Everywhere<br />" +
-                                        "www.Everywhere.live<br /> ";
+                myMessage.Html = "Hi " + emailAddress.FirstName + ", <br>" +
+                                "<br>" +
+                                "Don’t fret. Please enter the following verification code: <b>" + vCode + "</b> in the portal/app to reset your password. You can then continue with live streaming of videos through Everywhere platform.< br><br>" +
+                                        "Please click on the link to reset the password. " + newUri + "<br>" +
+                                        "<br>" +
+                                        "Best regards <br>" +
+                                        "Team Everywhere <br>" +
+                                        "www.Everywhere.live <br> ";
 
                 await SendConfirmationEmail.sendMail(myMessage);
                 emailAddress.ConfirmationDueDate = DateTime.Now;

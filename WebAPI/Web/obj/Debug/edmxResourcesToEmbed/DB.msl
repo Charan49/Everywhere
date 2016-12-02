@@ -78,6 +78,9 @@
     <EntitySetMapping Name="TestUsers">
       <EntityTypeMapping TypeName="InterceptDBModel.TestUser">
         <MappingFragment StoreEntitySet="TestUsers">
+          <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="FaceBookID" ColumnName="FaceBookID" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Password" ColumnName="Password" />

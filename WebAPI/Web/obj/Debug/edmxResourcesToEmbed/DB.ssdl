@@ -35,9 +35,12 @@
     </Key>
     <Property Name="TestUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FaceBookID" Type="nvarchar(max)" />
     <Property Name="EmailID" Type="nvarchar(max)" />
     <Property Name="Password" Type="nvarchar(max)" />
     <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="IsLinked" Type="bit" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
   </EntityType>
   <EntityType Name="Users">

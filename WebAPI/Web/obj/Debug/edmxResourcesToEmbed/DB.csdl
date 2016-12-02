@@ -129,6 +129,9 @@
     <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="User" Relationship="InterceptDBModel.FK_Users_TestUsers" FromRole="TestUser" ToRole="User" />
+    <Property Name="FaceBookID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="IsLinked" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="FK_Users_TestUsers">
     <End Type="InterceptDBModel.User" Role="User" Multiplicity="1" />

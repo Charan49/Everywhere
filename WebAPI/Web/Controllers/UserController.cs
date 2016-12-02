@@ -20,6 +20,8 @@ using System.Text;
 using WebApi.ErrorHelper;
 using System.Text.RegularExpressions;
 using NLog;
+using System.Runtime.Remoting.Contexts;
+using System.Web;
 
 namespace Web.Controllers
 {
@@ -92,13 +94,21 @@ namespace Web.Controllers
 
                     }
 
+                    var callbackURL = Url.Link("Default", new { controller = "VerifyCode", action = "Account" });
+                    UriBuilder builder = new UriBuilder(callbackURL);
+                    string newUri = builder.Uri.ToString();
+
                     var myMessage = new SendGridMessage();
                     myMessage.AddTo(model.email);
                     myMessage.From = new System.Net.Mail.MailAddress(
                                         "Everywherewebvideo@gmail.com");
                     myMessage.Subject = "Everywhere signup confirmation";
                     myMessage.Text = "";
-                    myMessage.Html = "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform.<br /><br />" +
+                    myMessage.Html = "Hi " + user.FirstName + ",<br />" +
+                                        "<br />" +
+                                        "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform.<br />" +
+                                        "Please click on the link to complete the registration. " + newUri + "<br />" +
+                                        "<br />" +
                                         "Best regards<br />" +
                                         "Team Everywhere<br />" +
                                         "www.Everywhere.live<br /> ";
@@ -118,6 +128,49 @@ namespace Web.Controllers
 
                     throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Please try again...  " };
                 }
+            }
+        }
+
+        [AllowAnonymous]
+        [Route("api/v1/ResendVerificationEmail/{email}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ResendVerificationEmail(string email)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
+            if (emailAddress != null)
+            {
+                
+                //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+                var callbackURL = Url.Link("Default", new { controller = "VerifyCode", action = "Account" });
+                UriBuilder builder = new UriBuilder(callbackURL);
+                string newUri = builder.Uri.ToString().Replace(":8080","");
+
+
+                string vCode = GenerateCode.CreateRandomCode(4);
+                var myMessage = new SendGridMessage();
+                myMessage.AddTo(email);
+                myMessage.From = new System.Net.Mail.MailAddress(
+                                    "Everywherewebvideo@gmail.com");
+                myMessage.Subject = "Everywhere signup confirmation";
+                myMessage.Text = "";
+                myMessage.Html = "Hi " + emailAddress.FirstName + ", <br><br>" +
+                                        "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform. <br>" +
+                                        "Please click on the link "+ newUri + " to complete the registration. <br>" +
+                                        "Best regards <br>" +
+                                        "Team Everywhere <br>" +
+                                        "www.Everywhere.live <br>";
+
+                await SendConfirmationEmail.sendMail(myMessage);
+                emailAddress.ConfirmationDueDate = DateTime.Now;
+                emailAddress.ModifiedDate = DateTime.Now;
+                emailAddress.ConfirmationCode = vCode;
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
             }
         }
 

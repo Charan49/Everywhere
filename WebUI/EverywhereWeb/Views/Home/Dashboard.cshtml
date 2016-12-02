@@ -483,19 +483,15 @@
                                                        ' </div>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">' +
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream ID:</span>' +
-                                                            '<input id="txtStreamKeyMobile" class="form-control" aria-label="" value="" readonly>' +
-
+                                                            '<input id="txtStreamKeyMobile" class="form-control" aria-label=""  onclick="this.select();" value="" readonly>' +
                                                        ' </div>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">'+
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream URL:</span>'+
-                                                            '<input id="txtStreamLinkMobile" class="form-control" aria-label="" value="" readonly>' +
-
+                                                            '<input id="txtStreamLinkMobile" class="form-control" aria-label="" onclick="this.select();" value="" readonly>' +
                                                        ' </div>' +
-
                                                     '</div>'+
                                                 '</div>'+
                                             '</div>'+
-
                                         '</div>'+
                                     '</div>');
         $('#profilePic').attr('src', picURL);
@@ -506,4 +502,5 @@
         $('#txtStreamLinkMobile').val(streamUrl);
         $('#txtStreamDateMobile').val(streamDate);
     }
+
 </script>

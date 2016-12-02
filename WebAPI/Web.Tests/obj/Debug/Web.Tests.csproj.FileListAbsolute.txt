@@ -64,6 +64,9 @@ D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\NLog.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGridMail.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\SendGrid.SmtpApi.dll
 D:\Jobs\Iqvis\Git\WebAPI\Web.Tests\bin\Debug\NLog.xml
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.config
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Debug.config
+F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Release.config
 F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.dll.config
 F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.dll
 F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Tests.pdb
@@ -116,6 +119,3 @@ F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\System.Web.WebPages.Deployment.xm
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.dll
 F:\Final Everywhere\WebAPI\Web.Tests\obj\Debug\Web.Tests.pdb
-F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.config
-F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Debug.config
-F:\Final Everywhere\WebAPI\Web.Tests\bin\Debug\Web.Release.config
