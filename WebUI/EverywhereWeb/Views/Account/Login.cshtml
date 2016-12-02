@@ -100,19 +100,15 @@
     </div>
 </section>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/detectPrivateBrowsing.js"></script>
 <script type="text/javascript">
 
-    detectPrivateMode(
-        function (is_private) {
-            
-            var result = typeof is_private === 'undefined' ? 'cannot detect' : is_private ? 'private' : 'not private';
-            if (result != 'not private') {
-                $('#rForm').html("<p>Error while storing the session token. Could be due to Private Browsing mode. Please disable Private Browsing mode and try again</p>");
-                return false;
-            }
+    $(document).ready(function () {
+        debugger;
+        try { localStorage.test = 2; } catch (e) {
+            $('#rForm').html("<p>Error while storing the session token. Could be due to Private Browsing mode. Please disable Private Browsing mode and try again</p>");
         }
-    );
+    });
+    
 
     function callLoginAPI(e) {
         
