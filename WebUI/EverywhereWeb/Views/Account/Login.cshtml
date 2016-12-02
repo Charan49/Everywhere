@@ -105,7 +105,7 @@
 
     detectPrivateMode(
         function (is_private) {
-            debugger;
+            
             var result = typeof is_private === 'undefined' ? 'cannot detect' : is_private ? 'private' : 'not private';
             if (result != 'not private') {
                 $('#rForm').html("<p>Error while storing the session token. Could be due to Private Browsing mode. Please disable Private Browsing mode and try again</p>");
