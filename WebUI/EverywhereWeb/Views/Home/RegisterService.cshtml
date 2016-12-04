@@ -65,7 +65,7 @@
                             </div>
 
                             <div id="testAccounts" class="form-group add-accounts">
-
+                              
 
                             </div>
 
@@ -160,31 +160,11 @@
     </div>
 </div>
 
-<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
-</script>
-<script>
-        function start() {
-            gapi.load('auth2', function () {
-                auth2 = gapi.auth2.init({
-                    client_id: '523666141221-8jckerkfihfs2iskmoagc5hpgmrpk9f9.apps.googleusercontent.com',
-                    // Scopes to request in addition to 'profile' and 'email'
-                    scope: 'https://www.googleapis.com/auth/youtube'
-                });
-            });
-        }
-</script>
-
 <script type="text/javascript">
 
     var fbObj = null;
     var sID = null;
     var sName = null;
-    var sIDFB = null;
-    var sNameFB = null;
-
-    var sIDYT = null;
-    var sNameYT = null;
-
     window.fbAsyncInit = function () {
         FB.init({
             //appId: '340485602973415',
@@ -221,7 +201,7 @@
                         $('#profilePic').attr('src', response.data.url);
                         console.log(profilePicture);
                         addRegisteredServiceRow('Facebook', profilePicture);
-                        addUserServices('Facebook', accessToken, profilePicture);
+                        addUserServices(accessToken, profilePicture);
                         }
                     }
                 );
@@ -238,24 +218,6 @@
         });
 
 
-    }
-
-    function youtubeLogin() {
-        auth2.grantOfflineAccess({ 'redirect_uri': 'postmessage' }).then(signInCallback);
-
-    }
-    function signInCallback(authResult) {
-        if (authResult['code']) {
-            $('#youtube').attr('style', 'display: none');
-            var code = authResult['code'];
-
-            addRegisteredServiceRow('Youtube', profilePicture);
-            addUserServices("Youtube",code, profilePicture);
-
-            //window.location.href = '@Url.Action("RegisterService", "Home")'+"?Code=" + code;
-        } else {
-
-        }
     }
 
 
@@ -365,8 +327,8 @@
 
                             if(data[i].name=='Facebook')
                             {
-                                sIDFB = data[i].ID;
-                                sNameFB = data[i].Name;
+                                sID = data[i].ID;
+                                sName = data[i].Name;
                                 if (data[i].IsTestUsersExists) {
                                     $("#facebook").show();
                                     $("#facebooktestUserbtn").hide();
@@ -382,27 +344,7 @@
                                     $("#facebooksm").hide();
                                     $("#facebooktestUserbtnsm").show();
                                 }
-
-                            }
-                            if (data[i].name == 'YouTube') {
-                                sIDYT = data[i].ID;
-                                sNameYT = data[i].Name;
-                                if (data[i].IsTestUsersExists) {
-                                    $("#facebook").show();
-                                    $("#facebooktestUserbtn").hide();
-
-                                    $("#facebooksm").show();
-                                    $("#facebooktestUserbtnsm").hide();
-
-                                }
-                                else {
-                                    $("#facebook").hide();
-                                    $("#facebooktestUserbtn").show();
-
-                                    $("#facebooksm").hide();
-                                    $("#facebooktestUserbtnsm").show();
-                                }
-
+                                
                             }
                         }
                     }
@@ -459,20 +401,12 @@
         //});
     }
 
-    function addUserServices(service,accessToken, picURL) {
+    function addUserServices(accessToken, picURL) {
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
         var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
-        if (service == 'Facebook')
-        {
-            sID = sIDFB;
-            sName = sNameFB;
-        }
-        else {
-            sID = sIDYT;
-            sName = sNameYT;
-        }
+
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
@@ -498,14 +432,6 @@
     }
 
     function removeUserServices(name) {
-        if (name == 'Facebook') {
-            sID = sIDFB;
-            sName = sNameFB;
-        }
-        else {
-            sID = sIDYT;
-            sName = sNameYT;
-        }
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
@@ -665,7 +591,7 @@
                                            ' </div>'+
                                         '</div>'+
                                     '</div>'+
-                                '</div>');
+                                '</div>'); 
 
     }
 
