@@ -14,13 +14,6 @@ using System.Web.Http.Cors;
 using Facebook;
 using System.Configuration;
 using WebApi.ErrorHelper;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Auth.OAuth2.Flows;
-using System.Threading;
-using Google.Apis.Auth.OAuth2.Responses;
-using Google.Apis.YouTube.v3.Data;
-using Google.Apis.YouTube.v3;
-using Google.Apis.Services;
 
 namespace Web.Controllers
 {
@@ -75,61 +68,7 @@ namespace Web.Controllers
                 tokenExpiration = DateTime.UtcNow.AddDays(60).ToString();
             }
 
-            if (service.Name == "YouTube")
-            {
-                string Code = model.accessToken;
-
-                ClientSecrets secrets = new ClientSecrets()
-                {
-                    ClientId = ConfigurationManager.AppSettings.Get("YouTubeAppId"),
-                    ClientSecret = ConfigurationManager.AppSettings.Get("YouTubeAppSecret")
-
-                };
-
-                IAuthorizationCodeFlow flow =
-                    new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
-                    {
-                        ClientSecrets = secrets,
-                        Scopes = new string[] { YouTubeService.Scope.Youtube }
-                    });
-                TokenResponse response = flow.ExchangeCodeForTokenAsync("", Code, "postmessage", CancellationToken.None).Result;
-
-                var credentials = new UserCredential(new GoogleAuthorizationCodeFlow(
-                new GoogleAuthorizationCodeFlow.Initializer { ClientSecrets = secrets }),
-               "TEST", response);
-
-                tokenLongTerm = response.AccessToken;
-                tokenExpiration = response.Issued.AddSeconds(Convert.ToDouble(response.ExpiresInSeconds)).ToString();
-
-
-                //var youTubeService = new YouTubeService(new BaseClientService.Initializer
-                //{
-                //    HttpClientInitializer = credentials,
-                //    ApplicationName = "Testing"
-                //});
-
-                //var liveStream = new LiveStream
-                //{
-
-                //    Cdn = new CdnSettings
-                //    {
-                //        Format = "360p",
-                //        IngestionType = "rtmp"
-                //    },
-                //    Snippet = new LiveStreamSnippet
-                //    {
-                //        Title = "test"
-
-                //    }
-
-                //};
-                //var request = youTubeService.LiveStreams.Insert(liveStream, "cdn,snippet");
-                //var youtuberesponse = request.Execute();
-
-                //Label1.Text = "Streamimg address=" + youtuberesponse.Cdn.IngestionInfo.IngestionAddress;
-                //Label2.Text = "Streamimg Name=" + youtuberesponse.Cdn.IngestionInfo.StreamName;
-
-            }
+            
 
 
             //Create New or Use Existing
@@ -145,7 +84,8 @@ namespace Web.Controllers
                     CreatedDate = DateTime.UtcNow,
                     IsDeleted = false,
                     CreatedBy = this.ApiUser().RUser.SubjectID.ToString(),
-                    PictureURL = model.pictureURL
+                    PictureURL = model.pictureURL,
+                    fbUserID=model.fbUserID
                 };
 
                 db.UserServices.Add(newUserService);
@@ -194,6 +134,7 @@ namespace Web.Controllers
             entry.StreamURL = "";
             entry.AccessToken = "";
             entry.TokenExpiration = "";
+            entry.fbUserID = "";
 
             db.Entry(entry).State = EntityState.Modified;
             await db.SaveChangesAsync();
@@ -263,7 +204,7 @@ namespace Web.Controllers
         public async Task<IEnumerable<JServiceMembership>> GetServiceMembership()
         {
             var ruser = this.ApiUser().RUser;
-            var ret = await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null ? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL }).ToListAsync();
+            var ret = await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null ? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL, fbUserID = x.fbUserID }).ToListAsync();
             return ret;
         }
 

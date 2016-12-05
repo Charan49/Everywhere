@@ -220,8 +220,8 @@
                         profilePicture = response.data.url;
                         $('#profilePic').attr('src', response.data.url);
                         console.log(profilePicture);
-                        addRegisteredServiceRow('Facebook', profilePicture);
-                        addUserServices('Facebook', accessToken, profilePicture);
+                        addRegisteredServiceRow('Facebook', profilePicture, user_id);
+                        addUserServices('Facebook', accessToken, profilePicture, user_id);
                         }
                     }
                 );
@@ -258,6 +258,10 @@
         }
     }
 
+    function get_raw_facebook_avatar_url(uid) {
+        var array = 'https://graph.facebook.com/' + uid + '/picture?width=146&height=124&redirect=true';
+        return array;
+    }
 
     window.onload = function () {
 
@@ -443,7 +447,7 @@
                     for (i = 0; i < data.length; i++) {
                         //addServiceRow(data[i].name);
 
-                        addRegisteredServiceRow(data[i].name, data[i].pictureUrl);
+                        addRegisteredServiceRow(data[i].name, data[i].pictureUrl, data[i].fbUserID);
                     }
                 }
                 else
@@ -459,7 +463,7 @@
         //});
     }
 
-    function addUserServices(service,accessToken, picURL) {
+    function addUserServices(service, accessToken, picURL, userID) {
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
@@ -481,7 +485,7 @@
             url: url,
             type: "POST",
             crossDomain: true,
-            data: JSON.stringify({ 'id': sID, 'accessToken': accessToken, 'tokenExpiresAt': Date.now(), 'pictureURL': picURL }),
+            data: JSON.stringify({ 'id': sID, 'accessToken': accessToken, 'tokenExpiresAt': Date.now(), 'pictureURL': picURL, 'fbUserID': userID }),
             dataType: "json",
             headers: headers,
             async: false,
@@ -583,7 +587,7 @@
     }
 
 
-    function addRegisteredServiceRow(name, picURL) {
+    function addRegisteredServiceRow(name, picURL, fbID) {
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         $('#accountsRegistered').show();
@@ -620,7 +624,7 @@
                                         '</div>' +
                                     '</div>' +
                                 '</div>');
-        $('#profilePic').attr('src',picURL);
+        $('#profilePic').attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124&redirect=tru');
     }
 
     function addServiceRow(name, picURL) {
