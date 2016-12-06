@@ -165,7 +165,7 @@
     </div>
 </div>
 
-
+<script src="~/Scripts/moment.js"></script>
 <script type="text/javascript">
     var obj = null;
 
@@ -186,7 +186,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/service/",
+            url: "http://ws.everywhere.live:8081/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -232,7 +232,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/service_membership/",
+            url: "http://ws.everywhere.live:8081/api/v1/service_membership/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -274,7 +274,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/signout/",
+            url: "http://ws.everywhere.live:8081/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -296,7 +296,14 @@
     function removeUserServices(name) {
 
         var token = sessionStorage.getItem('loginToken');
-        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" + obj[0].id;
+
+        if (name == 'Facebook')
+            alert("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm");
+        else
+            alert("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm");
+
+
+        var url = "http://ws.everywhere.live:8081/api/v1/service_membership/" + obj[0].id;
 
         var headers = {};
         if (token) {
@@ -332,7 +339,7 @@
         
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
-        var url = "http://ws.everywhere.live:8080/api/v1/livestream/start/" + name;
+        var url = "http://ws.everywhere.live:8081/api/v1/livestream/start/" + name;
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
@@ -349,12 +356,20 @@
 
                 alert("Stream URL has been generated Successfully!");
 
-                $('#txtStreamKey').val(data.streamId);
-                $('#txtStreamLink').val(data.streamUrl);
-                $('#txtStreamDate').val(getUTCTime(data.streamDate));
-                $('#txtStreamKeyMobile').val(data.streamId);
-                $('#txtStreamLinkMobile').val(data.streamUrl);
-                $('#txtStreamDateMobile').val(getUTCTime(data.streamDate));
+                //$('#txtStreamKey').val(data.streamId);
+                //$('#txtStreamLink').val(data.streamUrl);
+                //$('#txtStreamDate').val(getUTCTime(data.streamDate));
+                //$('#txtStreamKeyMobile').val(data.streamId);
+                //$('#txtStreamLinkMobile').val(data.streamUrl);
+                //$('#txtStreamDateMobile').val(getUTCTime(data.streamDate));
+
+                $('#txtStreamKey' + name).val(data.streamId);
+                $('#txtStreamLink' + name).val(data.streamUrl);
+                $('#txtStreamDate' + name).val(getUTCTime(data.streamDate));
+                $('#txtStreamKeyMobile' + name).val(data.streamId);
+                $('#txtStreamLinkMobile' + name).val(data.streamUrl);
+                $('#txtStreamDateMobile' + name).val(getUTCTime(data.streamDate));
+
             },
             error: function (jqXhr, textStatus, errorThrown) {
 
@@ -364,12 +379,21 @@
             }
         });
     }
+    function copyToClipboard(element) {
+        
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val($(element).val()).select();
+                document.execCommand("copy");
+                $temp.remove();
+            }
+    
 
     function GetLivestreamURLs() {
 
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
-        var url = "http://ws.everywhere.live:8080/api/v1/livestream/start";
+        var url = "http://ws.everywhere.live:8081/api/v1/livestream/start";
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
@@ -385,48 +409,40 @@
             success: function (data) {
 
                 alert("Stream URL has been generated Successfully!");
-
-                $('#txtStreamKey').val(data[0].streamId);
-                $('#txtStreamLink').val(data[0].streamUrl);
-                $('#txtStreamDate').val(data[0].streamDate);
-                $('#txtStreamKeyMobile').val(data[0].streamId);
-                $('#txtStreamLinkMobile').val(data[0].streamUrl);
-                $('#txtStreamDateMobile').val(data[0].streamDate);
+                for (i = 0; i < data.length; i++) {
+                    $('#txtStreamKey' + data[i].serviceName).val(data[i].streamId);
+                    $('#txtStreamLink' + data[i].serviceName).val(data[i].streamUrl);
+                    $('#txtStreamDate' + data[i].serviceName).val(data[i].streamDate);
+                    $('#txtStreamKeyMobile' + data[i].serviceName).val(data[i].streamId);
+                    $('#txtStreamLinkMobile' + data[i].serviceName).val(data[i].streamUrl);
+                    $('#txtStreamDateMobile' + data[i].serviceName).val(data[i].streamDate);
+                }
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 alert("Failed to generate Stream URL");
                 $('#txtStreamKey').val(data[0].streamId);
                 $('#txtStreamLink').val(data[0].streamUrl);
-                $('#txtStreamDate').val(data[0].streamDate);
+                $('#txtStreamDate').val(getUTCTime(data[0].streamDate));
                 $('#txtStreamKeyMobile').val(data[0].streamId);
                 $('#txtStreamLinkMobile').val(data[0].streamUrl);
-                $('#txtStreamDateMobile').val(data[0].streamDate);
+                $('#txtStreamDateMobile').val(getUTCTime(data[0].streamDate));
 
             }
         });
     }
 
     function getUTCTime(d) {
-        if (d != undefined || d != null) {
-            var sDate = new Date(d);
-            var stt = null;
-            if (sDate.getHours() > 12)
-                stt = 'PM';
-            else
-                stt = 'AM';
-            return sDate.getMonth().toString() + '/' + sDate.getDate().toString() + '/' + sDate.getFullYear().toString() + ' ' + sDate.getHours().toString() + ':' + sDate.getMinutes().toString() + stt;
+        if (d != undefined || d != null || d != "") {
+            if (d != "") {
+                var utcDate = moment.utc(d);
+                return utcDate.format("MM/DD/YYYY hh:mm:ss");
+            }
+            else {
+                return '';
+            }
         }
         else
             return '';
-    }
-
-    function copyToClipboard(element) {
-        
-        var $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val($(element).val()).select();
-        document.execCommand("copy");
-        $temp.remove();
     }
 
     function addLinkedAccount(name, picURL, streamId, streamUrl, streamDate)
@@ -441,7 +457,7 @@
                                                     '<img class="media-object" id="profilePic" src="../images/stream_thumb_01.jpg" alt="Image">'+
                                                ' </a>'+
                                                 '<div class="media-body">'+
-                                                    '<h4 class="media-heading">Facebook'+
+                                                    '<h4 class="media-heading">' + name +
                                                         '<small class="pull-right group-radio control-success right-check">'+
                                                             '<label class="check">Select <input type="checkbox" name="uSelect1" value=""> <span></span></label>'+
                                                         '</small>'+
@@ -456,62 +472,66 @@
                                                     '<div class="hidden-xs has-success mt-15 stream-key">' +
                                                     '<div class="input-group input-group-sm">' +
                                                             '<span class="input-group-addon addon-boxfree" ><i><img src="../images/icon-key-xs.png"> </i>Stream Date:</span>' +
-                                                            '<input id="txtStreamDate" class="form-control" aria-label="" value="" readonly>' +
+                                                            '<input id="txtStreamDate' + "" + name + "" + '" class="form-control" aria-label="" value="' + getUTCTime(streamDate) + '" readonly>' +
 
                                                         '</div>' +
                                                     '<div class="input-group input-group-sm">' +
                                                             '<span class="input-group-addon addon-boxfree" ><i><img src="../images/icon-key-xs.png"> </i>Stream ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span>' +
-                                                            '<input id="txtStreamKey" class="form-control" aria-label="" value="" readonly>' +
+                                                            '<input id="txtStreamKey' + "" + name + "" + '" class="form-control" aria-label="" " value="' + streamId + '" readonly>' +
 
                                                         '</div>' +
 
                                                         '<div class="input-group input-group-sm">'+
                                                             '<span class="input-group-addon addon-boxfree" ><i><img src="../images/icon-key-xs.png"> </i>Stream URL&nbsp;:</span>' +
-                                                            '<input id="txtStreamLink" class="form-control" aria-label="" value="" readonly>' +
+                                                            '<input id="txtStreamLink' + "" + name + "" + '" class="form-control" aria-label="" value="' + streamUrl + '" readonly>' +
 
                                                         '</div>' +
 
                                                     '</div>'+
                                                 '</div>'+
                                             '</div>'+
-                                            '<div class="visible-xs mt-15">'+
-                                                '<div class="row">'+
-                                                    '<p class="col-xs-6">'+
+                                            '<div class="visible-xs mt-15">' +
+                                                '<div class="row">' +
+                                                    '<p class="col-xs-6">' +
+
                                                         '<button type="button" class="btn btn-sm btn-grey btn-block"  onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-broken-chain-xs.png"> </i> Unlink</button>' +
-                                                    '</p>'+
-                                                    '<p class="col-xs-6">'+
-                                                        '<button type="button" class="btn btn-sm btn-grey btn-block"><i><img src="../images/icon-edit-xs.png"> </i> Edit</button>'+
-                                                    '</p>'+
+                                                    '</p>' +
+                                                    '<p class="col-xs-6">' +
+                                                        '<button type="button" class="btn btn-sm btn-grey btn-block"><i><img src="../images/icon-edit-xs.png"> </i> Edit</button>' +
+                                                    '</p>' +
                                                     '<p class="col-xs-12" style="align:center;">' +
                                                         '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="GetLivestreamURL(' + "'" + name + "'" + ')"><i><img src="../images/icon-circular-clock-xs.png"> </i> Schedule Streaming</button>' +
                                                     '</p>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">' +
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream Date:</span>' +
-                                                            '<input id="txtStreamDateMobile" class="form-control" aria-label="" value="" readonly>' +
+                                                         
+                                                            '<input id="txtStreamDateMobile' + "" + name + "" + '"  class="form-control" aria-label="" value="' + streamDate + '" readonly>' +
 
                                                        ' </div>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">' +
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream ID:</span>' +
-                                                            '<input id="txtStreamKeyMobile" class="form-control" aria-label=""  onclick="this.select();" value="" readonly>' +
+                                                            '<input id="txtStreamKeyMobile' + "" + name + "" + '"  class="form-control" aria-label=""  onclick="this.select();" value="' + streamId + '" readonly>' +
+
                                                             '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'#txtStreamKeyMobile'" + ')">Copy StreamID</button>' +
                                                        ' </div>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">'+
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream URL:</span>'+
-                                                            '<input id="txtStreamLinkMobile" class="form-control" aria-label="" onclick="this.select();" value="" readonly>' +
+                                                            '<input id="txtStreamLinkMobile' + "" + name + "" + '"   class="form-control" aria-label="" onclick="this.select();" value="' + streamUrl + '" readonly>' +
                                                             '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'#txtStreamLinkMobile'" + ')">Copy StreamURL</button>' +
+
                                                        ' </div>' +
-                                                    '</div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
+                                                    '</div>' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
                                     '</div>');
         $('#profilePic').attr('src', picURL);
-        $('#txtStreamKey').val(streamId);
-        $('#txtStreamLink').val(streamUrl);
-        $('#txtStreamDate').val(streamDate);
-        $('#txtStreamKeyMobile').val(streamId);
-        $('#txtStreamLinkMobile').val(streamUrl);
-        $('#txtStreamDateMobile').val(streamDate);
+        //$('#txtStreamKey').val(streamId);
+        //$('#txtStreamLink').val(streamUrl);
+        //$('#txtStreamDate').val(streamDate);
+        //$('#txtStreamKeyMobile').val(streamId);
+        //$('#txtStreamLinkMobile').val(streamUrl);
+        //$('#txtStreamDateMobile').val(streamDate);
     }
 
 </script>

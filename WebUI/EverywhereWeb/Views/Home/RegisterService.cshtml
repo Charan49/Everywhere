@@ -65,7 +65,7 @@
                             </div>
 
                             <div id="testAccounts" class="form-group add-accounts">
-                              
+
 
                             </div>
 
@@ -160,15 +160,33 @@
     </div>
 </div>
 
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+</script>
+<script>
+        function start() {
+            gapi.load('auth2', function () {
+                auth2 = gapi.auth2.init({
+                    client_id: '523666141221-8jckerkfihfs2iskmoagc5hpgmrpk9f9.apps.googleusercontent.com',
+                    // Scopes to request in addition to 'profile' and 'email'
+                    scope: 'https://www.googleapis.com/auth/youtube'
+                });
+            });
+        }
+</script>
+
 <script type="text/javascript">
 
     var fbObj = null;
     var sID = null;
     var sName = null;
+    var sIDFB = null;
+    var sNameFB = null;
+    var sIDYT = null;
+    var sNameYT = null
     window.fbAsyncInit = function () {
         FB.init({
             //appId: '340485602973415',
-            appId: '720765954737644',
+            appId: '383740905299171',
             xfbml: true,
             version: 'v2.8'
         });
@@ -200,8 +218,10 @@
                         profilePicture = response.data.url;
                         $('#profilePic').attr('src', response.data.url);
                         console.log(profilePicture);
-                        addRegisteredServiceRow('Facebook', profilePicture);
-                        addUserServices(accessToken, profilePicture);
+                        //addRegisteredServiceRow('Facebook', profilePicture);
+                        //addUserServices(accessToken, profilePicture);
+                        addRegisteredServiceRow('Facebook', profilePicture, user_id);
+                        addUserServices('Facebook', accessToken, profilePicture, user_id);
                         }
                     }
                 );
@@ -220,6 +240,31 @@
 
     }
 
+    function youtubeLogin() {
+        auth2.grantOfflineAccess({ 'redirect_uri': 'postmessage' }).then(signInCallback);
+
+    }
+    function signInCallback(authResult) {
+        if (authResult['code']) {
+            $('#youtube').attr('style', 'display: none');
+            var code = authResult['code'];
+
+            //addRegisteredServiceRow('Youtube', profilePicture);
+            //addUserServices(code, profilePicture);
+            addRegisteredServiceRow('Youtube', "", "");
+            addUserServices('Youtube', code, "", "");
+
+            //window.location.href = '@Url.Action("RegisterService", "Home")'+"?Code=" + code;
+        } else {
+
+        }
+    }
+
+    function get_raw_facebook_avatar_url(uid) {
+               var array = 'https://graph.facebook.com/' + uid + '/picture?width=146&height=124&redirect=true';
+                return array;
+       }
+
 
     window.onload = function () {
 
@@ -229,10 +274,6 @@
         //code. . .
         getServices();
 
-
-
-       // $("#facebook").hide();
-       // $("#facebooksm").hide();
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
 
@@ -327,8 +368,9 @@
 
                             if(data[i].name=='Facebook')
                             {
-                                sID = data[i].ID;
-                                sName = data[i].Name;
+                                sIDFB = data[i].ID;
+                                sNameFB = data[i].Name;
+
                                 if (data[i].IsTestUsersExists) {
                                     $("#facebook").show();
                                     $("#facebooktestUserbtn").hide();
@@ -344,7 +386,28 @@
                                     $("#facebooksm").hide();
                                     $("#facebooktestUserbtnsm").show();
                                 }
-                                
+
+                            }
+                            if (data[i].name == 'YouTube') {
+                               
+                                sIDYT = data[i].ID;
+                                sNameYT = data[i].Name;
+                                if (data[i].IsTestUsersExists) {
+                                    $("#facebook").show();
+                                    $("#facebooktestUserbtn").hide();
+
+                                    $("#facebooksm").show();
+                                    $("#facebooktestUserbtnsm").hide();
+
+                                }
+                                else {
+                                    $("#facebook").hide();
+                                    $("#facebooktestUserbtn").show();
+
+                                    $("#facebooksm").hide();
+                                    $("#facebooktestUserbtnsm").show();
+                                }
+
                             }
                         }
                     }
@@ -385,7 +448,8 @@
                     for (i = 0; i < data.length; i++) {
                         //addServiceRow(data[i].name);
 
-                        addRegisteredServiceRow(data[i].name, data[i].pictureUrl);
+                        //addRegisteredServiceRow(data[i].name, data[i].pictureUrl);
+                        addRegisteredServiceRow(data[i].name, data[i].pictureUrl, data[i].fbUserID);
                     }
                 }
                 else
@@ -401,11 +465,22 @@
         //});
     }
 
-    function addUserServices(accessToken, picURL) {
+    function addUserServices(service, accessToken, picURL, userID){
+    //function addUserServices(accessToken, picURL) {
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
         var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
+
+        if (service == 'Facebook')
+                {
+                            sID = sIDFB;
+                    sName = sNameFB;
+                }
+            else {
+                sID = sIDYT;
+                sName = sNameYT;
+            }
 
         var headers = {};
         if (token) {
@@ -415,7 +490,7 @@
             url: url,
             type: "POST",
             crossDomain: true,
-            data: JSON.stringify({ 'id': sID, 'accessToken': accessToken, 'tokenExpiresAt': Date.now(), 'pictureURL': picURL }),
+            data: JSON.stringify({ 'id': sID, 'accessToken': accessToken, 'tokenExpiresAt': Date.now(), 'pictureURL': picURL, 'fbUserID': userID }),
             dataType: "json",
             headers: headers,
             async: false,
@@ -434,15 +509,27 @@
     function removeUserServices(name) {
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
+        if (name == 'Facebook') {
+            sID = sIDFB;
+            sName = sNameFB;
+        }
+        else {
+            sID = sIDYT;
+            sName = sNameYT;
+        }
         var token = sessionStorage.getItem('loginToken');
         var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" + sID;
+
+      
 
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
+        if (name=='Facebook')
 	alert("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm");
-
+        else
+        alert("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm");
 
 
             $('#message').text("");
@@ -468,6 +555,7 @@
                 $('#accountsRegistered').hide();
                 $("#facebook").hide();
                 $("#facebooksm").hide();
+                location.href = '@Url.Action("RegisterService", "Home")';
 
             },
             success: function (data) {
@@ -475,6 +563,7 @@
                 getServices();
                 $('#acc' + sName).show();
                 $('#accFacebookLink').remove();
+                location.href = '@Url.Action("RegisterService", "Home")';
 
             }
         });
@@ -508,8 +597,8 @@
         });
     }
 
-
-    function addRegisteredServiceRow(name, picURL) {
+    function addRegisteredServiceRow(name, picURL, fbID){
+    //function addRegisteredServiceRow(name, picURL) {
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         $('#accountsRegistered').show();
@@ -546,7 +635,8 @@
                                         '</div>' +
                                     '</div>' +
                                 '</div>');
-        $('#profilePic').attr('src',picURL);
+        //$('#profilePic').attr('src', picURL);
+        $('#profilePic').attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124&redirect=tru');
     }
 
     function addServiceRow(name, picURL) {
@@ -591,7 +681,7 @@
                                            ' </div>'+
                                         '</div>'+
                                     '</div>'+
-                                '</div>'); 
+                                '</div>');
 
     }
 

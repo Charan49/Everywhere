@@ -71,6 +71,8 @@ namespace Web.Models
 
         public string pictureURL { get; set; }
 
+        public string fbUserID { get; set; }
+
     }
 
     public class JServiceMembership
@@ -84,6 +86,8 @@ namespace Web.Models
         public string streamKey { get; set; }
         public string streamDate { get; set; }
         public string pictureUrl { get; set; }
+
+        public string fbUserID { get; set; }
 
     }
 }
