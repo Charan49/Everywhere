@@ -159,6 +159,7 @@
                         </div>
                     </form>
                     <button type="button" class="btn btn-success btn-lg cta" disabled>Schedule</button>
+                    <textarea id="hiddenText" class="hidden"></textarea>
                 </div>
             </div>
         </div>
@@ -250,7 +251,7 @@
                 else
                     {
                     for (i = 0; i < data.length; i++) {
-                        debugger;
+                        
                         //addServiceRow(data[i].name);
                         addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
 
@@ -383,15 +384,15 @@
             }
         });
     }
+  
     function copyToClipboard(element) {
         
-                var $temp = $("<input>");
-                $("body").append($temp);
-                $temp.val($(element).val()).select();
-                document.execCommand("copy");
-                $temp.remove();
-            }
-    
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($('#' + element).val()).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
 
     function GetLivestreamURLs() {
 
@@ -453,7 +454,7 @@
 
     function addLinkedAccount(name, picURL, streamId, streamUrl, streamDate, fbUserID)
     {
-        debugger;
+        
         $('#selectStream').show();
         $('#message').hide();
         $('#nonLinked').remove();
@@ -519,12 +520,12 @@
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream ID:</span>' +
                                                             '<input id="txtStreamKeyMobile' + "" + name + "" + '"  class="form-control" aria-label=""  onclick="this.select();" value="' + streamId + '" readonly>' +
 
-                                                            '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'#txtStreamKeyMobile'" + ')">Copy StreamID</button>' +
+                                                            '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'txtStreamKeyMobile" + name + "'" + ')">Copy StreamID</button>' +
                                                        ' </div>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">'+
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream URL:</span>'+
                                                             '<input id="txtStreamLinkMobile' + "" + name + "" + '"   class="form-control" aria-label="" onclick="this.select();" value="' + streamUrl + '" readonly>' +
-                                                            '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'#txtStreamLinkMobile'" + ')">Copy StreamURL</button>' +
+                                                            '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'txtStreamLinkMobile" + name + "'" + ')">Copy StreamURL</button>' +
 
                                                        ' </div>' +
                                                     '</div>' +
