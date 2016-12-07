@@ -14,6 +14,13 @@ using System.Web.Http.Cors;
 using Facebook;
 using System.Configuration;
 using WebApi.ErrorHelper;
+using Google.Apis.YouTube.v3;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Services;
+using Google.Apis.YouTube.v3.Data;
+using Google.Apis.Auth.OAuth2;
+using System.Threading;
 
 namespace Web.Controllers
 {
@@ -35,7 +42,7 @@ namespace Web.Controllers
 
             Guid ServiceID;
             Guid.TryParse(model.id.ToString().ToUpper(), out ServiceID);
-
+            
             //Check if Service is Present
             var service = await db.Services.FirstOrDefaultAsync(x => x.ServiceGUID == ServiceID && x.IsDeleted == false);
             if (service == null)
@@ -45,7 +52,7 @@ namespace Web.Controllers
             }
 
             var rUser = this.ApiUser().RUser;
-
+            
             //Check if the Service Entry Already Exists
             var entry = await db.UserServices.FirstOrDefaultAsync(x => x.ServiceGUID == ServiceID && x.UserGUID == rUser.SubjectID);
 
@@ -53,7 +60,7 @@ namespace Web.Controllers
             //Get Long-Term Token  
             string tokenLongTerm = "";
             string tokenExpiration = "";
-
+                     
             if (service.Name == "Facebook")
             {
                 //Create a Long Term Facebook Token
@@ -61,14 +68,68 @@ namespace Web.Controllers
                 client.AccessToken = model.accessToken;
                 client.AppId = ConfigurationManager.AppSettings.Get("FacebookAppId");
                 client.AppSecret = ConfigurationManager.AppSettings.Get("FacebookAppSecret");
-
+                
                 dynamic ret = await client.GetTaskAsync(string.Format("oauth/access_token?grant_type=fb_exchange_token&fb_exchange_token={0}&client_id={1}&client_secret={2}", model.accessToken, client.AppId, client.AppSecret), new { });
 
                 tokenLongTerm = ret.access_token;
                 tokenExpiration = DateTime.UtcNow.AddDays(60).ToString();
             }
 
-            
+            if (service.Name == "YouTube")
+            {
+                string Code = model.accessToken;
+
+                ClientSecrets secrets = new ClientSecrets()
+                {
+                    ClientId = ConfigurationManager.AppSettings.Get("YouTubeAppId"),
+                    ClientSecret = ConfigurationManager.AppSettings.Get("YouTubeAppSecret")
+
+                };
+
+                IAuthorizationCodeFlow flow =
+                    new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
+                    {
+                        ClientSecrets = secrets,
+                        Scopes = new string[] { YouTubeService.Scope.Youtube }
+                    });
+                TokenResponse response = flow.ExchangeCodeForTokenAsync("", Code, "postmessage", CancellationToken.None).Result;
+
+                var credentials = new UserCredential(new GoogleAuthorizationCodeFlow(
+                new GoogleAuthorizationCodeFlow.Initializer { ClientSecrets = secrets }),
+               "TEST", response);
+
+                tokenLongTerm = response.AccessToken;
+                tokenExpiration = response.Issued.AddSeconds(Convert.ToDouble(response.ExpiresInSeconds)).ToString();
+
+
+                //var youTubeService = new YouTubeService(new BaseClientService.Initializer
+                //{
+                //    HttpClientInitializer = credentials,
+                //    ApplicationName = "Testing"
+                //});
+
+                //var liveStream = new LiveStream
+                //{
+
+                //    Cdn = new CdnSettings
+                //    {
+                //        Format = "360p",
+                //        IngestionType = "rtmp"
+                //    },
+                //    Snippet = new LiveStreamSnippet
+                //    {
+                //        Title = "test"
+
+                //    }
+
+                //};
+                //var request = youTubeService.LiveStreams.Insert(liveStream, "cdn,snippet");
+                //var youtuberesponse = request.Execute();
+
+                //Label1.Text = "Streamimg address=" + youtuberesponse.Cdn.IngestionInfo.IngestionAddress;
+                //Label2.Text = "Streamimg Name=" + youtuberesponse.Cdn.IngestionInfo.StreamName;
+
+            }
 
 
             //Create New or Use Existing
@@ -95,21 +156,21 @@ namespace Web.Controllers
                 entry.AccessToken = tokenLongTerm;
                 entry.TokenExpiration = tokenExpiration;
                 entry.PictureURL = model.pictureURL;
-                entry.IsDeleted = false;
+                entry.IsDeleted = false;                
                 db.Entry(entry).State = EntityState.Modified;
-            }
+            }            
 
             //Save
             await db.SaveChangesAsync();
 
-            var testUsers = db.TestUsers.FirstOrDefault(x => x.UserGUID == rUser.SubjectID && x.IsDeleted == false && x.IsLinked == false);
+            var testUsers = db.TestUsers.FirstOrDefault(x => x.UserGUID == rUser.SubjectID && x.IsDeleted == false && x.IsLinked==false);
             testUsers.IsLinked = true;
             db.Entry(testUsers).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
             return Request.CreateResponse(HttpStatusCode.Created);
         }
-
+                
 
         [Route("api/v1/service_membership/{id}")]
         [HttpDelete]
@@ -139,32 +200,36 @@ namespace Web.Controllers
             db.Entry(entry).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
-            var testUsers = await db.TestUsers.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false);
-
-
-            FacebookClient client = new FacebookClient();
-            client.AppId = ConfigurationManager.AppSettings.Get("FacebookAppId");
-            client.AppSecret = ConfigurationManager.AppSettings.Get("FacebookAppSecret");
-            dynamic result = await client.GetTaskAsync("oauth/access_token", new
+            if (entry.Service.Name == "Facebook")
             {
-                client_id = client.AppId,
-                client_secret = client.AppSecret,
-                grant_type = "client_credentials",
-            });
+
+                var testUsers = await db.TestUsers.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false);
 
 
-            client.AccessToken = result[0];
-            dynamic result1 = client.Delete(testUsers.FaceBookID, new
-            {
-                access_token = result[0],
+                FacebookClient client = new FacebookClient();
+                client.AppId = ConfigurationManager.AppSettings.Get("FacebookAppId");
+                client.AppSecret = ConfigurationManager.AppSettings.Get("FacebookAppSecret");
+                dynamic result = await client.GetTaskAsync("oauth/access_token", new
+                {
+                    client_id = client.AppId,
+                    client_secret = client.AppSecret,
+                    grant_type = "client_credentials",
+                });
 
-            });
+
+                client.AccessToken = result[0];
+                dynamic result1 = client.Delete(testUsers.FaceBookID, new
+                {
+                    access_token = result[0],
+
+                });
 
 
-            testUsers.IsDeleted = true;
-            testUsers.IsLinked = false;
-            db.Entry(testUsers).State = EntityState.Modified;
-            await db.SaveChangesAsync();
+                testUsers.IsDeleted = true;
+                testUsers.IsLinked = false;
+                db.Entry(testUsers).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
 
             return Ok();
         }
