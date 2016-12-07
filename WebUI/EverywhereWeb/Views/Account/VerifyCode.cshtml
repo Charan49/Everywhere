@@ -91,7 +91,7 @@
         //$('#btnSignIn').click(function (e) {
         var id = $('#txtCode').val();
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/ConfirmEmail/",
+            url: "http://ws.everywhere.live:8081/api/v1/ConfirmEmail/",
             type: "POST",
             crossDomain: true,
             data: JSON.stringify({ 'code': id }),
@@ -127,7 +127,7 @@
         //$('#btnSignIn').click(function (e) {
         var email = sessionStorage.getItem('signUpEmail');
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/ResendVerificationEmail/"+email+"/",
+            url: "http://ws.everywhere.live:8081/api/v1/ResendVerificationEmail/"+email+"/",
             type: "POST",
             crossDomain: true,
             data: { 'email': email },

@@ -296,7 +296,7 @@
         }
         $.ajax({
 
-            url: "http://ws.everywhere.live:8080/api/v1/TestUsers/",
+            url: "http://ws.everywhere.live:8081/api/v1/TestUsers/",
 
             type: "GET",
             data: {},
@@ -347,7 +347,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/service/",
+            url: "http://ws.everywhere.live:8081/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -433,7 +433,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/service_membership/",
+            url: "http://ws.everywhere.live:8081/api/v1/service_membership/",
             type: "GET",
             data: {},
             dataType: "json",
@@ -467,7 +467,7 @@
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
-        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
+        var url = "http://ws.everywhere.live:8081/api/v1/service_membership/AddServiceMembership/";
         if (service == 'Facebook')
         {
             sID = sIDFB;
@@ -513,7 +513,7 @@
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
-        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" + sID;
+        var url = "http://ws.everywhere.live:8081/api/v1/service_membership/" + sID;
 
         var headers = {};
         if (token) {
@@ -567,7 +567,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/signout/",
+            url: "http://ws.everywhere.live:8081/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},

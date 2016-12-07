@@ -107,7 +107,6 @@ namespace Web.Controllers
                     myMessage.Html = "Hi " + user.FirstName + ",<br />" +
                                         "<br />" +
                                         "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform.<br />" +
-                                        "Please click on the link to complete the registration. " + newUri + "<br />" +
                                         "<br />" +
                                         "Best regards<br />" +
                                         "Team Everywhere<br />" +
