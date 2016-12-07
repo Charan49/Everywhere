@@ -251,7 +251,7 @@
                     {
                     for (i = 0; i < data.length; i++) {
                         //addServiceRow(data[i].name);
-                        addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate);
+                        addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
 
                         accessToken = data[i].AccessToken;
                     }
@@ -296,8 +296,8 @@
     function removeUserServices(name) {
 
         var token = sessionStorage.getItem('loginToken');
-<<<<<<< HEAD
-=======
+
+
 
         if (name == 'Facebook')
             alert("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm");
@@ -305,7 +305,7 @@
             alert("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm");
 
 
->>>>>>> ffb2dead94e4b865a82c8d4925c387e7f70e9258
+
         var url = "http://ws.everywhere.live:8081/api/v1/service_membership/" + obj[0].id;
 
         var headers = {};
@@ -415,10 +415,10 @@
                 for (i = 0; i < data.length; i++) {
                     $('#txtStreamKey' + data[i].serviceName).val(data[i].streamId);
                     $('#txtStreamLink' + data[i].serviceName).val(data[i].streamUrl);
-                    $('#txtStreamDate' + data[i].serviceName).val(data[i].streamDate);
+                    $('#txtStreamDate' + data[i].serviceName).val(getUTCTime(data[i].streamDate));
                     $('#txtStreamKeyMobile' + data[i].serviceName).val(data[i].streamId);
                     $('#txtStreamLinkMobile' + data[i].serviceName).val(data[i].streamUrl);
-                    $('#txtStreamDateMobile' + data[i].serviceName).val(data[i].streamDate);
+                    $('#txtStreamDateMobile' + data[i].serviceName).val(getUTCTime(data[i].streamDate));
                 }
             },
             error: function (jqXhr, textStatus, errorThrown) {
@@ -448,7 +448,7 @@
             return '';
     }
 
-    function addLinkedAccount(name, picURL, streamId, streamUrl, streamDate)
+    function addLinkedAccount(name, picURL, streamId, streamUrl, streamDate, fbUserID)
     {
         $('#selectStream').show();
         $('#message').hide();
@@ -528,7 +528,7 @@
                                             '</div>' +
                                         '</div>' +
                                     '</div>');
-        $('#profilePic').attr('src', picURL);
+        $('#profilePic').attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124&redirect=tru');
         //$('#txtStreamKey').val(streamId);
         //$('#txtStreamLink').val(streamUrl);
         //$('#txtStreamDate').val(streamDate);
