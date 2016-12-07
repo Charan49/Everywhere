@@ -250,6 +250,7 @@
                 else
                     {
                     for (i = 0; i < data.length; i++) {
+                        debugger;
                         //addServiceRow(data[i].name);
                         addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
 
@@ -438,7 +439,9 @@
         if (d != undefined || d != null || d != "") {
             if (d != "") {
                 var utcDate = moment.utc(d);
-                return utcDate.format("MM/DD/YYYY hh:mm:ss");
+                
+                return moment(utcDate).local().format("MM/DD/YYYY HH:mm:ss");
+                //return utcDate.format("MM/DD/YYYY hh:mm:ss");
             }
             else {
                 return '';
@@ -450,6 +453,7 @@
 
     function addLinkedAccount(name, picURL, streamId, streamUrl, streamDate, fbUserID)
     {
+        debugger;
         $('#selectStream').show();
         $('#message').hide();
         $('#nonLinked').remove();
@@ -528,7 +532,7 @@
                                             '</div>' +
                                         '</div>' +
                                     '</div>');
-        $('#profilePic').attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124&redirect=tru');
+        $('#profilePic').attr('src', 'https://graph.facebook.com/' + fbUserID + '/picture?width=146&height=124');
         //$('#txtStreamKey').val(streamId);
         //$('#txtStreamLink').val(streamUrl);
         //$('#txtStreamDate').val(streamDate);
