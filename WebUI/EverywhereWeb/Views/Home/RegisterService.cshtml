@@ -163,15 +163,15 @@
 <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
 </script>
 <script>
-        function start() {
-            gapi.load('auth2', function () {
-                auth2 = gapi.auth2.init({
-                    client_id: '523666141221-8jckerkfihfs2iskmoagc5hpgmrpk9f9.apps.googleusercontent.com',
-                    // Scopes to request in addition to 'profile' and 'email'
-                    scope: 'https://www.googleapis.com/auth/youtube'
-                });
+    function start() {
+        gapi.load('auth2', function () {
+            auth2 = gapi.auth2.init({
+                client_id: '523666141221-8jckerkfihfs2iskmoagc5hpgmrpk9f9.apps.googleusercontent.com',
+                // Scopes to request in addition to 'profile' and 'email'
+                scope: 'https://www.googleapis.com/auth/youtube'
             });
-        }
+        });
+    }
 </script>
 
 <script type="text/javascript">
@@ -222,8 +222,8 @@
                         //addUserServices(accessToken, profilePicture);
                         addRegisteredServiceRow('Facebook', profilePicture, user_id);
                         addUserServices('Facebook', accessToken, profilePicture, user_id);
-                        }
                     }
+                }
                 );
 
                 //addLinkButton();
@@ -254,16 +254,16 @@
             addRegisteredServiceRow('Youtube', "", "");
             addUserServices('Youtube', code, "", "");
 
-            //window.location.href = '@Url.Action("RegisterService", "Home")'+"?Code=" + code;
+            window.location.href = '@Url.Action("RegisterService", "Home")';
         } else {
 
         }
     }
 
     function get_raw_facebook_avatar_url(uid) {
-               var array = 'https://graph.facebook.com/' + uid + '/picture?width=146&height=124&redirect=true';
-                return array;
-       }
+        var array = 'https://graph.facebook.com/' + uid + '/picture?width=146&height=124&redirect=true';
+        return array;
+    }
 
 
     window.onload = function () {
@@ -280,14 +280,22 @@
         getMembershipServices();
         $('#username').text("");
         $('#password').text("");
+        $('#youtubemessage').text("Before linking your YouTube account, please enable Live Streaming in your YouTube account as per the steps below. \n"
+        + "1-Login to your GMail/YouTube account \n"
+        + "2-Go to https://youtube.com/features  \n"
+        + "3-In Live streaming section click on Enable")
+        $('#youtubemessagesm').text("Before linking your YouTube account, please enable Live Streaming in your YouTube account as per the steps below. \n"
+       + "1-Login to your GMail/YouTube account \n"
+       + "2-Go to https://youtube.com/features \n"
+       + "3-In Live streaming section click on Enable")
+
 
 
     }
 
- function CreateNewTestAccount()
- {
-     $("#youtubetestUserbtn").hide();
-     $("#youtubetestUserbtnsm").hide();
+    function CreateNewTestAccount() {
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
@@ -327,7 +335,7 @@
 
                 }
                 else
-                return false;
+                    return false;
             },
             error: function (jqXhr, textStatus, errorThrown) {
 
@@ -363,11 +371,10 @@
                         if (data[i].IsDeleted != 'True') {
 
                             addServiceRow(data[i].name);
-                             $("#youtubetestUserbtn").hide();
-                             $("#youtubetestUserbtnsm").hide();
+                            $("#youtubetestUserbtn").hide();
+                            $("#youtubetestUserbtnsm").hide();
 
-                            if(data[i].name=='Facebook')
-                            {
+                            if (data[i].name == 'Facebook') {
                                 sIDFB = data[i].ID;
                                 sNameFB = data[i].Name;
 
@@ -389,7 +396,7 @@
 
                             }
                             if (data[i].name == 'YouTube') {
-                               
+
                                 sIDYT = data[i].ID;
                                 sNameYT = data[i].Name;
                                 if (data[i].IsTestUsersExists) {
@@ -465,25 +472,24 @@
         //});
     }
 
-    function addUserServices(service, accessToken, picURL, userID){
-    //function addUserServices(accessToken, picURL) {
+    function addUserServices(service, accessToken, picURL, userID) {
+        //function addUserServices(accessToken, picURL) {
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
 
-        //var url = "http://ws.everywhere.live:8081/api/v1/service_membership/AddServiceMembership/";
-
         var url = "http://ws.everywhere.live:8081/api/v1/service_membership/AddServiceMembership/";
 
-        if (service == 'Facebook')
-                {
-                            sID = sIDFB;
-                    sName = sNameFB;
-                }
-            else {
-                sID = sIDYT;
-                sName = sNameYT;
-            }
+        //var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
+
+        if (service == 'Facebook') {
+            sID = sIDFB;
+            sName = sNameFB;
+        }
+        else {
+            sID = sIDYT;
+            sName = sNameYT;
+        }
 
         var headers = {};
         if (token) {
@@ -523,54 +529,60 @@
         var token = sessionStorage.getItem('loginToken');
         var url = "http://ws.everywhere.live:8081/api/v1/service_membership/" + sID;
 
-      
+
 
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
-        if (name=='Facebook')
-	alert("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm");
+
+        var confirmlink = false;
+
+        if (name == 'Facebook')
+            var confirmlink = confirm("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm or Cancel");
         else
-        alert("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm");
+            var confirmlink = confirm("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm or Cancel");
+        if (confirmlink) {
+            $('#Youtubemessage').text("");
+            $('#Youtubemessagesm').text("");
 
 
-            $('#message').text("");
             $('#username').text("");
             $('#password').text("");
-            $('#messagesm').text("");
+
             $('#usernamesm').text("");
             $('#passwordsm').text("");
 
-        $.ajax({
-            url: url,
-            crossDomain: true,
-            type: "DELETE",
-            data: {},
-            dataType: "json",
-            headers: headers,
-            async: false,
-            contentType: "application/json; charset=utf-8",
-            error: function (jqXhr, textStatus, errorThrown) {
+            $.ajax({
+                url: url,
+                crossDomain: true,
+                type: "DELETE",
+                data: {},
+                dataType: "json",
+                headers: headers,
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                error: function (jqXhr, textStatus, errorThrown) {
 
-                getServices();
-                $('#accFacebookLink').remove();
-                $('#accountsRegistered').hide();
-                $("#facebook").hide();
-                $("#facebooksm").hide();
-                location.href = '@Url.Action("RegisterService", "Home")';
+                    getServices();
+                    $('#accFacebookLink').remove();
+                    $('#accountsRegistered').hide();
+                    $("#facebook").hide();
+                    $("#facebooksm").hide();
+                    location.href = '@Url.Action("RegisterService", "Home")';
 
-            },
-            success: function (data) {
+                },
+                success: function (data) {
 
-                getServices();
-                $('#acc' + sName).show();
-                $('#accFacebookLink').remove();
-                location.href = '@Url.Action("RegisterService", "Home")';
+                    getServices();
+                    $('#acc' + sName).show();
+                    $('#accFacebookLink').remove();
+                    location.href = '@Url.Action("RegisterService", "Home")';
 
-            }
-        });
-        //});
+                }
+            });
+            //});
+        }
 
     }
 
@@ -600,8 +612,8 @@
         });
     }
 
-    function addRegisteredServiceRow(name, picURL, fbID){
-    //function addRegisteredServiceRow(name, picURL) {
+    function addRegisteredServiceRow(name, picURL, fbID) {
+        //function addRegisteredServiceRow(name, picURL) {
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
         $('#accountsRegistered').show();
@@ -610,7 +622,7 @@
                                     '<div class="panel-body">' +
                                         '<div class="media">' +
                                             '<a class="pull-left" href="#">' +
-                                                '<img class="media-object" id="profilePic" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                                '<img class="media-object" id="profilePic' + name + '" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
                                             '</a>' +
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +
@@ -639,36 +651,46 @@
                                     '</div>' +
                                 '</div>');
         //$('#profilePic').attr('src', picURL);
-        $('#profilePic').attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124');
+        $('#profilePic'+name).attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124');
     }
 
     function addServiceRow(name, picURL) {
 
         $('#accounts').show();
-        $('#accounts').append('<div id="acc' + name + '" class="panel">'+
-                                    '<div class="panel-body">'+
-                                        '<div class="media">'+
-                                            '<a class="pull-left greyscale" href="#">'+
+        $('#accounts').append('<div id="acc' + name + '" class="panel">' +
+                                    '<div class="panel-body">' +
+                                        '<div class="media">' +
+                                            '<a class="pull-left greyscale" href="#">' +
                                                 '<img class="media-object" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
-                                            '</a>'+
+                                            '</a>' +
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +
                                                     '<span class="pull-right hidden-xs">' +
-                                                     '<label id="message" style="text-transform:none !important;" for=""></label>'+
-                                    '<label id="username" style="text-transform:none !important;" for=""></label>' +
-                                    '<br />'+
-                                    '<label id="password" style="text-transform:none !important;" for=""></label>' +
-                                                        '<button type="button" class="btn btn-xs btn-grey" id="' + name.toLowerCase().trim()+'testUserbtn" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
-                                                        '<button type="button" class="btn btn-xs btn-grey"  id="' + name.toLowerCase().trim()+'"  onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
-                                                    '</span>'+
-                                                '</h4>' +
-                                                '<div class="meta-des"></div>'+
+                                                  '<label id= "' + name.toLowerCase().trim() + 'message" style="text-transform:none !important;font-size:small;white-space: pre-wrap;" for=""></label>' +
+                                                 '</span>' +
+                                                    '<span class="pull-right hidden-xs">' +
 
-                                            '</div>'+
-                                        '</div>'+
-                                        '<div class="visible-xs mt-15">'+
+                                    '<label id="username" style="text-transform:none !important;" for=""></label>' +
+                                    '<br />' +
+                                    '<label id="password" style="text-transform:none !important;" for=""></label>' +
+                                                        '<button type="button" class="btn btn-xs btn-grey" id="' + name.toLowerCase().trim() + 'testUserbtn" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
+                                                        '<button type="button" class="btn btn-xs btn-grey"  id="' + name.toLowerCase().trim() + '"  onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                                    '</span>' +
+                                                '</h4>' +
+                                                '<div class="meta-des"></div>' +
+
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="visible-xs mt-15">' +
                                             '<div class="row">' +
+                                                                                         '<p class="col-xs-15">' +
+                                                                                        '<label id= "' + name.toLowerCase().trim() + 'messagesm" style="text-transform:none !important;font-size:small;white-space: pre-wrap;" for=""></label>' +
+ ' </p>' +
+  ' </div>' +
+ '<div class="row">' +
                                             '<p class="col-xs-6">' +
+
+
                                              '<label id="messagesm" style="text-transform:none !important;" for=""></label>' +
                                     '<label id="usernamesm" style="text-transform:none !important;" for=""></label>' +
                                     '<br />' +
@@ -679,11 +701,11 @@
                                                     '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'testUserbtnsm" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
                                                     ' </p>' +
                                                     '<p class="col-xs-6">' +
-                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim()+'sm" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
-                                               ' </p>'+
-                                           ' </div>'+
-                                        '</div>'+
-                                    '</div>'+
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'sm" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                               ' </p>' +
+                                           ' </div>' +
+                                        '</div>' +
+                                    '</div>' +
                                 '</div>');
 
     }

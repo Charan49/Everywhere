@@ -117,13 +117,13 @@ namespace Web.Controllers
                                     "Everywherewebvideo@gmail.com");
                 myMessage.Subject = "Everywhere password reset";
                 myMessage.Text = "";
-                myMessage.Html = "Hi " + emailAddress.FirstName + ", " +
-                                "<br>" +
-                                "Don’t fret. Please enter the following verification code: <b>" + vCode + "</b> in the portal/app to reset your password. You can then continue with live streaming of videos through Everywhere platform.<br>" +
-                                        "<br>" +
+            
+                myMessage.Html = "Hi " + emailAddress.FirstName + ", <br>" +
+                                "Don’t fret. Please enter the following verification code: <b>" + vCode + "</b> in the portal/app to reset your password. You can then continue with live streaming of videos through Everywhere platform. <br>" +
                                         "Best regards <br>" +
                                         "Team Everywhere <br>" +
                                         "www.Everywhere.live <br> ";
+
 
                 await SendConfirmationEmail.sendMail(myMessage);
                 emailAddress.ConfirmationDueDate = DateTime.Now;
