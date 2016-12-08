@@ -61,9 +61,15 @@
                                 </div>
                                 @Html.ValidationSummary("", new { @class = "text-danger" })
                                 <div class="form-group">
-                                    @Html.LabelFor(m => m.Name, new { @class = "control-label" })
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "John Smith", id = "uName" })
+                                    @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "John Smith", id = "ufName" })
                                     
+                                    @*<input type="text" class="form-control" id="uName" placeholder="John Stewart">*@
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "John Smith", id = "ulName" })
+
                                     @*<input type="text" class="form-control" id="uName" placeholder="John Stewart">*@
                                 </div>
 
@@ -124,7 +130,7 @@
 
     function callRegisterAPI(e) {
 
-            var name = $('#uName').val();
+            var name = $('#ufName').val()+" "+$('#ulName').val();
             var email = $('#uEmail').val();
             var password = $('#uPass').val();
             sessionStorage.setItem('signUpEmail', email);
