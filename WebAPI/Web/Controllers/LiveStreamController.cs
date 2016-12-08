@@ -67,7 +67,7 @@ namespace Web.Controllers
                 }
                 else if (entry.Service.Name == serviceYoutube)
                 {
-                    
+
 
                     ClientSecrets secrets = new ClientSecrets()
                     {
@@ -88,7 +88,7 @@ namespace Web.Controllers
                     {
                         HttpClientInitializer = credentials1,
 
-                        ApplicationName = "Testing"
+                        ApplicationName = "Everywhere"
                     });
 
                     var liveStream = new LiveStream
@@ -138,7 +138,7 @@ namespace Web.Controllers
                         streamDate = DateTime.UtcNow
                     });
 
-             
+
 
                     entry.StreamID = youtuberesponse.Cdn.IngestionInfo.StreamName;
                     entry.StreamURL = youtuberesponse.Cdn.IngestionInfo.IngestionAddress;
@@ -180,7 +180,7 @@ namespace Web.Controllers
                     //Create Facebook Live Stream
                     Facebook.FacebookClient tempClient = new FacebookClient();
                     tempClient.AccessToken = service.AccessToken;
-                    dynamic ret2 = await tempClient.PostTaskAsync("me", new { });                    
+                    dynamic ret2 = await tempClient.PostTaskAsync("me", new { });
                 }
                 catch
                 {
@@ -188,12 +188,12 @@ namespace Web.Controllers
                     throw new ApiDataException(1002, "Access Token Expired.", HttpStatusCode.Unauthorized);
                 }
 
-              
-               //Create Facebook Live Stream
+
+                //Create Facebook Live Stream
                 Facebook.FacebookClient client = new FacebookClient();
                 client.AccessToken = service.AccessToken;
                 dynamic ret = await client.PostTaskAsync("/me/live_videos", new { });
-               
+
                 result.serviceName = service.Service.Name;
                 result.streamId = ret.id;
                 result.streamUrl = ret.stream_url;
@@ -235,7 +235,7 @@ namespace Web.Controllers
                 {
                     HttpClientInitializer = credentials1,
 
-                    ApplicationName = "Testing"
+                    ApplicationName = "Everywhere"
                 });
 
                 var liveStream = new LiveStream

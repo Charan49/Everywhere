@@ -242,7 +242,7 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                
+
                 obj = data;
                 if (data.length == 0) {
                     $('#selectStream').hide();
@@ -251,8 +251,12 @@
                 else
                     {
                     for (i = 0; i < data.length; i++) {
-                        
+
                         //addServiceRow(data[i].name);
+                        if (data[i].streamId == null)
+                            data[i].streamId = "";
+                        if (data[i].streamUrl == null)
+                            data[i].streamUrl = "";
                         addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
 
                         accessToken = data[i].AccessToken;
@@ -298,17 +302,23 @@
     function removeUserServices(name) {
 
         var token = sessionStorage.getItem('loginToken');
+        var confirmlink = false;
+        var id = "";
+        var service = "";
 
-
-
-        if (name == 'Facebook')
-            alert("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm");
-        else
-            alert("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm");
-
-
-
-        var url = "http://ws.everywhere.live:8081/api/v1/service_membership/" + obj[0].id;
+        for (i = 0; i < obj.length; i++) {
+            if (obj[i].name == name) {
+                id = obj[i].id;
+                service = obj[i].name;
+            }
+        }
+            if (name == 'Facebook')
+                confirmlink = confirm("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm or Cancel");
+            else
+                confirmlink = confirm("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm or Cancel");
+            if (confirmlink)
+            {
+                var url = "http://ws.everywhere.live:8081/api/v1/service_membership/" +id;
 
         var headers = {};
         if (token) {
@@ -325,23 +335,24 @@
             contentType: "application/json; charset=utf-8",
             error: function (jqXhr, textStatus, errorThrown) {
 
-                $('#' + obj[0].name + 'Linked').remove();
-                $('#selectStream').hide();
-                $('#message').show();
-            },
-            success: function (data) {
+                        $('#' + service + 'Linked').remove();
+                        $('#selectStream').hide();
+                        $('#message').show();
+                    },
+                    success: function (data) {
 
 
-                $('#' + obj[0].name + 'Linked').remove();
-                $('#selectStream').hide();
-                $('#message').show();
+                        $('#' + service + 'Linked').remove();
+                        $('#selectStream').hide();
+                        $('#message').show();
+                    }
+                });
+                //});
             }
-        });
-        //});
-    }
+        }
 
     function GetLivestreamURL(name) {
-        
+
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
         var url = "http://ws.everywhere.live:8081/api/v1/livestream/start/" + name;
@@ -384,9 +395,9 @@
             }
         });
     }
-  
+
     function copyToClipboard(element) {
-        
+
         var $temp = $("<input>");
         $("body").append($temp);
         $temp.val($('#' + element).val()).select();
@@ -440,7 +451,7 @@
         if (d != undefined || d != null || d != "") {
             if (d != "") {
                 var utcDate = moment.utc(d);
-                
+
                 return moment(utcDate).local().format("MM/DD/YYYY HH:mm:ss");
                 //return utcDate.format("MM/DD/YYYY hh:mm:ss");
             }
@@ -454,7 +465,7 @@
 
     function addLinkedAccount(name, picURL, streamId, streamUrl, streamDate, fbUserID)
     {
-        
+	debugger;
         $('#selectStream').show();
         $('#message').hide();
         $('#nonLinked').remove();
@@ -462,7 +473,7 @@
                                         '<div class="panel-body">'+
                                             '<div class="media">'+
                                                 '<a class="pull-left" href="#">'+
-                                                    '<img class="media-object" id="profilePic" src="../images/stream_thumb_01.jpg" alt="Image">'+
+                                                    '<img class="media-object" id="profilePic' + name + '" src="../images/stream_thumb_01.jpg" alt="Image">'+
                                                ' </a>'+
                                                 '<div class="media-body">'+
                                                     '<h4 class="media-heading">' + name +
@@ -512,7 +523,7 @@
                                                     '</p>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">' +
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream Date:</span>' +
-                                                         
+
                                                             '<input id="txtStreamDateMobile' + "" + name + "" + '"  class="form-control" aria-label="" value="' + streamDate + '" readonly>' +
 
                                                        ' </div>' +
@@ -533,7 +544,8 @@
                                             '</div>' +
                                         '</div>' +
                                     '</div>');
-        $('#profilePic').attr('src', 'https://graph.facebook.com/' + fbUserID + '/picture?width=146&height=124');
+        $('#profilePic'+name).attr('src', 'https://graph.facebook.com/' + fbUserID + '/picture?width=146&height=124');
+        //$('#profilePic').attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124&redirect=tru');
         //$('#txtStreamKey').val(streamId);
         //$('#txtStreamLink').val(streamUrl);
         //$('#txtStreamDate').val(streamDate);
