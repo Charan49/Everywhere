@@ -42,6 +42,39 @@
     </nav>
 </header>
 <section class="bg-photo">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#77B300">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">YouNow Stream Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                       
+                        <label class="control-label" style="color:red;" id="ErrorStreamURL" for=""></label>
+                        <br />
+                        <label class="control-label" for="uStreamURL">Stream URL</label>
+                        <input class="form-control"   id="uStreamURL" name="uStreamID" placeholder="" type="text" value="">
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" style="color:red;" id="ErrorStreamID" for=""></label>
+                        <br />
+                        <label class="control-label" for="uStreamID">Stream ID</label>
+                        <input class="form-control"  id="uStreamID" name="uStreamID" placeholder="" type="text" value="">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="YounowService();" >Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <div class="page-content">
 
         <div style="background-color:#fafafa; height:100%; position:relative; padding-top:20px; padding-bottom:20px" class="clearfix">
@@ -183,10 +216,12 @@
     var sNameFB = null;
     var sIDYT = null;
     var sNameYT = null
+    var sIDYN = null;
+    var sNameYN = null
     window.fbAsyncInit = function () {
         FB.init({
             //appId: '340485602973415',
-            appId: '383740905299171',
+            appId: '720765954737644',
             xfbml: true,
             version: 'v2.8'
         });
@@ -289,7 +324,25 @@
        + "2-Go to https://youtube.com/features \n"
        + "3-In Live streaming section click on Enable")
 
+        $('#younowmessage').text("Before linking your YouNow account, please go to Younow website by clicking on 'Goto Younow' button. \n"
+      + "1-Create a new younow account \n"
+      + "2-Go to https://www.younow.com/settings  \n"
+      + "3-Copy stream URL and stream ID and click link button on everywhere and enter the copied values ")
+        $('#younowmessagesm').text("Before linking your YouNow account, please go to Younow website by clicking on 'Goto Younow' button. \n"
+      + "1-Create a new younow account \n"
+      + "2-Go to https://www.younow.com/settings  \n"
+      + "3-Copy stream URL and stream ID and click link button on everywhere and enter the copied values ")
 
+
+
+    }
+    function RedirectToYounow()
+    {
+        $("#younow").show();
+        $("#younowtestUserbtn").hide();
+        window.open('https://www.younow.com', '_blank');
+
+        //alert("An Everywhere Facebook account has been created and emailed to you. Please check your email with the subject \"Everywhere Facebook account\". Follow the procedure in the email to Login with Facebook and allow Everywhere to publish your live streams.");
 
     }
 
@@ -303,7 +356,7 @@
         }
         $.ajax({
 
-            url: "http://ws.everywhere.live:8081/api/v1/TestUsers/",
+            url: "http://ws.everywhere.live:8080/api/v1/TestUsers/",
 
             type: "GET",
             data: {},
@@ -328,6 +381,9 @@
                     $("#facebooksm").show();
                     $("#facebooktestUserbtnsm").hide();
 
+                    $("#Younowbook").show();
+                    $("#YounowtestUserbtn").hide();
+
 
                     alert("An Everywhere Facebook account has been created and emailed to you. Please check your email with the subject \"Everywhere Facebook account\". Follow the procedure in the email to Login with Facebook and allow Everywhere to publish your live streams.");
                     //alert("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account Email:"+data[0].email+" and Password:"+data[0].password);
@@ -344,6 +400,77 @@
         });
 
     }
+    function younowLogin()
+    {
+        $('#myModal').modal('show');
+    }
+    function YounowService() {
+     
+        
+        if ($('#uStreamID').val().length > 0 && $('#uStreamURL').val().length > 0)
+        {
+            var currentDate = new Date();
+            currentDate=currentDate.toISOString();
+            addRegisteredServiceRow('Younow', "", "");
+            addUserServices('Younow', "", "", "");
+            var name = 'Younow';
+            var token = sessionStorage.getItem('loginToken');
+            var headers = {};
+            var url = "http://ws.everywhere.live:8080/api/v1/livestream/start/" + name;
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+            }
+            $.ajax({
+                url: url,
+                type: "POST",
+                crossDomain: true,
+                data: JSON.stringify({ 'serviceName': "Younow", 'streamId': $('#uStreamID').val(), 'streamUrl': $('#uStreamURL').val(), 'streamDate': currentDate }),
+                dataType: "json",
+                headers: headers,
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    //alert("Stream URL has been generated Successfully!");
+
+                    //$('#txtStreamKey').val(data.streamId);
+                    //$('#txtStreamLink').val(data.streamUrl);
+                    //$('#txtStreamDate').val(getUTCTime(data.streamDate));
+                    //$('#txtStreamKeyMobile').val(data.streamId);
+                    //$('#txtStreamLinkMobile').val(data.streamUrl);
+                    //$('#txtStreamDateMobile').val(getUTCTime(data.streamDate));
+
+                    //$('#txtStreamKey' + name).val(data.streamId);
+                    //$('#txtStreamLink' + name).val(data.streamUrl);
+                    //$('#txtStreamDate' + name).val(getUTCTime(data.streamDate));
+                    //$('#txtStreamKeyMobile' + name).val(data.streamId);
+                    //$('#txtStreamLinkMobile' + name).val(data.streamUrl);
+                    //$('#txtStreamDateMobile' + name).val(getUTCTime(data.streamDate));
+
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+
+                    //alert("Failed to generate Stream URL");
+
+
+                }
+            });
+
+
+            window.location.href = '@Url.Action("RegisterService", "Home")';
+        }
+        else
+        {
+            if ($('#uStreamID').text().length <= 0)
+                $('#ErrorStreamID').text("Please Enter Stream ID");
+            if ($('#uStreamURL').text().length <= 0)
+                $('#ErrorStreamURL').text("Please Enter Stream URL");
+            return false;
+        }
+      
+    }
+
+    
 
     function getServices() {
         $("#youtubetestUserbtn").hide();
@@ -354,7 +481,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8081/api/v1/service/",
+            url: "http://ws.everywhere.live:8080/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -374,6 +501,12 @@
                             $("#youtubetestUserbtn").hide();
                             $("#youtubetestUserbtnsm").hide();
 
+                            if (data[i].name == 'Younow') {
+                                sIDYN = data[i].ID;
+                                sNameYN = data[i].Name;
+                                $("#younow").hide();
+                            }
+
                             if (data[i].name == 'Facebook') {
                                 sIDFB = data[i].ID;
                                 sNameFB = data[i].Name;
@@ -388,6 +521,7 @@
                                 }
                                 else {
                                     $("#facebook").hide();
+
                                     $("#facebooktestUserbtn").show();
 
                                     $("#facebooksm").hide();
@@ -441,7 +575,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8081/api/v1/service_membership/",
+            url: "http://ws.everywhere.live:8080/api/v1/service_membership/",
             type: "GET",
             data: {},
             dataType: "json",
@@ -456,7 +590,19 @@
                         //addServiceRow(data[i].name);
 
                         //addRegisteredServiceRow(data[i].name, data[i].pictureUrl);
-                        addRegisteredServiceRow(data[i].name, data[i].pictureUrl, data[i].fbUserID);
+
+                        if (data[i].name == 'Facebook') {
+                            var picUrl = 'https://graph.facebook.com/' + data[i].fbUserID + '/picture?width=146&height=124';
+
+                         
+                            addRegisteredServiceRow(data[i].name, picUrl, data[i].fbUserID);
+                        }
+                        else {
+                           
+                            addRegisteredServiceRow(data[i].name, data[i].pictureUrl, data[i].fbUserID);
+                        }
+
+                        
                     }
                 }
                 else
@@ -478,7 +624,7 @@
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
 
-        var url = "http://ws.everywhere.live:8081/api/v1/service_membership/AddServiceMembership/";
+        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
 
         //var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
 
@@ -486,9 +632,13 @@
             sID = sIDFB;
             sName = sNameFB;
         }
-        else {
+        if (service == 'Youtube') {
             sID = sIDYT;
             sName = sNameYT;
+        }
+        if (service == 'Younow') {
+            sID = sIDYN;
+            sName = sNameYN;
         }
 
         var headers = {};
@@ -522,12 +672,17 @@
             sID = sIDFB;
             sName = sNameFB;
         }
+        if (name == 'Younow')
+        {
+            sID = sIDYN;
+            sName = sNameYN;
+        }
         else {
             sID = sIDYT;
-            sName = sNameYT;
+        sName = sNameYT;
         }
         var token = sessionStorage.getItem('loginToken');
-        var url = "http://ws.everywhere.live:8081/api/v1/service_membership/" + sID;
+        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" + sID;
 
 
 
@@ -535,11 +690,12 @@
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
-
         var confirmlink = false;
 
         if (name == 'Facebook')
             var confirmlink = confirm("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm or Cancel");
+        if (name == 'Younow')
+            confirmlink = confirm("Unlinking will delete your Younow streaming details. Please click OK to confirm or Cancel");
         else
             var confirmlink = confirm("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm or Cancel");
         if (confirmlink) {
@@ -593,7 +749,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8081/api/v1/signout/",
+            url: "http://ws.everywhere.live:8080/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -651,11 +807,20 @@
                                     '</div>' +
                                 '</div>');
         //$('#profilePic').attr('src', picURL);
-        $('#profilePic'+name).attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124');
+        $('#profilePic' + name).attr('src', picURL);
     }
 
     function addServiceRow(name, picURL) {
-
+        var testlink;
+        var functioncall;
+        if (name == 'Facebook') {
+            var testlink = 'Create Account';
+            var functioncall = 'CreateNewTestAccount();';
+        }
+        else {
+            var testlink = 'Go to YouNow';
+            var functioncall = 'RedirectToYounow();';
+        }
         $('#accounts').show();
         $('#accounts').append('<div id="acc' + name + '" class="panel">' +
                                     '<div class="panel-body">' +
@@ -673,8 +838,8 @@
                                     '<label id="username" style="text-transform:none !important;" for=""></label>' +
                                     '<br />' +
                                     '<label id="password" style="text-transform:none !important;" for=""></label>' +
-                                                        '<button type="button" class="btn btn-xs btn-grey" id="' + name.toLowerCase().trim() + 'testUserbtn" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
-                                                        '<button type="button" class="btn btn-xs btn-grey"  id="' + name.toLowerCase().trim() + '"  onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                                        '<button type="button" class="btn btn-xs btn-grey" id="' + name.toLowerCase().trim() + 'testUserbtn" onclick="' + functioncall + '"><i><img src="../images/icon-chain-xs.png"> </i>' + testlink + '</button>' +
+                                                        '<button type="button" class="btn btn-xs btn-grey"   id="' + name.toLowerCase().trim() + '"  onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
                                                     '</span>' +
                                                 '</h4>' +
                                                 '<div class="meta-des"></div>' +

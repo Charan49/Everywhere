@@ -21,6 +21,7 @@ using Google.Apis.Services;
 using Google.Apis.YouTube.v3.Data;
 using Google.Apis.Auth.OAuth2;
 using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace Web.Controllers
 {
@@ -107,47 +108,58 @@ namespace Web.Controllers
                 tokenLongTerm = response.AccessToken;
                 tokenExpiration = response.Issued.AddSeconds(Convert.ToDouble(response.ExpiresInSeconds)).ToString();
 
-            }
-
-
-            //Create New or Use Existing
-            if (entry == null)
-            {
-                var newUserService = new UserService
+                using (var client = new WebClient())
                 {
-                    AccessID = Guid.NewGuid(),
-                    ServiceGUID = model.id,
-                    AccessToken = tokenLongTerm,
-                    TokenExpiration = tokenExpiration,
-                    UserGUID = this.ApiUser().RUser.SubjectID,
-                    CreatedDate = DateTime.UtcNow,
-                    IsDeleted = false,
-                    CreatedBy = this.ApiUser().RUser.SubjectID.ToString(),
-                    PictureURL = model.pictureURL,
-                    fbUserID = model.fbUserID
-                };
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    client.Headers[HttpRequestHeader.Authorization] = "Bearer " + response.AccessToken;
 
-                db.UserServices.Add(newUserService);
-            }
-            else
-            {
-                entry.AccessToken = tokenLongTerm;
-                entry.TokenExpiration = tokenExpiration;
-                entry.PictureURL = model.pictureURL;
-                entry.IsDeleted = false;
-                entry.fbUserID = model.fbUserID;
-                entry.PictureURL = model.pictureURL;
-                db.Entry(entry).State = EntityState.Modified;
+                    var response1 = client.DownloadString("https://www.googleapis.com/plus/v1/people/me");
+                    JObject o = JObject.Parse(response1);
+                    string pictureURL = (string)o.SelectToken("image.url");
+                    model.pictureURL = pictureURL.Replace("sz=50", "sz=150");
+                    model.fbUserID = (string)o.SelectToken("id");
+                }
             }
 
-            //Save
-            await db.SaveChangesAsync();
+
+                //Create New or Use Existing
+                if (entry == null)
+                {
+                    var newUserService = new UserService
+                    {
+                        AccessID = Guid.NewGuid(),
+                        ServiceGUID = model.id,
+                        AccessToken = tokenLongTerm,
+                        TokenExpiration = tokenExpiration,
+                        UserGUID = this.ApiUser().RUser.SubjectID,
+                        CreatedDate = DateTime.UtcNow,
+                        IsDeleted = false,
+                        CreatedBy = this.ApiUser().RUser.SubjectID.ToString(),
+                        PictureURL = model.pictureURL,
+                        fbUserID = model.fbUserID
+                    };
+
+                    db.UserServices.Add(newUserService);
+                }
+                else
+                {
+                    entry.AccessToken = tokenLongTerm;
+                    entry.TokenExpiration = tokenExpiration;
+                    entry.PictureURL = model.pictureURL;
+                    entry.IsDeleted = false;
+                    entry.fbUserID = model.fbUserID;
+                    entry.PictureURL = model.pictureURL;
+                    db.Entry(entry).State = EntityState.Modified;
+                }
+
+                //Save
+                await db.SaveChangesAsync();
 
 
 
-            return Request.CreateResponse(HttpStatusCode.Created);
+                return Request.CreateResponse(HttpStatusCode.Created);
+           
         }
-
 
         [Route("api/v1/service_membership/{id}")]
         [HttpDelete]

@@ -70,7 +70,6 @@ namespace Web.Controllers
                     try
                     {
 
-                        System.Diagnostics.EventLog.WriteEntry("Desktop Window Manager", "error");
                         db.TestUsers.Add(testUser);
                         db.SaveChanges();
 
@@ -83,8 +82,7 @@ namespace Web.Controllers
                     {
                         //Rollback
                         transaction.Rollback();
-                        System.Diagnostics.EventLog.WriteEntry("Desktop Window Manager", "error");
-
+    
                     }
                 }
 

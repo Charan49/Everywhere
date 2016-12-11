@@ -56,8 +56,12 @@ namespace EverywhereWeb.Models
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Name")]
-        public string Name { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
 
         [Required]
         [EmailAddress]

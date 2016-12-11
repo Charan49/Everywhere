@@ -30,6 +30,7 @@ namespace Web.Controllers
     {
         private const string serviceFacebook = "Facebook";
         private const string serviceYoutube = "YouTube";
+        private const string serviceYounow = "Younow";
 
         private InterceptDB db = new InterceptDB();
 
@@ -291,6 +292,34 @@ namespace Web.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
+        }
+
+        [Route("api/v1/livestream/start/{serviceName}")]
+        [HttpPost]
+        public async Task<HttpResponseMessage> CreateLiveStreamUrl([FromBody] JLiveStream model)
+        {
+            var ruser = this.ApiUser().RUser;
+            var service = await db.UserServices.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.Service.Name == model.serviceName && x.IsDeleted == false);
+
+            if (service == null)
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+
+            JLiveStream result = new JLiveStream();
+
+            if (service.Service.Name == serviceYounow)
+            {
+                
+              
+                service.StreamID = model.streamId;
+                service.StreamURL = model.streamUrl;
+                service.StreamDate = DateTime.UtcNow;
+                service.PictureURL = "../images/stream_thumb_younow.png";
+                db.Entry(service).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            
+
+            return Request.CreateResponse(HttpStatusCode.Created);
         }
     }
 }

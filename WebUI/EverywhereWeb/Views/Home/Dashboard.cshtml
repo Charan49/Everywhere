@@ -187,7 +187,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8081/api/v1/service/",
+            url: "http://ws.everywhere.live:8080/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -233,7 +233,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8081/api/v1/service_membership/",
+            url: "http://ws.everywhere.live:8080/api/v1/service_membership/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -257,7 +257,18 @@
                             data[i].streamId = "";
                         if (data[i].streamUrl == null)
                             data[i].streamUrl = "";
-                        addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
+                      
+                            if (data[i].name == 'Facebook')
+                            {
+                                var picUrl = 'https://graph.facebook.com/' + data[i].fbUserID + '/picture?width=146&height=124';
+                            
+                                addLinkedAccount(data[i].name, picUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
+                            }
+                            else{
+                                addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
+                            }
+
+
 
                         accessToken = data[i].AccessToken;
                     }
@@ -280,7 +291,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8081/api/v1/signout/",
+            url: "http://ws.everywhere.live:8080/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -314,11 +325,14 @@
         }
             if (name == 'Facebook')
                 confirmlink = confirm("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm or Cancel");
+            if(name =='Younow')
+                confirmlink = confirm("Unlinking will delete your Younow streaming details. Please click OK to confirm or Cancel");
             else
                 confirmlink = confirm("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm or Cancel");
+
             if (confirmlink)
             {
-                var url = "http://ws.everywhere.live:8081/api/v1/service_membership/" +id;
+                var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" +id;
 
         var headers = {};
         if (token) {
@@ -353,47 +367,53 @@
 
     function GetLivestreamURL(name) {
 
-        var token = sessionStorage.getItem('loginToken');
-        var headers = {};
-        var url = "http://ws.everywhere.live:8081/api/v1/livestream/start/" + name;
-        if (token) {
-            headers.Authorization = 'Bearer ' + token;
+        if (name == 'Younow')
+        {
+            alert("Stream URL cannot be generated for Younow");
         }
-        $.ajax({
-            url: url,
-            type: "GET",
-            crossDomain: true,
-            data: {},
-            dataType: "json",
-            headers: headers,
-            async: false,
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-
-                alert("Stream URL has been generated Successfully!");
-
-                //$('#txtStreamKey').val(data.streamId);
-                //$('#txtStreamLink').val(data.streamUrl);
-                //$('#txtStreamDate').val(getUTCTime(data.streamDate));
-                //$('#txtStreamKeyMobile').val(data.streamId);
-                //$('#txtStreamLinkMobile').val(data.streamUrl);
-                //$('#txtStreamDateMobile').val(getUTCTime(data.streamDate));
-
-                $('#txtStreamKey' + name).val(data.streamId);
-                $('#txtStreamLink' + name).val(data.streamUrl);
-                $('#txtStreamDate' + name).val(getUTCTime(data.streamDate));
-                $('#txtStreamKeyMobile' + name).val(data.streamId);
-                $('#txtStreamLinkMobile' + name).val(data.streamUrl);
-                $('#txtStreamDateMobile' + name).val(getUTCTime(data.streamDate));
-
-            },
-            error: function (jqXhr, textStatus, errorThrown) {
-
-                alert("Failed to generate Stream URL");
-
-
+    else        {
+            var token = sessionStorage.getItem('loginToken');
+            var headers = {};
+            var url = "http://ws.everywhere.live:8080/api/v1/livestream/start/" + name;
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
             }
-        });
+            $.ajax({
+                url: url,
+                type: "GET",
+                crossDomain: true,
+                data: {},
+                dataType: "json",
+                headers: headers,
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    alert("Stream URL has been generated Successfully!");
+
+                    //$('#txtStreamKey').val(data.streamId);
+                    //$('#txtStreamLink').val(data.streamUrl);
+                    //$('#txtStreamDate').val(getUTCTime(data.streamDate));
+                    //$('#txtStreamKeyMobile').val(data.streamId);
+                    //$('#txtStreamLinkMobile').val(data.streamUrl);
+                    //$('#txtStreamDateMobile').val(getUTCTime(data.streamDate));
+
+                    $('#txtStreamKey' + name).val(data.streamId);
+                    $('#txtStreamLink' + name).val(data.streamUrl);
+                    $('#txtStreamDate' + name).val(getUTCTime(data.streamDate));
+                    $('#txtStreamKeyMobile' + name).val(data.streamId);
+                    $('#txtStreamLinkMobile' + name).val(data.streamUrl);
+                    $('#txtStreamDateMobile' + name).val(getUTCTime(data.streamDate));
+
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+
+                    alert("Failed to generate Stream URL");
+
+
+                }
+            });
+        }
     }
 
     function copyToClipboard(element) {
@@ -409,7 +429,7 @@
 
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
-        var url = "http://ws.everywhere.live:8081/api/v1/livestream/start";
+        var url = "http://ws.everywhere.live:8080/api/v1/livestream/start";
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
@@ -544,7 +564,7 @@
                                             '</div>' +
                                         '</div>' +
                                     '</div>');
-        $('#profilePic'+name).attr('src', 'https://graph.facebook.com/' + fbUserID + '/picture?width=146&height=124');
+        $('#profilePic' + name).attr('src', picURL);
         //$('#profilePic').attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124&redirect=tru');
         //$('#txtStreamKey').val(streamId);
         //$('#txtStreamLink').val(streamUrl);

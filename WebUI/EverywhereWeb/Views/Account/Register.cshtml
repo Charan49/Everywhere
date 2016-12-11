@@ -27,7 +27,7 @@
                 </ul>
 
                 <div class="navbar-right">
-                    <p class="navbar-text"></p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");" >Login</button>
+                    <p class="navbar-text"></p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");">Login</button>
                 </div>
             </div>
             <!-- /.navbar-collapse -->
@@ -62,13 +62,13 @@
                                 @Html.ValidationSummary("", new { @class = "text-danger" })
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
-                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "John Smith", id = "ufName" })
-                                    
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "John", id = "ufName" })
+
                                     @*<input type="text" class="form-control" id="uName" placeholder="John Stewart">*@
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
-                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "John Smith", id = "ulName" })
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Smith", id = "ulName" })
 
                                     @*<input type="text" class="form-control" id="uName" placeholder="John Stewart">*@
                                 </div>
@@ -76,7 +76,7 @@
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Email, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "john.s@company.co", id = "uEmail" })
-                                    
+
                                     @*<label for="uEmail">Email</label>
                                         <input type="email" class="form-control" id="uEmail" placeholder="john.s@company.co">*@
                                 </div>
@@ -84,7 +84,7 @@
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Password, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "6+ characters", id = "uPass", type = "password" })
-                                    
+
                                     @*<label for="uPass">Password</label>
                                         <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
                                 </div>
@@ -138,7 +138,7 @@
             var callbackURL = "http://localhost:9178/Account/VerifyCode";
 
             $.ajax({
-                url: "http://ws.everywhere.live:8081/api/v1/user/register/",
+                url: "http://ws.everywhere.live:8080/api/v1/user/register/",
                 type: "POST",
                 crossDomain: true,
                 data: JSON.stringify({ 'Name': name, 'Email': email, 'Password': password, 'DOB': dob, 'Location': '', 'url':callbackURL }),
@@ -173,7 +173,7 @@
                                         '<strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Please try again....</span>'+
                                     '</div>');
                         $('#regValidSummary').show();
-                        
+
                     }
                 }
             });
