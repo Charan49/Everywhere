@@ -53,23 +53,23 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                       
+
                         <label class="control-label" style="color:red;" id="ErrorStreamURL" for=""></label>
                         <br />
                         <label class="control-label" for="uStreamURL">Stream URL</label>
-                        <input class="form-control"   id="uStreamURL" name="uStreamID" placeholder="" type="text" value="">
+                        <input class="form-control" id="uStreamURL" name="uStreamID" placeholder="" type="text" value="">
 
                     </div>
                     <div class="form-group">
                         <label class="control-label" style="color:red;" id="ErrorStreamID" for=""></label>
                         <br />
                         <label class="control-label" for="uStreamID">Stream ID</label>
-                        <input class="form-control"  id="uStreamID" name="uStreamID" placeholder="" type="text" value="">
+                        <input class="form-control" id="uStreamID" name="uStreamID" placeholder="" type="text" value="">
 
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" onclick="YounowService();" >Save</button>
+                    <button type="button" class="btn btn-default" onclick="YounowService();">Save</button>
                 </div>
             </div>
 
@@ -201,7 +201,8 @@
             auth2 = gapi.auth2.init({
                 client_id: '523666141221-8jckerkfihfs2iskmoagc5hpgmrpk9f9.apps.googleusercontent.com',
                 // Scopes to request in addition to 'profile' and 'email'
-                scope: 'https://www.googleapis.com/auth/youtube'
+                scope: 'https://www.googleapis.com/auth/youtube',
+                access_type: 'offline'
             });
         });
     }
@@ -405,8 +406,8 @@
         $('#myModal').modal('show');
     }
     function YounowService() {
-     
-        
+
+
         if ($('#uStreamID').val().length > 0 && $('#uStreamURL').val().length > 0)
         {
             var currentDate = new Date();
@@ -467,10 +468,10 @@
                 $('#ErrorStreamURL').text("Please Enter Stream URL");
             return false;
         }
-      
+
     }
 
-    
+
 
     function getServices() {
         $("#youtubetestUserbtn").hide();
@@ -594,15 +595,26 @@
                         if (data[i].name == 'Facebook') {
                             var picUrl = 'https://graph.facebook.com/' + data[i].fbUserID + '/picture?width=146&height=124';
 
-                         
+
                             addRegisteredServiceRow(data[i].name, picUrl, data[i].fbUserID);
                         }
+                        else if (data[i].name == 'Younow') {
+
+                            addRegisteredServiceRow(data[i].name, data[i].pictureUrl, data[i].fbUserID);
+                        }
                         else {
-                           
+
+                            //var imageurl = 'https://www.googleapis.com/plus/v1/people/'+data[i].fbUserID+'?fields=image&key=AIzaSyBFjMMUvL1D9Osl3fK0UcxZnVeOlAKTG-s';
+                            //var xmlHttp = new XMLHttpRequest();
+                            //xmlHttp.open("GET", imageurl, false); // false for synchronous request
+                            //xmlHttp.send(null);
+                            //var a = JSON.parse(xmlHttp.responseText);
+                            //var imgurl = a.image.url;
+                            //var imgurls100 = imgurl.replace("sz=50", "sz=150");
                             addRegisteredServiceRow(data[i].name, data[i].pictureUrl, data[i].fbUserID);
                         }
 
-                        
+
                     }
                 }
                 else
@@ -672,7 +684,7 @@
             sID = sIDFB;
             sName = sNameFB;
         }
-        if (name == 'Younow')
+        else if (name == 'Younow')
         {
             sID = sIDYN;
             sName = sNameYN;
@@ -694,7 +706,7 @@
 
         if (name == 'Facebook')
             var confirmlink = confirm("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm or Cancel");
-        if (name == 'Younow')
+        else if (name == 'Younow')
             confirmlink = confirm("Unlinking will delete your Younow streaming details. Please click OK to confirm or Cancel");
         else
             var confirmlink = confirm("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm or Cancel");
@@ -783,7 +795,6 @@
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +
                                                     '<span class="pull-right hidden-xs" style="padding-left:5px;">' +
-                                                        '<div id="fb"><button type="button" class="btn btn-xs btn-grey"><i><img src="../images/icon-chain-xs.png"> </i> Edit</button>' +
                                                     '</div></span>' +
                                                     '<span class="pull-right hidden-xs">' +
                                                         '<button type="button" class="btn btn-xs btn-grey" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-chain-xs.png"> </i> Unlink</button>' +
@@ -800,7 +811,6 @@
                                                 '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-chain-xs.png"> </i> Unlink</button>' +
                                                ' </p>' +
                                                '<p class="col-xs-6">' +
-                                                    '<button type="button" class="btn btn-sm btn-grey btn-block"><i><img src="../images/icon-chain-xs.png"> </i> Edit</button>' +
                                                ' </p>' +
                                            ' </div>' +
                                         '</div>' +

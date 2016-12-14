@@ -19,6 +19,7 @@ using Web.Models.Json;
 using System.Web.Http.Tracing;
 using WebApi.ErrorHelper;
 using System.Text.RegularExpressions;
+using System.Net.Mail;
 
 namespace Web.Controllers
 {
@@ -111,21 +112,22 @@ namespace Web.Controllers
                 //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
                 
                 string vCode = GenerateCode.CreateRandomCode(4);
-                var myMessage = new SendGridMessage();
-                myMessage.AddTo(model.email);
-                myMessage.From = new System.Net.Mail.MailAddress(
-                                    "Everywherewebvideo@gmail.com");
-                myMessage.Subject = "Everywhere password reset";
-                myMessage.Text = "";
+                MailMessage message = new MailMessage("test@test.com", model.email);
+              
+
+               
             
-                myMessage.Html = "Hi " + emailAddress.FirstName + ", <br>" +
+                message.Subject = "Everywhere password reset";
+               
+
+                message.Body = "Hi " + emailAddress.FirstName + ", <br>" +
                                 "Don’t fret. Please enter the following verification code: <b>" + vCode + "</b> in the portal/app to reset your password. You can then continue with live streaming of videos through Everywhere platform. <br>" +
                                         "Best regards <br>" +
                                         "Team Everywhere <br>" +
                                         "www.Everywhere.live <br> ";
 
 
-                await SendConfirmationEmail.sendMail(myMessage);
+                await SendEmail.sendMail(message);
                 emailAddress.ConfirmationDueDate = DateTime.Now;
                 emailAddress.ModifiedDate = DateTime.Now;
                 emailAddress.ConfirmationCode = vCode;

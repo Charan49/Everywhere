@@ -98,20 +98,19 @@ namespace Web.Controllers
                     UriBuilder builder = new UriBuilder(callbackURL);
                     string newUri = builder.Uri.ToString();
 
-                    var myMessage = new SendGridMessage();
-                    myMessage.AddTo(model.email);
-                    myMessage.From = new System.Net.Mail.MailAddress(
-                                        "Everywherewebvideo@gmail.com");
-                    myMessage.Subject = "Everywhere signup confirmation";
-                    myMessage.Text = "";
-                    myMessage.Html = "Hi " + user.FirstName + ",<br />" +
+                
+
+                    MailMessage message = new MailMessage("test@test.com", model.email);
+                    message.Subject= "Everywhere signup confirmation";
+                    message.Body = "Hi " + user.FirstName + ",<br />" +
                                         "<br />" +
                                         "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform.<br />" +
                                         "<br />" +
                                         "Best regards<br />" +
                                         "Team Everywhere<br />" +
                                         "www.Everywhere.live<br /> ";
-                    await SendConfirmationEmail.sendMail(myMessage);
+                    await SendEmail.sendMail(message);
+
                     db.Users.Add(user);
                     db.SaveChanges();
 
@@ -139,20 +138,20 @@ namespace Web.Controllers
             if (emailAddress != null)
             {
                 
+
+
                 string vCode = GenerateCode.CreateRandomCode(4);
-                var myMessage = new SendGridMessage();
-                myMessage.AddTo(email);
-                myMessage.From = new System.Net.Mail.MailAddress(
-                                    "Everywherewebvideo@gmail.com");
-                myMessage.Subject = "Everywhere signup confirmation";
-                myMessage.Text = "";
-                myMessage.Html = "Hi " + emailAddress.FirstName + ", <br>" +
+
+                MailMessage message = new MailMessage("test@test.com", email);
+                message.Subject = "Everywhere signup confirmation";
+                message.Body = "Hi " + emailAddress.FirstName + ", <br>" +
                                         "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform. <br>" +
                                         "Best regards <br>" +
                                         "Team Everywhere <br>" +
                                         "www.Everywhere.live <br>";
+                await SendEmail.sendMail(message);
 
-                await SendConfirmationEmail.sendMail(myMessage);
+                
                 emailAddress.ConfirmationDueDate = DateTime.Now;
                 emailAddress.ModifiedDate = DateTime.Now;
                 emailAddress.ConfirmationCode = vCode;

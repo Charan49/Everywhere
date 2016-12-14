@@ -15,6 +15,7 @@ using System.Web.Http.Cors;
 using Facebook;
 using System.Configuration;
 using SendGrid;
+using System.Net.Mail;
 
 namespace Web.Controllers
 {
@@ -86,24 +87,21 @@ namespace Web.Controllers
                     }
                 }
 
-                var myMessage = new SendGridMessage();
-                myMessage.AddTo(rUser.Email);
-                myMessage.From = new System.Net.Mail.MailAddress(
-                                    "Everywherewebvideo@gmail.com");
-                myMessage.Subject = "Everywhere Facebook account ";
-                //myMessage.Text = "Please reset your password by entring this " + vCode + " code. ";
-                myMessage.Text = "";
-                myMessage.Html = "Hi " + rUser.Name + " " + rUser.LastName + ",<br /><br />Here is your Everywhere Facebook account"
-                                + "<br /><br />Email: " + result1[3] + " <br />Password: " + result1[4] +
-                "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
-                "<br />1 - Go to http://web.everywhere.live and login." +
-                "<br />2 - Logout of Facebook if you already logged in." +
-                "<br />3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
+                MailMessage message = new MailMessage("test@test.com", rUser.Email);
+                message.Body = "Hi " + rUser.Name + " " + rUser.LastName + ",<br /><br />Here is your Everywhere Facebook account"
+                               + "<br /><br />Email: " + result1[3] + " <br />Password: " + result1[4] +
+               "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
+               "<br />1 - Go to http://web.everywhere.live and login." +
+               "<br />2 - Logout of Facebook if you already logged in." +
+               "<br />3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
 
-                "<br /><br />Best regards, <br /> Team Everywhere <br /> Everywhere.live";
+               "<br /><br />Best regards, <br /> Team Everywhere <br /> Everywhere.live";
+                message.Subject= "Everywhere Facebook account ";
+                await SendEmail.sendMail(message);
+
+             
 
 
-                await SendConfirmationEmail.sendMail(myMessage);
             }
             catch (Facebook.FacebookOAuthException ex)
             {
@@ -154,24 +152,20 @@ namespace Web.Controllers
                         }
                     }
 
-                    var myMessage = new SendGridMessage();
-                    myMessage.AddTo(rUser.Email);
-                    myMessage.From = new System.Net.Mail.MailAddress(
-                                        "Everywherewebvideo@gmail.com");
-                    myMessage.Subject = "Everywhere Facebook account ";
-                    //myMessage.Text = "Please reset your password by entring this " + vCode + " code. ";
-                    myMessage.Text = "";
-                    myMessage.Html = "Hi " + rUser.Name + " " + rUser.LastName + ",<br /><br />Here is your Everywhere Facebook account"
-                                    + "<br /><br />Email: " + result1[3] + " <br />Password: " + result1[4] +
-                    "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
-                    "<br />1 - Go to http://web.everywhere.live and login." +
-                    "<br />2 - Logout of Facebook if you already logged in." +
-                    "<br />3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
+                    MailMessage message = new MailMessage("test@test.com", rUser.Email);
+                    message.Body = "Hi " + rUser.Name + " " + rUser.LastName + ",<br /><br />Here is your Everywhere Facebook account"
+                                   + "<br /><br />Email: " + result1[3] + " <br />Password: " + result1[4] +
+                   "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
+                   "<br />1 - Go to http://web.everywhere.live and login." +
+                   "<br />2 - Logout of Facebook if you already logged in." +
+                   "<br />3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
 
-                    "<br /><br />Best regards, <br /> Team Everywhere <br /> Everywhere.live";
+                   "<br /><br />Best regards, <br /> Team Everywhere <br /> Everywhere.live";
+                    message.Subject = "Everywhere Facebook account ";
+                    await SendEmail.sendMail(message);
 
 
-                    await SendConfirmationEmail.sendMail(myMessage);
+                   
                 }
 
             }

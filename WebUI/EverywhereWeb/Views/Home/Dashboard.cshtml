@@ -41,7 +41,39 @@
 </header>
 <section class="bg-photo">
     <div class="page-content">
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color:#77B300">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">YouNow Stream Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+
+                            <label class="control-label" style="color:red;" id="ErrorStreamURL" for=""></label>
+                            <br />
+                            <label class="control-label" for="uStreamURL">Stream URL</label>
+                            <input class="form-control" id="uStreamURL" name="uStreamID" placeholder="" type="text" value="">
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" style="color:red;" id="ErrorStreamID" for=""></label>
+                            <br />
+                            <label class="control-label" for="uStreamID">Stream ID</label>
+                            <input class="form-control" id="uStreamID" name="uStreamID" placeholder="" type="text" value="">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" onclick="YounowService();">Save</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
@@ -257,16 +289,30 @@
                             data[i].streamId = "";
                         if (data[i].streamUrl == null)
                             data[i].streamUrl = "";
-                      
+
                             if (data[i].name == 'Facebook')
                             {
                                 var picUrl = 'https://graph.facebook.com/' + data[i].fbUserID + '/picture?width=146&height=124';
-                            
+
                                 addLinkedAccount(data[i].name, picUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
                             }
-                            else{
+                            else if (data[i].name == 'Younow') {
                                 addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
                             }
+                        else {
+
+                            //var imageurl = 'https://www.googleapis.com/plus/v1/people/'+data[i].fbUserID+'?fields=image&key=AIzaSyBFjMMUvL1D9Osl3fK0UcxZnVeOlAKTG-s';
+                            //var xmlHttp = new XMLHttpRequest();
+                            //xmlHttp.open("GET", imageurl, false); // false for synchronous request
+                            //xmlHttp.send(null);
+                            //xmlHttp.onerror = function () { console.log("error" + xhr.status) }
+                            //var a = JSON.parse(xmlHttp.responseText);
+                            //var imgurl = a.image.url;
+                            //var imgurls100 = imgurl.replace("sz=50", "sz=150");
+                                addLinkedAccount(data[i].name, data[i].pictureUrl, data[i].streamId, data[i].streamUrl, data[i].streamDate, data[i].fbUserID);
+
+
+                        }
 
 
 
@@ -325,7 +371,7 @@
         }
             if (name == 'Facebook')
                 confirmlink = confirm("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm or Cancel");
-            if(name =='Younow')
+            else if(name =='Younow')
                 confirmlink = confirm("Unlinking will delete your Younow streaming details. Please click OK to confirm or Cancel");
             else
                 confirmlink = confirm("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm or Cancel");
@@ -363,7 +409,87 @@
                 });
                 //});
             }
+    }
+
+    function editStreamDetails(name)
+    {
+        if (name == 'Younow') {
+            $('#myModal').modal('show');
+            $('#uStreamURL').val($('#txtStreamLinkYounow').val());
+            $('#uStreamID').val($('#txtStreamKeyYounow').val());
         }
+    }
+
+    function YounowService() {
+
+
+        if ($('#uStreamID').val().length > 0 && $('#uStreamURL').val().length > 0) {
+            var currentDate = new Date();
+            currentDate = currentDate.toISOString();
+
+            var name = 'Younow';
+            var token = sessionStorage.getItem('loginToken');
+            var headers = {};
+            var url = "http://ws.everywhere.live:8080/api/v1/livestream/start/" + name;
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+            }
+            $.ajax({
+                url: url,
+                type: "POST",
+                crossDomain: true,
+                data: JSON.stringify({ 'serviceName': "Younow", 'streamId': $('#uStreamID').val(), 'streamUrl': $('#uStreamURL').val(), 'streamDate': currentDate }),
+                dataType: "json",
+                headers: headers,
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    $('#txtStreamLinkYounow').val($('#uStreamURL').val());
+                    $('#txtStreamKeyYounow').val($('uStreamID').val());
+                    //$('#myModal').modal('hide');
+                    //$('#myModal').modal('toggle');
+                    //$('#myModal').modal('hide');
+                    window.location.href = '@Url.Action("Dashboard", "Home")';
+                    //alert("Stream URL has been generated Successfully!");
+
+                    //$('#txtStreamKey').val(data.streamId);
+                    //$('#txtStreamLink').val(data.streamUrl);
+                    //$('#txtStreamDate').val(getUTCTime(data.streamDate));
+                    //$('#txtStreamKeyMobile').val(data.streamId);
+                    //$('#txtStreamLinkMobile').val(data.streamUrl);
+                    //$('#txtStreamDateMobile').val(getUTCTime(data.streamDate));
+
+                    //$('#txtStreamKey' + name).val(data.streamId);
+                    //$('#txtStreamLink' + name).val(data.streamUrl);
+                    //$('#txtStreamDate' + name).val(getUTCTime(data.streamDate));
+                    //$('#txtStreamKeyMobile' + name).val(data.streamId);
+                    //$('#txtStreamLinkMobile' + name).val(data.streamUrl);
+                    //$('#txtStreamDateMobile' + name).val(getUTCTime(data.streamDate));
+
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+
+                    $('#txtStreamLinkYounow').val($('#uStreamURL').val());
+                    $('#txtStreamKeyYounow').val($('uStreamID').val());
+                    //alert("Failed to generate Stream URL");
+                    window.location.href = '@Url.Action("Dashboard", "Home")';
+                    //$('#myModal').modal('hide');
+                }
+            });
+
+
+           // window.location.href = '@Url.Action("RegisterService", "Home")';
+        }
+        else {
+            if ($('#uStreamID').text().length <= 0)
+                $('#ErrorStreamID').text("Please Enter Stream ID");
+            if ($('#uStreamURL').text().length <= 0)
+                $('#ErrorStreamURL').text("Please Enter Stream URL");
+            return false;
+        }
+
+    }
 
     function GetLivestreamURL(name) {
 
@@ -485,7 +611,7 @@
 
     function addLinkedAccount(name, picURL, streamId, streamUrl, streamDate, fbUserID)
     {
-	
+
         $('#selectStream').show();
         $('#message').hide();
         $('#nonLinked').remove();
@@ -506,7 +632,7 @@
                                                     '<div class="text-right hidden-xs">'+
                                                         '<button type="button" class="btn btn-xs btn-grey" data-toggle="modal" onclick="GetLivestreamURL(' + "'" + name + "'" + ')"><i><img src="../images/icon-circular-clock-xs.png"> </i> Schedule Streaming</button>' +
                                                         '<button type="button" class="btn btn-xs btn-grey" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-broken-chain-xs.png"> </i> Unlink</button>' +
-                                                        '<button type="button" class="btn btn-xs btn-grey"><i><img src="../images/icon-edit-xs.png"> </i> Edit</button>'+
+                                                        '<button type="button" class="btn btn-xs btn-grey"  onclick="editStreamDetails(' + "'" + name + "'" + ')"><i><img src="../images/icon-edit-xs.png"> </i> Edit</button>' +
                                                     '</div>'+
                                                     '<div class="hidden-xs has-success mt-15 stream-key">' +
                                                     '<div class="input-group input-group-sm">' +
@@ -536,7 +662,7 @@
                                                         '<button type="button" class="btn btn-sm btn-grey btn-block"  onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-broken-chain-xs.png"> </i> Unlink</button>' +
                                                     '</p>' +
                                                     '<p class="col-xs-6">' +
-                                                        '<button type="button" class="btn btn-sm btn-grey btn-block"><i><img src="../images/icon-edit-xs.png"> </i> Edit</button>' +
+                                                        '<button type="button" class="btn btn-sm btn-grey btn-block"  onclick="editStreamDetails(' + "'" + name + "'" + ')"><i><img src="../images/icon-edit-xs.png"> </i> Edit</button>' +
                                                     '</p>' +
                                                     '<p class="col-xs-12" style="align:center;">' +
                                                         '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="GetLivestreamURL(' + "'" + name + "'" + ')"><i><img src="../images/icon-circular-clock-xs.png"> </i> Schedule Streaming</button>' +
