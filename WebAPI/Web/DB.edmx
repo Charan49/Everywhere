@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Apps">
           <Key>
             <PropertyRef Name="AppGUID" />
@@ -76,19 +76,20 @@
           <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AccessID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccessToken" Type="nvarchar(max)" />
+          <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
-          <Property Name="AccessToken" Type="nvarchar" MaxLength="200" />
-          <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
           <Property Name="StreamID" Type="nvarchar(max)" />
           <Property Name="StreamURL" Type="nvarchar(max)" />
           <Property Name="StreamKey" Type="nvarchar(max)" />
           <Property Name="StreamDate" Type="datetime2" Precision="7" />
           <Property Name="PictureURL" Type="nvarchar(max)" />
           <Property Name="fbUserID" Type="nvarchar" MaxLength="100" />
+          <Property Name="LongToken" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_Services_UserServices">
           <End Role="Services" Type="Self.Services" Multiplicity="1" />
@@ -216,7 +217,7 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
           <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
-          <Property Name="AccessToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TokenExpiration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StreamID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="StreamURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -224,6 +225,7 @@
           <Property Name="StreamDate" Type="DateTime" Precision="7" />
           <Property Name="PictureURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="fbUserID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LongToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Services_UserServices">
           <End Role="Services" Type="Self.Service" Multiplicity="1" />
@@ -357,6 +359,7 @@
           <EntitySetMapping Name="UserServices">
             <EntityTypeMapping TypeName="InterceptDBModel.UserService">
               <MappingFragment StoreEntitySet="UserServices">
+                <ScalarProperty Name="LongToken" ColumnName="LongToken" />
                 <ScalarProperty Name="fbUserID" ColumnName="fbUserID" />
                 <ScalarProperty Name="PictureURL" ColumnName="PictureURL" />
                 <ScalarProperty Name="StreamDate" ColumnName="StreamDate" />

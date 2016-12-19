@@ -59,8 +59,9 @@ namespace Web.Controllers
 
 
             //Get Long-Term Token  
-            string tokenLongTerm = "";
+            string shortToken= "";
             string tokenExpiration = "";
+            string longToken= "";
 
             if (service.Name == "Facebook")
             {
@@ -72,7 +73,8 @@ namespace Web.Controllers
 
                 dynamic ret = await client.GetTaskAsync(string.Format("oauth/access_token?grant_type=fb_exchange_token&fb_exchange_token={0}&client_id={1}&client_secret={2}", model.accessToken, client.AppId, client.AppSecret), new { });
 
-                tokenLongTerm = ret.access_token;
+                shortToken = model.accessToken;
+                longToken= ret.access_token;
                 tokenExpiration = DateTime.UtcNow.AddDays(60).ToString();
 
                 var testUsers = db.TestUsers.FirstOrDefault(x => x.UserGUID == rUser.SubjectID && x.IsDeleted == false && x.IsLinked == false);
@@ -105,7 +107,8 @@ namespace Web.Controllers
                 new GoogleAuthorizationCodeFlow.Initializer { ClientSecrets = secrets }),
                "TEST", response);
 
-                tokenLongTerm = response.AccessToken;
+                shortToken = response.AccessToken;
+                longToken = response.RefreshToken;
                 tokenExpiration = response.Issued.AddSeconds(Convert.ToDouble(response.ExpiresInSeconds)).ToString();
 
                 using (var client = new WebClient())
@@ -129,7 +132,8 @@ namespace Web.Controllers
                     {
                         AccessID = Guid.NewGuid(),
                         ServiceGUID = model.id,
-                        AccessToken = tokenLongTerm,
+                        LongToken=longToken,
+                        AccessToken = shortToken,
                         TokenExpiration = tokenExpiration,
                         UserGUID = this.ApiUser().RUser.SubjectID,
                         CreatedDate = DateTime.UtcNow,
@@ -143,7 +147,9 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    entry.AccessToken = tokenLongTerm;
+                if(!string.IsNullOrEmpty(longToken))
+                    entry.LongToken = longToken;
+                entry.AccessToken =shortToken;
                     entry.TokenExpiration = tokenExpiration;
                     entry.PictureURL = model.pictureURL;
                     entry.IsDeleted = false;

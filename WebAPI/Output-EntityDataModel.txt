@@ -1,0 +1,13 @@
+﻿The '"' character, hexadecimal value 0x22, cannot be included in a name. Line 2, position 15.
+Generated model file: DB.edmx.
+Loading metadata from the database took 00:00:01.4407065.
+Generating the model took 00:00:13.7421743.
+Added the connection string to the Web.Config file.
+Generated model file: DB.edmx.
+Loading metadata from the database took 00:00:00.8512171.
+Generating the model took 00:00:12.6698084.
+Added the connection string to the Web.Config file.
+Generated model file: DB.edmx.
+Loading metadata from the database took 00:00:00.4412586.
+Generating the model took 00:00:01.8543152.
+Added the connection string to the Web.Config file.

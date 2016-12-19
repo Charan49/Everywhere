@@ -57,6 +57,7 @@
     <EntitySetMapping Name="UserServices">
       <EntityTypeMapping TypeName="InterceptDBModel.UserService">
         <MappingFragment StoreEntitySet="UserServices">
+          <ScalarProperty Name="LongToken" ColumnName="LongToken" />
           <ScalarProperty Name="fbUserID" ColumnName="fbUserID" />
           <ScalarProperty Name="PictureURL" ColumnName="PictureURL" />
           <ScalarProperty Name="StreamDate" ColumnName="StreamDate" />

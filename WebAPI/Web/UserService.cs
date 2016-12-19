@@ -30,6 +30,7 @@ namespace Web
         public Nullable<System.DateTime> StreamDate { get; set; }
         public string PictureURL { get; set; }
         public string fbUserID { get; set; }
+        public string LongToken { get; set; }
     
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }

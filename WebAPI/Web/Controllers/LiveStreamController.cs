@@ -48,7 +48,12 @@ namespace Web.Controllers
                 {
                     //Create Facebook Live Stream
                     Facebook.FacebookClient client = new FacebookClient();
-                    client.AccessToken = entry.AccessToken;
+                    client.AccessToken = entry.LongToken;
+       
+                //dynamic ret = await client.GetTaskAsync(string.Format("oauth/access_token?grant_type=fb_exchange_token&fb_exchange_token={0}&client_id={1}&client_secret={2}", model.accessToken, client.AppId, client.AppSecret), new { });
+
+
+
                     dynamic ret = await client.PostTaskAsync("/me/live_videos", new { });
 
                     list.Add(new JLiveStream
@@ -77,7 +82,7 @@ namespace Web.Controllers
 
                     };
 
-                    var token = new TokenResponse { RefreshToken = entry.AccessToken };
+                    var token = new TokenResponse { RefreshToken = entry.LongToken };
                     var credentials1 = new UserCredential(new GoogleAuthorizationCodeFlow(
                         new GoogleAuthorizationCodeFlow.Initializer
                         {
@@ -180,7 +185,7 @@ namespace Web.Controllers
                 {
                     //Create Facebook Live Stream
                     Facebook.FacebookClient tempClient = new FacebookClient();
-                    tempClient.AccessToken = service.AccessToken;
+                    tempClient.AccessToken = service.LongToken;
                     dynamic ret2 = await tempClient.PostTaskAsync("me", new { });
                 }
                 catch
@@ -192,7 +197,7 @@ namespace Web.Controllers
 
                 //Create Facebook Live Stream
                 Facebook.FacebookClient client = new FacebookClient();
-                client.AccessToken = service.AccessToken;
+                client.AccessToken = service.LongToken;
                 dynamic ret = await client.PostTaskAsync("/me/live_videos", new { });
 
                 result.serviceName = service.Service.Name;
@@ -224,7 +229,7 @@ namespace Web.Controllers
 
                 };
 
-                var token = new TokenResponse { RefreshToken = service.AccessToken };
+                var token = new TokenResponse { RefreshToken = service.LongToken };
                 var credentials1 = new UserCredential(new GoogleAuthorizationCodeFlow(
                     new GoogleAuthorizationCodeFlow.Initializer
                     {

@@ -15,7 +15,13 @@
                     <span class="icon-bar middle-bar"></span>
                     <span class="icon-bar bottom-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");"><img src="../images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+                @*<a class="navbar-brand" href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");"><img src="../images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>*@
+                <ul>
+                    <li>
+                        <a class="navbar-brand" href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");"><img src="../images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+                        <a class="navbar-brand" href="#"><h1 id="cspio-headline">everywhere™</h1></a>
+                    </li>
+                </ul>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -199,10 +205,12 @@
     function start() {
         gapi.load('auth2', function () {
             auth2 = gapi.auth2.init({
-                client_id: '523666141221-8jckerkfihfs2iskmoagc5hpgmrpk9f9.apps.googleusercontent.com',
+                client_id: '523666141221-3thnnbdici8m7apt0dadsosmmna59824.apps.googleusercontent.com',
                 // Scopes to request in addition to 'profile' and 'email'
                 scope: 'https://www.googleapis.com/auth/youtube',
-                access_type: 'offline'
+                access_type: 'offline',
+               approval_prompt:'force'
+         
             });
         });
     }
