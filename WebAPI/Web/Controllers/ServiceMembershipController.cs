@@ -268,6 +268,87 @@ namespace Web.Controllers
             return ret;
         }
 
+        [Route("api/v1/service_membership/{id}")]
+        [HttpGet]
+        public async Task<IEnumerable<JServiceMembership>> GetServiceMembershipWithGuid(Guid id)
+        {
+
+            var ret = await db.UserServices.Where(x => x.UserGUID == id && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null ? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL, fbUserID = x.fbUserID }).ToListAsync();
+            return ret;
+        }
+
+        
+        [Route("api/v1/video/addvideoswitch")]
+        [HttpPost]
+        public async Task<HttpResponseMessage> AddVideoSwitch([FromBody] JVideoSwitch model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
+            }
+
+            //////////////////////////////////
+            //Create First & Last Names from provided name            
+
+            VideoSwitchURL jvs = new VideoSwitchURL();
+
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    //Check if a Video with Same E-mail Already Exists
+                    int count = await db.VideoSwitchURLs.CountAsync(u => u.Id == model.id);
+                    if (count > 0)
+                    {
+                        jvs.Id = model.id;
+                        jvs.StreamURL = model.url;
+                        jvs.ModifiedBy = this.ApiUser().RUser.SubjectID.ToString();
+                        jvs.ModifiedDate = DateTime.UtcNow;
+                        db.Entry(jvs).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        jvs.StreamURL = model.url;
+                        jvs.VideoGUID = Guid.NewGuid();
+                        jvs.IsDeleted = false;
+                        jvs.CreatedDate = DateTime.UtcNow;
+                        jvs.CreatedBy = this.ApiUser().RUser.SubjectID.ToString();
+                        db.VideoSwitchURLs.Add(jvs);
+                        db.SaveChanges();
+                    }
+                    
+
+                    //Complete Transaction
+                    transaction.Commit();
+
+                    return Request.CreateResponse(HttpStatusCode.Created);
+                }
+                catch
+                {
+                    //Rollback
+                    transaction.Rollback();
+
+                    throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Please try again...  " };
+                }
+            }
+        }
+
+        
+        [Route("api/v1/video/Getvideo")]
+        [HttpGet]
+        public async Task<IEnumerable<JVideoSwitch>> GetUrlInfo()
+        {
+            var videos = await db.VideoSwitchURLs.Select(x => new JVideoSwitch { id=x.Id, url=x.StreamURL}).ToListAsync();
+            if (videos.Count > 0)
+                return videos;
+            else
+                return null;
+           //     throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+        }
+
         private string GetHeaderValue(string header)
         {
             return Request.Headers.GetValues(header).FirstOrDefault();

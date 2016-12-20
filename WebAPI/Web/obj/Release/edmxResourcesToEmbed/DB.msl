@@ -57,6 +57,8 @@
     <EntitySetMapping Name="UserServices">
       <EntityTypeMapping TypeName="InterceptDBModel.UserService">
         <MappingFragment StoreEntitySet="UserServices">
+          <ScalarProperty Name="LongToken" ColumnName="LongToken" />
+          <ScalarProperty Name="fbUserID" ColumnName="fbUserID" />
           <ScalarProperty Name="PictureURL" ColumnName="PictureURL" />
           <ScalarProperty Name="StreamDate" ColumnName="StreamDate" />
           <ScalarProperty Name="StreamKey" ColumnName="StreamKey" />
@@ -78,12 +80,29 @@
     <EntitySetMapping Name="TestUsers">
       <EntityTypeMapping TypeName="InterceptDBModel.TestUser">
         <MappingFragment StoreEntitySet="TestUsers">
+          <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="FaceBookID" ColumnName="FaceBookID" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="EmailID" ColumnName="EmailID" />
           <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
           <ScalarProperty Name="TestUserID" ColumnName="TestUserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VideoSwitchURLs">
+      <EntityTypeMapping TypeName="InterceptDBModel.VideoSwitchURL">
+        <MappingFragment StoreEntitySet="VideoSwitchURL">
+          <ScalarProperty Name="VideoGUID" ColumnName="VideoGUID" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="StreamURL" ColumnName="StreamURL" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

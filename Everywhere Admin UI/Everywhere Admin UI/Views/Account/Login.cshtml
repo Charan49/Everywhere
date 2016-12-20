@@ -1,0 +1,151 @@
+﻿@using Everywhere_Admin_UI.Models
+
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<header data-spy="affix" data-offset-top="460" data-offset-bottom="200">
+    <nav class="navbar navbar-admin" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-main">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar top-bar"></span>
+                    <span class="icon-bar middle-bar"></span>
+                    <span class="icon-bar bottom-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <span class="brand-icon"><img src="~/Images/everywhere_logo_admin.png"></span>
+                    <span class="brand-text"> everywhere<sup>™</sup></span>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-collapse-main">
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav navbar-center">
+                        <li>@*<a href="#">Forgot Password?</a>*@</li>
+                    </ul>
+                </div>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+    <nav class="navbar-green" role="navigation">
+        <div class="container">
+            <div class="text-center nav-header">
+                <span>Login to your Account</span>
+            </div>
+        </div>
+    </nav>
+</header>
+<section class="bg-photo">
+    <div class="page-content bg-grey">
+        <div class="container">
+            <div class="row pt-pb">
+                <div class="col-sm-4 col-sm-offset-4">
+
+                   
+                    
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { role = "form", @class = "admin-login form-group-lg", id = "rForm", @onsubmit = "callLoginAPI(event)" }))
+                    {
+                        @Html.AntiForgeryToken()
+                       
+                                <div id="validSummary" hidden>
+                                    <div class="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! email or password is not valid.</span>
+                                    </div>
+                                </div>
+
+                        if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                        {
+                            <div class="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! email or password is not valid.</span>
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "john.s@company.co", id = "uEmail" })                          
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "6+ characters", id = "uPass", type = "password" })
+                                    
+                        </div>
+                        <button type="submit" id="btnSignIn" class="btn-success cta btn-lg btn-block">Login</button>
+                        <br />
+                        <p class="text-center">
+                            <a href="@Url.Action("ForgotPassword", "Account")"><small class="text-muted">Forgot Password?</small></a>
+                        </p>                           
+                    }           
+                    @Html.Hidden("RedirectTo", Url.Action("UserManagement", "Manage"))
+                    @Html.Hidden("RedirectToConfirm", Url.Action("ResetPassword", "Account"))
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer></footer>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        
+        try { localStorage.test = 2; } catch (e) {
+            $('#rForm').html("<p>Error while storing the session token. Could be due to Private Browsing mode. Please disable Private Browsing mode and try again</p>");
+        }
+    });
+
+
+    function callLoginAPI(e) {
+
+        ;
+        //$('#btnSignIn').click(function (e) {
+            var email = $('#uEmail').val();
+            var password = $('#uPass').val();
+            var key = 'ADMIN_LOGIN_KEY';
+            var uuid = '00001310-0000-0000-1012-000000000000';
+            sessionStorage.setItem('signUpEmail', email);
+            
+            $.ajax({
+                url: "http://web-test.everywhere.live:8081/api/v1/authenticate/",
+                type: "POST",
+                crossDomain: true,
+                data: JSON.stringify({ 'email':email, 'Password': password, 'key': key, 'uuid': uuid }),
+                dataType: "json",
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    e.preventDefault();
+                    sessionStorage.setItem('loginToken', data.token);
+                    sessionStorage.setItem('userName', data.name);
+                    sessionStorage.setItem('email',email);
+
+                    var url = $("#RedirectTo").val();
+                    window.location.href = url;
+
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    e.preventDefault();
+                    ;
+                    if (jqXhr.statusText == "Created") {
+                        var url = $("#RedirectTo").val();
+                        location.href = url;
+                    }
+                    if (jqXhr.statusText == "Found") {
+                        var url = $("#RedirectToConfirm").val();
+                        location.href = url;
+                    }
+                    else {
+                       // alert('Your User Name or password is incorrect!!!')
+                        $('#validSummary').show();
+                    }
+                     
+                }
+            });
+        //});
+    }
+</script>

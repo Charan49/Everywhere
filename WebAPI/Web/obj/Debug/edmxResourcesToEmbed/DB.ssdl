@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="InterceptDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Apps">
     <Key>
       <PropertyRef Name="AppGUID" />
@@ -71,20 +71,33 @@
     <Property Name="ServiceGUID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="UserGUID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="AccessID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="AccessToken" Type="nvarchar(max)" />
-    <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
     <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+    <Property Name="AccessToken" Type="nvarchar" MaxLength="200" />
+    <Property Name="TokenExpiration" Type="nvarchar" MaxLength="50" />
     <Property Name="StreamID" Type="nvarchar(max)" />
     <Property Name="StreamURL" Type="nvarchar(max)" />
     <Property Name="StreamKey" Type="nvarchar(max)" />
     <Property Name="StreamDate" Type="datetime2" Precision="7" />
     <Property Name="PictureURL" Type="nvarchar(max)" />
     <Property Name="fbUserID" Type="nvarchar" MaxLength="100" />
-    <Property Name="LongToken" Type="nvarchar(max)" />
+    <Property Name="LongToken" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="VideoSwitchURL">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VideoGUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="StreamURL" Type="nvarchar" MaxLength="250" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedBy" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="ModifiedDate" Type="datetime" />
   </EntityType>
   <Association Name="FK_Services_UserServices">
     <End Role="Services" Type="Self.Services" Multiplicity="1" />
@@ -128,6 +141,7 @@
     <EntitySet Name="TestUsers" EntityType="Self.TestUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserServices" EntityType="Self.UserServices" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VideoSwitchURL" EntityType="Self.VideoSwitchURL" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Services_UserServices" Association="Self.FK_Services_UserServices">
       <End Role="Services" EntitySet="Services" />
       <End Role="UserServices" EntitySet="UserServices" />

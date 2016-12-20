@@ -365,7 +365,7 @@
         }
         $.ajax({
 
-            url: "http://ws.everywhere.live:8080/api/v1/TestUsers/",
+            url: "http://web-test.everywhere.live:8081/api/v1/TestUsers/",
 
             type: "GET",
             data: {},
@@ -425,7 +425,7 @@
             var name = 'Younow';
             var token = sessionStorage.getItem('loginToken');
             var headers = {};
-            var url = "http://ws.everywhere.live:8080/api/v1/livestream/start/" + name;
+            var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start/" + name;
             if (token) {
                 headers.Authorization = 'Bearer ' + token;
             }
@@ -490,7 +490,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/service/",
+            url: "http://web-test.everywhere.live:8081/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -584,7 +584,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/service_membership/",
+            url: "http://web-test.everywhere.live:8081/api/v1/service_membership/",
             type: "GET",
             data: {},
             dataType: "json",
@@ -644,9 +644,9 @@
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
 
-        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
+        var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/AddServiceMembership/";
 
-        //var url = "http://ws.everywhere.live:8080/api/v1/service_membership/AddServiceMembership/";
+        //var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/AddServiceMembership/";
 
         if (service == 'Facebook') {
             sID = sIDFB;
@@ -702,7 +702,7 @@
         sName = sNameYT;
         }
         var token = sessionStorage.getItem('loginToken');
-        var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" + sID;
+        var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/" + sID;
 
 
 
@@ -769,7 +769,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/signout/",
+            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},

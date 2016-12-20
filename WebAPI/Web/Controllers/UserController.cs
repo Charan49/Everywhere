@@ -86,7 +86,7 @@ namespace Web.Controllers
                 try
                 {
                     //Check if a User with Same E-mail Already Exists
-                    int count = await db.Users.CountAsync(u => String.Compare(u.Email, model.email.Trim(), true) == 0 && u.AccountState != (byte)Models.Enums.AccountState.Deleted);
+                    int count = await db.Users.CountAsync(u => String.Compare(u.Email, model.email.Trim(), true) == 0 && u.AccountState != (byte)Models.Enums.AccountState.Deleted && String.Compare(u.UserType, "User", true) == 0);
                     if (count > 0)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.Conflict, "User already exists.");

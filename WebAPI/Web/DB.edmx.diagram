@@ -13,6 +13,7 @@
         <AssociationConnector Association="InterceptDBModel.FK_Users_UserServices" ManuallyRouted="false" />
         <EntityTypeShape EntityType="InterceptDBModel.TestUser" Width="1.5" PointX="8.5" PointY="5.125" />
         <AssociationConnector Association="InterceptDBModel.FK_Users_TestUsers" />
+        <EntityTypeShape EntityType="InterceptDBModel.VideoSwitchURL" Width="1.5" PointX="0.75" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

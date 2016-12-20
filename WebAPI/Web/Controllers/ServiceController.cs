@@ -140,7 +140,7 @@ namespace Web.Controllers
             }
 
 
-            Service service = await db.Services.FirstOrDefaultAsync(x => x.Name == name);
+            Service service = await db.Services.FirstOrDefaultAsync(x => x.ServiceGUID == jService.ID);
             if (service == null)
             {
                 return NotFound();
@@ -148,12 +148,13 @@ namespace Web.Controllers
             }
 
             //Update Settings
-            if (String.Compare(service.ServiceProviderInfo, service.ServiceProviderInfo, true) != 0 || String.Compare(service.AuthMethod, service.AuthMethod, true) != 0)
+            if (String.Compare(service.ServiceProviderInfo, jService.serviceProviderInfo, true) != 0 || String.Compare(service.AuthMethod, jService.authenticationMethod, true) != 0 || String.Compare(service.Name, jService.name, true) != 0)
             {
                 service.AuthMethod = jService.authenticationMethod;
                 service.ServiceProviderInfo = jService.serviceProviderInfo;
                 service.ModifiedBy = this.ApiUser().Email;
                 service.ModifiedDate = DateTime.UtcNow;
+                service.Name = jService.name;
             }
             
             db.Entry(service).State = EntityState.Modified;

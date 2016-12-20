@@ -1,0 +1,254 @@
+﻿
+@{
+    ViewBag.Title = "ServicesManagement";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Everywhere | Services Management</title>
+</head>
+<body>
+  
+    <section class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">                  
+                    <div class="toolbar clearfix">
+                        <h3 class="navbar-text pull-left">Services</h3>
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="bg-grey pt-pb">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                        <div class="list-users"  id="UserList">
+                            
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <footer></footer>
+
+
+    <div class="modal fade" id="modal-services">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="list-users">
+
+                    <div class="item">
+                        <div class="list-img">
+                            <span class="user-avatar"></span>
+                        </div>
+                        <div class="list-body">
+                          
+                            <div class="form-group">
+                                <br />
+                                                       
+                                <input type="text" class="form-control" id="auName" value="" readonly>
+                                <input type="hidden" id="hideId">
+                            </div>
+                            @*<div class="form-group">
+                                <textarea rows="3" class="form-control">
+                                    Are you one of thousands of iPhone owners who has no idea that they can get free...
+                                </textarea>
+                            </div>*@
+                        </div>
+                        <div class="list-cta">
+                            <a href="" class="btn btn-success btn-block cta" onclick="updateService($('#auName').val())")>Save &amp; Close</a>
+                            
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Settings</strong>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1">Account ID</span>
+                                            <input type="text" class="form-control" value="" aria-describedby="basic-addon1" id="accId">
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1">Private Key</span>
+                                            <input type="text" class="form-control" value="" aria-describedby="basic-addon1">
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1">Server</span>
+                                            <input type="text" class="form-control" value="" aria-describedby="basic-addon1" id="serverId">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                @*<div class="col-sm-4">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Service</strong>
+                                        <div class="input-group">
+                                            <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                                                <a href="#" class="btn btn-link btn-active-sucuss active">Enable</a>
+                                                <a href="#" class="btn btn-link btn-active-danger">Disabled</a>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-grey btn-block"><img src="~/images/icon-delete.png"> Delete Service</button>
+
+                                    </div>
+                                </div>*@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
+    getServices();
+    }
+
+    function Logout() {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            }
+        });
+    }
+
+    function getServices()
+    {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/service/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                
+                $.each(data, function (index) {
+                    $('#UserList').append(
+                    '<div class="item">' + '<div class="list-body">'
+                                                  + '<h3 class="list-heading">'+  data[index].name +'</h3>'
+                                                  //+' <p class="list-des">Are you one of thousands of iPhone owners who has no idea that they can get free...</p>'
+                                                +'</div>'
+                                                +'<div class="list-cta">'
+                                                   + ' <a class="btn btn-default btn-block cta" data-toggle="modal" href="#modal-services" id="' + data[index].name + '" onclick="fillData(this.id)">Edit</a>'
+                                                +'</div>'
+                                            +'</div>'
+                                            )
+                })
+            }
+        });
+    }
+
+    function fillData(uname) {
+        
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/service/" + uname,
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                
+                $("#auName").val(data[0].name);
+                $("#hideId").val(data[0].ID);
+                $("#accId").val(data[0].ID);
+                $("#serverId").val(data[0].serviceProviderInfo);
+
+
+            }
+        });
+    }
+
+    function updateService(uid) {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        var name = $('#auName').val();
+        var sp = $('#serverId').val();
+        var id = $('#accId').val();
+
+
+        
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/service/" + uid + "/",
+            type: "PUT",
+            dataType: "json",
+            headers: headers,
+            crossDomain: true,
+            data: JSON.stringify({ 'authenticationMethod': 'oAuth', 'name': name, 'serviceProviderInfo': sp, 'ID': id}),
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(name);
+            }, error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+            }
+
+        });
+    }
+
+
+</script>

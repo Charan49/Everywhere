@@ -106,6 +106,7 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> ForgotPassword([FromBody] JForgetPassword model)
         {
+            string linkUrl = string.Empty;
             User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
             if (emailAddress != null)
             {
@@ -113,19 +114,59 @@ namespace Web.Controllers
                 
                 string vCode = GenerateCode.CreateRandomCode(4);
                 MailMessage message = new MailMessage("test@test.com", model.email);
-              
 
-               
-            
+                if(!string.IsNullOrEmpty(model.callbackURL))
+                    linkUrl = "Please click on the given URL to complete the registration " + model.callbackURL + "<br />";
+
                 message.Subject = "Everywhere password reset";
                
 
                 message.Body = "Hi " + emailAddress.FirstName + ", <br>" +
                                 "Don’t fret. Please enter the following verification code: <b>" + vCode + "</b> in the portal/app to reset your password. You can then continue with live streaming of videos through Everywhere platform. <br>" +
+                                linkUrl+
                                         "Best regards <br>" +
                                         "Team Everywhere <br>" +
                                         "www.Everywhere.live <br> ";
 
+
+                await SendEmail.sendMail(message);
+                emailAddress.ConfirmationDueDate = DateTime.Now;
+                emailAddress.ModifiedDate = DateTime.Now;
+                emailAddress.ConfirmationCode = vCode;
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
+        }
+
+        [AllowAnonymous]
+        [Route("api/v1/ForgotAdminPassword")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ForgotAdminPassword([FromBody] JForgetPassword model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
+            if (emailAddress != null)
+            {
+                //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+
+                string vCode = GenerateCode.CreateRandomCode(4);
+                MailMessage message = new MailMessage("test@test.com", model.email);
+                
+                message.Subject = "Everywhere Admin account";
+
+
+                message.Body = "Hi " + emailAddress.FirstName + ", " +
+                                "<br>" +
+                                "Don’t fret. Please enter the following verification code: <b>" + vCode + "</b> in the portal/app to reset your password. You can then continue with live streaming of videos through Everywhere platform.<br>" +
+                                "Please click on the given URL to complete the registration " + model.callbackURL + "<br />" +
+                                "<br>" +
+                                        "Best regards <br>" +
+                                        "Team Everywhere <br>" +
+                                        "www.Everywhere.live <br> ";
 
                 await SendEmail.sendMail(message);
                 emailAddress.ConfirmationDueDate = DateTime.Now;
@@ -184,6 +225,35 @@ namespace Web.Controllers
                     throw new ApiDataException(1002, "Verification code expired...", HttpStatusCode.NotAcceptable);
                 }
                 emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+                emailAddress.ConfirmationCode = string.Empty;
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
+
+        }
+
+        [AllowAnonymous]
+        [Route("api/v1/ResetAdminPassword/{code}")]
+        [HttpPut]
+        public async Task<IHttpActionResult> ResetAdminPassword(string code, [FromBody] ResetPasswordModel model)
+        {
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.ConfirmationCode == code && x.Email == model.email);
+            if (emailAddress != null)
+            {
+                TimeSpan ts = DateTime.Now.Subtract(Convert.ToDateTime(emailAddress.ConfirmationDueDate));
+
+                if (Convert.ToInt32(ts.TotalDays) > 7)
+                {
+                    return NotFound();
+                    throw new ApiDataException(1002, "Verification code expired...", HttpStatusCode.NotAcceptable);
+                }
+                emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
+                emailAddress.AccountState = (byte)Models.Enums.AccountState.Active;
                 emailAddress.ConfirmationCode = string.Empty;
                 await db.SaveChangesAsync();
                 return Ok();

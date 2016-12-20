@@ -30,5 +30,6 @@ namespace Web
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserService> UserServices { get; set; }
         public virtual DbSet<TestUser> TestUsers { get; set; }
+        public virtual DbSet<VideoSwitchURL> VideoSwitchURLs { get; set; }
     }
 }

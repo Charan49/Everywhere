@@ -1,0 +1,480 @@
+﻿
+@{
+    ViewBag.Title = "AdminManagement";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Everywhere | Admin User Management</title>    
+    <link href="~/Content/style_admin.css" rel="stylesheet" />
+</head>
+<body>
+    <section class="page-content">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                      <div class="toolbar clearfix">
+                        <h3 class="navbar-text pull-left">Admin Users</h3>
+                        <div class="pull-right">
+                            <a class="btn btn-default btn-block cta" data-toggle="modal" href="#modal-user">Add New User</a>                         
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="bg-grey pt-pb">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                        <div class="list-users" id="UserList">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <footer></footer>
+
+
+    <div class="modal fade" id="modal-user">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="list-users">
+                    <div class="item">
+                        <div class="list-img">
+                            <span class="user-avatar"></span>
+                        </div>
+                             <div class="list-body">         
+                                    <br />              
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="auName" placeholder="User Name">
+                                        <input type="text" class="form-control" id="auLast" placeholder="Last Name">
+                                    </div>                         
+                            </div>
+                        <div class="list-cta">
+                            <a href="" class="btn btn-success btn-block cta" onclick=saveUser();>Save &amp; Close</a>
+                            <a href="" class="btn btn-grey btn-block">Cancel</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Details</strong>
+                                        @*<div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1">ID</span>
+                                            <input type="text" class="form-control" value="23456654899" aria-describedby="basic-addon1">
+                                        </div>*@
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Email</span>
+                                            <input type="text" class="form-control"  id="auEmail" aria-describedby="basic-addon1" placeholder="abc@xyz.com">
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon" >Role</span>
+                                            <select name="cars" class="form-control" id="auStatus">
+                                                <option value="Admin">Admin</option>
+                                                <option value="User">User</option>                                                
+                                            </select>
+                                           @* <input type="text" class="form-control" id="auStatus"  aria-describedby="basic-addon1" placeholder="Admin" value="Admin">*@
+                                        </div>
+                                    </div>
+                                </div>                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-user-update">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="list-users">
+                    <div class="item">
+                        <div class="list-img">
+                            <span class="user-avatar"></span>
+                        </div>
+                        <div class="list-body">
+                            <br />
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="aName" placeholder="Name">
+                                <input type="text" class="form-control" id="aLast" placeholder="Last Name">
+                                <input type="hidden" id="hideId">
+                            </div>
+                        </div>
+                        <div class="list-cta">
+                            <a href="" class="btn btn-success btn-block cta" id="saveClose" onclick=updateUser($('#hideId').val());>Save &amp; Close</a>
+                                <a href="" class="btn btn-grey btn-block">Cancel</a>
+                    </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Details</strong>
+                                        @*<div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">ID</span>
+                                                <input type="text" class="form-control" value="23456654899" aria-describedby="basic-addon1">
+                                            </div>*@
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Email</span>
+                                            <input type="text" class="form-control" id="aEmail" aria-describedby="basic-addon1" placeholder="abc@xyz.com">
+                                        </div>
+
+                                     
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Reset Password</strong>
+                                        @*<div class="form-group">
+                                                <input type="password" class="form-control" placeholder="Enter New Password">
+                                            </div>*@
+
+                                        <button type="button" class="btn btn-success btn-block" id="resetId" onclick="resetUser()">Reset</button>
+
+                                    </div>
+                                </div>
+                                @Html.Hidden("RedirectToConfirm", Url.Action("ResetPassword", "Account"))
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
+    getAdminManagment();
+    }
+
+    function Logout() {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            }
+        });
+    }
+
+    function resetUser() {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+       
+        
+        alert("Email has been sent!!!");
+
+        var eMail = $('#aEmail').val();
+        var cURL = $('#RedirectToConfirm').val();
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/ForgotAdminPassword/",
+            type: "POST",
+            dataType: "json",
+            headers: headers,
+            crossDomain: true,
+            data: JSON.stringify({ 'email': eMail, 'callbackURL': 'http://admin.everywhere.live'+cURL }),
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(name);
+            }, error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+            }
+
+        });
+    }
+
+    function getAdminManagment()
+    {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/type/" + "Admin",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $.each(data, function (index) {
+                    
+                    var str = data[index].firstName;
+                    var enable = "Disabled";
+                   
+                    if (data[index].accountState == 21) {
+                        enable = "Enabled";
+                    }
+                    else {
+                        enable = "Disabled";
+                    }
+
+                    $('#UserList').append(
+                         '<div class="item">'
+                             + '   <div class="list-img">'
+                             + '       <span class="user-avatar">' + str.substring(0, 1) + '</span>'
+                               + ' </div>'
+                                + '<div class="list-body">'
+                                  + '  <h4 class="list-heading">' + data[index].firstName + ' ' + data[index].lastName + '</h4>'
+                                    //+ '<p class="list-des">Are you one of thousands of iPhone owners who has no idea that they can get free...</p>'
+                                    + '<div class="list-meta">'
+                                      + '  <span class="btn btn-default btn-sm" id="' + data[index].id + '" onclick="updateEnable(this.id)">'
+                                        + '    <b>Admin:</b>'
+                                          + '  <strong class="text-success">'+enable+'</strong>'
+                                        + '</span>'
+                                    + '</div>'
+                                + '</div>'
+                                + '<div class="list-cta">'
+                                  + '  <a class="btn btn-default btn-block cta" data-toggle="modal" href="#modal-user-update" id="' + data[index].id + '" onclick="fillData(this.id)">Edit</a>'
+                                + '</div>'
+                           + ' </div>'
+                           )
+                })
+
+            }
+        });
+    }
+    
+
+    function saveUser() {
+
+        
+        if(validate()){
+
+            var token = sessionStorage.getItem('loginToken');
+            var headers = {};
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+            }
+
+            var name = $('#auName').val();
+            var lastName = $('#auLast').val();
+            var email = $('#auEmail').val();
+            var role = $('#auStatus').val();
+            var cURL = $("#RedirectToConfirm").val();
+            console.log(name);
+            $.ajax({
+                url: "http://web-test.everywhere.live:8081/api/v1/users/",
+                type: "POST",
+                data: JSON.stringify({ 'firstName': name, 'lastName': lastName, 'password': 'password', 'email': email, 'role': role, 'callbackURL': 'http://admin.everywhere.live' + cURL }),
+                dataType: "json",
+                headers: headers,
+                async:false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    // perform your save call here
+
+                    if (data.statusText=="Created") {
+                        alert("Done");
+                    } else {
+                                
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    
+                    console.log(jqXhr.Message);
+                }
+            });
+        }
+    }
+
+
+    function updateEnable(uid) {
+
+        var text = $("#" + uid).find('strong').text();
+        var enable = false;
+        var get = "";
+        if (text != "Enabled") {
+            $("#" + uid).find('strong').text("Enabled");
+            get = $("#" + uid).find('strong').text();
+            enable = false;
+        }
+        else {
+             $("#" + uid).find('strong').text("Disabled");
+            get = $("#" + uid).find('strong').text();
+
+            enable = true;
+        }
+
+         var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        alert("User is successfully " + get);
+
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/disable",
+            type: 'POST',
+            dataType: 'json',
+            headers: headers,
+            data: { 'id': uid, 'disable': enable, 'notify': 'Yes' },
+            async: false,
+            success: function (data) {
+               
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+                location.reload();
+            }
+        });
+
+    }
+
+    function fillData(uid) {
+
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid,
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#aName").val(data[0].firstName);
+                $("#aEmail").val(data[0].email);
+                $("#aLast").val(data[0].lastName);
+                $("#hideId").val(data[0].id);
+
+                if (data[0].accountState != 21) {
+                    $('#resetId').prop("disabled", true);
+                    $('#saveClose').hide();
+
+                }
+                else {
+                    $('#resetId').prop("disabled", false);
+                    $('#saveClose').show();
+
+                }
+
+            }
+        });
+    }
+
+
+    function updateUser(uid) {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        var name = $('#aName').val();
+        var lastName = $('#aLast').val();
+        var eMail = $('#aEmail').val();
+        var cURL = $("#RedirectToConfirm").val();
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid + "/",
+            type: "PUT",
+            dataType: "json",
+            headers: headers,
+            crossDomain: true,
+            data: JSON.stringify({ 'id': uid, 'email': eMail, 'firstName': name, 'lastName': lastName, 'accountState': '21', 'callbackURL': 'http://admin.everywhere.live' + cURL }),
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(name);
+            }, error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+            }
+
+        });       
+    }
+
+    function validate() {
+
+        var name = $('#auName').val();
+        var lastName = $('#auLast').val();
+        var email = $('#auEmail').val();
+        var role = $('#auStatus').val();
+
+        if(name == '')
+        {
+            alert('Please enter user name');
+            return false;
+        }
+        else if (lastName == '') {
+            alert('Please enter last name');
+            return false;
+        }
+        else if (email == '') {
+            alert('Please enter email');
+            return false;
+        }
+        else if (role == '') {
+            alert('Please enter user role (e.g User or Admin)');
+            return false;
+        }
+
+        return true;
+    }
+
+   
+</script>

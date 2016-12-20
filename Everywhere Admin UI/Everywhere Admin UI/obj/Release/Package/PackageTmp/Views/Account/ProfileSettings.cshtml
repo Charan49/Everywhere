@@ -1,0 +1,292 @@
+﻿
+@{
+    ViewBag.Title = "ProfileSettings";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Everywhere | Profile Settings </title>
+</head>
+<body>
+    <section class="page-content">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+
+                    <div class="toolbar clearfix">
+                        <h3 class="navbar-text pull-left">Profile Settings</h3>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="bg-grey pt-pb">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                        <div class="list-users list-settings">
+                            <div class="item">
+                                <div class="list-img">
+                                    <span class="user-avatar"></span>
+                                </div>
+                                <div class="list-body">
+                                    <br />
+
+                                    <input type="text" class="form-control" id="uName">
+
+                                    <div class="list-meta">
+                                        @*<span class="btn btn-default btn-sm">
+                                                <strong>User Account:</strong>
+                                                <strong class="text-success">Enabled</strong>
+                                            </span>*@
+                                    </div>
+                                </div>
+                                <div class="list-cta">
+                                    <a class="btn btn-default btn-block cta" data-toggle="modal" href='#modal-user' onclick="updateUser($('#uHidden').val())">Save</a>
+                                </div>
+                            </div>
+                            <section class="col-sm-12">
+                                <div class="col-sm-5">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Details</strong>
+                                        @*<div class="input-group">
+                                                <span class="input-group-addon" id="basic-addon1">ID</span>
+                                                <input type="text" class="form-control" value="23456654899" aria-describedby="basic-addon1">
+                                            </div>*@
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1">Email</span>
+                                            <input type="text" class="form-control" aria-describedby="basic-addon1" id="uEmail">
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="basic-addon1">Role</span>
+                                            <input type="text" class="form-control" value="Admin" aria-describedby="basic-addon1" readonly>
+                                        </div>
+                                        <input type="hidden" id="uHidden" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Reset Password</strong>
+                                        @*<div class="form-group">
+                                                <input type="password" class="form-control" placeholder="Enter New Password">
+                                            </div>*@
+
+                                        <button type="button" class="btn btn-success btn-block" onclick="resetUser()">Reset</button>
+
+                                    </div>
+                                </div>
+
+                                @*<div class="col-sm-4">
+                                        <div class="form-group input-group-sm">
+                                            <strong>User Account</strong>
+                                            <div class="input-group">
+                                                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                                                    <a href="#" class="btn btn-link btn-active-sucuss active">Enable</a>
+                                                    <a href="#" class="btn btn-link btn-active-danger">Disabled</a>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" class="btn btn-grey btn-block"><img src="~/images/icon-delete.png"> Delete User</button>
+
+                                        </div>
+                                    </div>*@
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <footer></footer>
+
+</body>
+</html>
+<script type="text/javascript">
+
+
+    window.onload = function () {
+        
+        var getEmail = sessionStorage.getItem('email');
+        getUser(getEmail);
+    }
+
+    function Logout() {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            }
+        });
+    }
+
+
+
+function updateEnable(uid) {
+
+        var text = $("#" + uid).find('strong').text();
+        var enable = false;
+        if (text != "Enabled") {
+            $("#" + uid).find('strong').text("Enabled");
+            enable = false;
+        }
+        else {
+            $("#" + uid).find('strong').text("Disabled");
+            enable = true;
+        }
+
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+            if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/disable",
+            type: 'POST',
+            dataType: 'json',
+            headers: headers,
+            data: { 'id': uid, 'disable': enable, 'notify': 'Yes' },
+            async: false,
+            success: function (data) {
+                location.reload();
+                console.log(data);
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+                location.reload();
+            }
+        });
+}
+
+function resetUser() {
+
+    var token = sessionStorage.getItem('loginToken');
+    var headers = {};
+    if (token) {
+        headers.Authorization = 'Bearer ' + token;
+    }
+
+    alert("Email has been sent!!!");
+
+    var eMail = $('#uEmail').val();
+
+    $.ajax({
+        url: "http://web-test.everywhere.live:8081/api/v1/ForgotPassword/",
+        type: "POST",
+        dataType: "json",
+        headers: headers,
+        crossDomain: true,
+        data: JSON.stringify({ 'email': eMail }),
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            console.log(name);
+        }, error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            console.log(err.Message);
+        }
+
+    });
+}
+
+function updateUser(uid) {
+
+    var token = sessionStorage.getItem('loginToken');
+    var headers = {};
+    if (token) {
+        headers.Authorization = 'Bearer ' + token;
+    }
+
+
+    var name = $('#uName').val();
+    var eMail = $('#uEmail').val();
+    var sName = name.split(" ");
+    var lastName="";
+    if(sName[1]!=undefined)
+        lastName = sName[1];
+
+    sessionStorage.setItem('email', eMail);
+
+
+    $.ajax({
+        url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid,
+        type: "PUT",
+        dataType: "json",
+        headers: headers,
+        crossDomain: true,
+        data: JSON.stringify({ 'id': 0, 'email': eMail, 'firstName': sName[0], 'lastName': lastName, 'accountState': '21', guid: '00001310-0000-0000-1012-000000000000' }),
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            console.log(name);
+            alert("Profile is successfully updated!!!")
+        }, error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            console.log(err.Message);
+        }
+
+    });
+}
+
+
+function getUser(email) {
+    var token = sessionStorage.getItem('loginToken');
+    var headers = {};
+    if (token) {
+        headers.Authorization = 'Bearer ' + token;
+    }
+
+   // var eMail = $('#uEmail').val();
+    
+    $.ajax({
+        url: "http://web-test.everywhere.live:8081/api/v1/users/getId/" + email + "/",
+        type: "GET",
+        dataType: "json",
+        headers: headers,
+        crossDomain: true,
+        data: JSON.stringify({}),
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+
+            $('#uName').val(data[0].firstName + ' ' + data[0].lastName);
+            $('#uHidden').val(data[0].id);
+            $('#uEmail').val(data[0].email);
+
+
+            console.log(name);
+        }, error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            console.log(err.Message);
+        }
+
+    });
+}
+</script>

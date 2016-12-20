@@ -353,6 +353,7 @@
     <Compile Include="Models\Json\JToken.cs" />
     <Compile Include="Models\Json\JUserCheck.cs" />
     <Compile Include="Models\Json\JUser.cs" />
+    <Compile Include="Models\Json\JVideoSwitch.cs" />
     <Compile Include="Models\Redis\RApiUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs">
@@ -365,6 +366,9 @@
       <DependentUpon>DB.tt</DependentUpon>
     </Compile>
     <Compile Include="UserService.cs">
+      <DependentUpon>DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VideoSwitchURL.cs">
       <DependentUpon>DB.tt</DependentUpon>
     </Compile>
   </ItemGroup>

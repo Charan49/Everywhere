@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Title = "VideoSettings";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Everywhere | Video Switch Settings</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js">
+    </script>
+</head>
+<body>
+    
+    <section class="page-content">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+
+                    <div class="toolbar clearfix">
+                        <h3 class="navbar-text pull-left">Video Switch Settings</h3>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="bg-grey pt-pb">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                        <div class="list-users list-settings">
+                            <h4 class="list-heading">Configure video switch URL</h4>
+                            <div class="item">                 
+                                <p class="text-center">        
+                                    <div class="list-body" id="mainURL">                                   
+
+
+                                    </div>
+                                </div>
+                                <div class="list-cta">
+                                    <button type="button" class="btn btn-grey btn-block" id="btAdd" onclick="addRows()">Add URL</button>
+                                    <a href="" class="btn btn-success btn-block cta" onclick="saveData()">Save &amp; Close</a>
+                                    <a href="" class="btn btn-grey btn-block">Cancel</a>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </section>
+    <footer></footer>
+</body>
+</html>
+<script type="text/javascript">
+
+    window.onload = function () {
+        $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
+        getVideoUrl();
+      
+    }
+
+    
+    var iCnt = 0;
+    function getVideoUrl() {
+
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/video/Getvideo/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                
+                $.each(data, function (index) {                    
+                    $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + index + ' value=' + data[index].url + ' /><input type="hidden" id=' + index + ' value=' + data[index].id + ' ></div>');
+
+                });
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+    }
+
+    function Logout() {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                var url = '@Url.Action("Login", "Account")';
+                window.location.href = url;
+            }
+        });
+    }
+
+
+    function saveData()
+    {
+               
+
+        for (var i = 0; i <= $('.url-Button').length-1; i++) {
+            
+            var id=$('#'+i).val();
+            if(id==undefined)
+                id=0;
+            saveUrl($('#tb' + i).val(), id);
+            iCnt++;
+        }
+
+    }
+
+    function saveUrl(urldata,uid) {
+        
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/video/addvideoswitch/",
+            type: "POST",
+            data:JSON.stringify({ 'url': urldata, 'id': uid }),
+            dataType: "json",
+            headers: headers,
+            crossDomain: true,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+             
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                
+                console.log(jqXhr.Message);
+            }
+        });
+    }
+
+        /// Add or Remove URL
+
+    function addRows() {
+        
+        $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + $('.url-Button').length + ' /></div>');
+            iCnt = iCnt + 1;
+    }
+
+
+</script>
+
+    

@@ -1,0 +1,444 @@
+﻿
+@{
+    ViewBag.Title = "UserManagement";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Everywhere | User Management</title>  
+</head>
+<body>
+    <section class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">                   
+                    <div class="toolbar clearfix">
+                        <h3 class="navbar-text pull-left">Users</h3>
+                        <div class="pull-right">
+                                @*<div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Active <span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                    </ul>
+                                </div>*@
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="bg-grey pt-pb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                        <div class="list-users" id="UserList">      
+                           
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer></footer>
+
+
+    <div class="modal fade" id="modal-user">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="list-users">
+                    <div class="item">                      
+                        <div class="list-body">
+
+                            <div class="form-group">
+                             <br />
+                                <input type="text" class="form-control" id="auName" placeholder="User Name" readonly>
+                                <input type="text" class="form-control" id="auLast" placeholder="Last Name" readonly>
+                                <input type="text" class="form-control" id="auEmail" placeholder="Email" readonly>
+                                <input type="hidden" id="hideId">
+                            </div>                          
+                        </div>
+                        <div class="list-cta">                            
+                           @* <a href="" class="btn btn-success btn-block cta" onclick="updateUser($('#hideId').val())">Save &amp; Close</a>*@
+                            <br />
+                            <a href="" class="btn btn-grey btn-block">Close</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Linked Services</strong>
+                                        @*<div class="input-group">*@
+                                            <div class="list-users" id="UserLinkList">
+
+                                            </div>
+
+                                           @* <input type="text" class="form-control" placeholder="Facebook" id="facebooklink">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button"><img src="~/Images/icon-link-connection.png"></button>
+                                            </span>
+                                            </div>
+                                            <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Youtube" id="youtubelink">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button"><img src="~/images/icon-link-connection.png"></button>
+                                            </span>
+                                            </div>
+                                            <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Twitter" id="twitterlink">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button"><img src="~/images/icon-link-connection.png"></button>
+                                        </span>*@
+
+                                       @* </div> *@ 
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group input-group-sm">
+                                        <strong>Reset Password</strong>
+                                        @*<div class="form-group">
+                                            <input type="password" class="form-control" placeholder="Enter New Password">
+                                        </div>*@
+
+                                        <button type="button" class="btn btn-success btn-block" id="resetId" onclick="resetUser()">Reset</button>
+
+                                    </div>
+                                </div>
+
+                                @*<div class="col-sm-4">
+                                    <div class="form-group input-group-sm">
+                                        <strong>User Accounts</strong>
+                                        
+
+                                        <button type="button" class="btn btn-grey btn-block" onclick="deleteUser($('#hideId').val())"><img src="~/images/icon-delete.png"> Delete Users</button>
+
+                                    </div>
+                                </div>*@
+                               @Html.Hidden("RedirectToConfirm", Url.Action("ResetPassword", "Account"))
+
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
+    getUsers();
+    }
+
+    function resetUser() {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+       
+        alert("Email has been sent!!!");
+        
+        var eMail = $('#auEmail').val();
+        var cURL = $('#RedirectToConfirm').val();
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/ForgotPassword/",
+            type: "POST",
+            dataType: "json",
+            headers: headers,
+            crossDomain: true,
+            data: JSON.stringify({ 'email': eMail, 'callbackURL': 'http://web.everywhere.live' + cURL }),
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(name);
+            }, error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+            }
+
+        });
+    }
+
+
+    function updateUser(uid)
+    {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+       
+        var name = $('#auName').val();     
+        var lastName = $('#auLast').val();     
+        var eMail = $('#auEmail').val(); 
+        var cURL = $('#RedirectToConfirm').val();
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid+"/",
+            type: "PUT",           
+            dataType: "json",
+            headers: headers,
+            crossDomain: true,
+            data: JSON.stringify({ 'id': uid, 'email': eMail, 'firstName': name, 'lastName': lastName, 'accountState': '21', 'callbackURL': 'http://web.everywhere.live' + cURL }),
+            async: false,
+            contentType: "application/json; charset=utf-8",
+             success: function (data){ 
+                console.log(name);
+             }, error: function (xhr, status, error) {
+                 var err = eval("(" + xhr.responseText + ")");
+                 console.log(err.Message);
+             }
+           
+        });
+    }      
+
+    function getUsers() {
+        
+    var token = sessionStorage.getItem('loginToken');
+    var headers = {};
+    if (token) {
+        headers.Authorization = 'Bearer ' + token;
+    }    
+  
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/type/" + "User",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+              
+                $.each(data, function (index) {
+
+                    var str = data[index].firstName;
+                    var id = 0;
+                    var enable = "Disabled";
+                   
+                    if (data[index].accountState == 21) {
+                        enable = "Enabled";
+                    }
+                    else {
+                        enable = "Disabled";        
+                    }
+                    
+                    getUserList(data, str, index, headers, enable);
+                });
+            return false;
+        },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+    }
+
+    function getUserList(data, str, index, headers, enable)
+    {
+        $('#UserList').append(
+
+                         '<div class="item">' +
+                                    '<div class="list-img">' +
+                                        '<span class="user-avatar" id = "FC">' + str.substring(0, 1) + '</span>' +
+                                    '</div>' +
+                                    '<div class="list-body">' +
+                                       '<h4 class="list-heading">' + data[index].firstName + ' ' + data[index].lastName + '</h4>' +
+                                       '<h5 class="list-heading">' + data[index].email + '</h5>' +
+                                        '<div class="list-meta">' +                                    
+                                          '<span class="btn btn-default btn-sm" id="' + data[index].id + '" onclick="updateEnable(this.id)">' +
+                                              '<b> User Accounts:</b>' +
+                                          '  <strong class="text-success"  >' + enable + '</strong>' +
+                                        '</span>' +
+                                    '</div>' +
+                                  '</div>' +
+                                '<div class="list-cta"> <a class="btn btn-default btn-block cta" data-toggle="modal" href="#modal-user" id="' + data[index].id + '" onclick="fillData(this.id)" >Edit</a></div>' +
+                            '</div>'
+
+                            )
+    }
+
+    function getLinkedServices(data, index, headers)
+    {
+        var services = "";
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/service_membership/" + data[index].guid + "/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (sdata) {
+                $.each(sdata, function (sindex) {
+                    
+                    services+=sdata[sindex].name+', ';
+                });
+                $('#linkedServices').append(services);
+            },
+            error: function (xhr, status, error) {
+
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+            }
+        });
+    }
+
+    function getService(id)
+    {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        
+                                    
+
+    }
+
+    function fillData(uid) {
+      
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid,
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            
+            success: function (data) {               
+               
+                $("#auName").val(data[0].firstName);
+                $("#auEmail").val(data[0].email);
+                $("#auLast").val(data[0].lastName);
+                $("#hideId").val(data[0].id);
+
+                if (data[0].accountState != 21) {
+                    $('#resetId').prop("disabled", true);
+                }
+                else {
+                    $('#resetId').prop("disabled", false);
+                }
+
+                $.ajax({
+                    url: "http://web-test.everywhere.live:8081/api/v1/service_membership/" + data[0].guid + "/",
+                    type: "GET",
+                    crossDomain: true,
+                    data: {},
+                    dataType: "json",
+                    headers: headers,
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (sdata) {
+                        
+                        for (i = 0; i < sdata.length; i++) {
+                            $('#UserLinkList').append(
+                                '<input type="text" class="form-control" value="' + sdata[i].name.toLowerCase() + '" readonly >'
+                           // $("#" + data[i].name.toLowerCase() + "link").val(data[i].name)
+                            );
+                        }
+                        
+                                                                
+                    }
+             , error: function (xhr, status, error) {
+                 var err = eval("(" + xhr.responseText + ")");
+                 console.log(err.Message);
+             }
+                }
+            )
+            }
+        });
+    }
+
+
+    function updateEnable(uid) {        
+                
+        var text = $("#" + uid).find('strong').text();
+        var enable = false;
+        var get = "";
+
+        if (text != "Enabled") {
+            $("#" + uid).find('strong').text("Enabled");
+            get = $("#" + uid).find('strong').text();
+            enable = false;
+        }
+        else {
+            $("#" + uid).find('strong').text("Disabled");
+            get = $("#" + uid).find('strong').text();
+            enable = true;
+        }
+
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        alert("User is successfully " + get);
+
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/disable",
+            type: 'POST',
+            dataType: 'json',
+            headers: headers,
+            data: { 'id': uid, 'disable': enable, 'notify': 'Yes' },
+            async: false,
+            success: function (data) {                
+                console.log(data);
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);               
+            }
+        });
+    }    
+
+    function deleteUser(uid)
+    {
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        alert("User is deleted!")
+               
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/users/"+uid,
+            type: 'Delete',
+            dataType: 'json',
+            headers: headers,
+            data: {},
+            async: false,
+            success: function (data) {               
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                console.log(err.Message);
+            }
+        });
+    }     
+</script>
+

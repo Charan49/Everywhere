@@ -1,0 +1,155 @@
+html {height: 100%; width: 100%}
+body {font-family: 'Open Sans', sans-serif; height: 100%; color: #494848; width: 100%}
+
+h1, h2, h3, h4 {font-weight: 400;}
+label {font-weight: 400; }
+strong {font-weight: 600; }
+
+.btn, .form-control {border-radius: 3px !important;}
+.form-control {box-shadow: none}
+
+.btn-grey {background-color: #BFBFBF; color: #fff}
+.btn-link.btn-active-sucuss.active {background-color: #77b300; color: #fff}
+.btn-link.btn-active-danger.active {background-color: #f24c4c; color: #fff}
+
+.navbar-admin {background-color: #fff; margin-bottom:0 !important;  }
+
+.dropdown .caret {opacity: .3; border-width: 6px}
+.dropdown-menu > li > a,
+.nav > li > a {line-height: 36px;}
+
+.navbar-admin .nav>li>a {  color: #494848}
+.navbar-admin .nav>li>a:focus, .navbar-admin .nav>li>a:hover {color: #77B300;  background-color: transparent;}
+
+.navbar-main {background-color: #747474}
+.navbar-main .nav>li>a {border-radius: 0; border-left: 1px solid #fff; border-right: 1px solid #fff;  color: #fff; background-image: none; transition: ease-in-out .3s}
+.navbar-main .nav>li:first-child>a {border-left: 0 none}
+.navbar-main .nav>li:last-child>a {border-right: 0 none}
+.navbar-main .nav>li.active>a {  background-color: #77b300;
+    background-image: -moz-linear-gradient(left, #77b300 0%, #add900 100%);
+    background-image: -webkit-linear-gradient(left, #77b300 0%,#add900 100%);
+    background-image: linear-gradient(to right, #77b300 0%,#add900 100%);
+}
+.navbar-main .nav>li>a:focus, .navbar-main .nav>li>a:hover {background-color: #77B300;}
+
+.nav-justified>.dropdown .dropdown-menu {border-radius: 0; width: 100%; padding: 0; border: 0; box-shadow: none; background-color: rgba(112, 112, 112, .7)}
+.nav-justified>.dropdown .dropdown-menu a {background-color: transparent; color: #fff; text-align: center}
+.nav-justified>.dropdown .dropdown-menu a:focus, .nav-justified>.dropdown .dropdown-menu a:hover {background-color: #77B300;}
+
+.navbar-green {background-color: #77B300; color: #fff; margin-bottom: 40px}
+.nav-header {padding-top: 16px; padding-bottom: 16px; text-transform: uppercase}
+
+.navbar-admin .navbar-brand {height: auto; padding-top: 8px; padding-bottom: 8px; font-family: Pacifico; color:#77b300; }
+.navbar-admin .navbar-brand .brand-text{display:inline-block; margin-left:8px;  font-size:32px; vertical-align:-4px}
+
+
+.bg-grey {background-color: #f2f2f2}
+.pt-pb {padding-top: 40px; padding-bottom: 40px;}
+
+.container-max {max-width: 1366px; margin: auto}
+.admin-login {min-height: 280px}
+
+.list-users { position: relative}
+.list-settings,
+.list-users .item{width:100%; background-color: #fff; border-radius: 3px; box-shadow: 0 2px 5px rgba(0, 0, 0, .16); border: 1px solid #fafafa; padding: 16px 8px; display: table; margin-bottom: 16px }
+.list-settings .item,
+
+.modal .list-users .item{border-radius: 0; box-shadow: none; border: none }
+.list-users .item .list-meta{margin-bottom: 8px }
+.list-users .item > div{ display: table-cell; vertical-align: top}
+.list-users .item > .list-img { text-align: center; width: 72px;  height: 72px; padding-left: 16px; padding-right: 16px }
+.list-users .item > .list-body { padding-left: 16px; }
+.list-users .item > .list-img .user-avatar {display: inline-block; position: relative; width: 72px; height: 72px; line-height: 68px; font-size: 40px; text-align: center; border-radius: 50%; border: 1px solid #ccc}
+.list-users .item > .list-img .user-avatar .img-circle{ position: absolute; width: 72px; height: 72px; top: 0; left: 0; border-radius: 50%; border: 1px solid #747474 }
+
+.list-users .item  .btn { margin-top: 10px }
+.list-users .item > .list-cta { text-align: center; width: 96px; padding-left: 16px; padding-right: 16px }
+.list-users .item > .list-cta .cta{ line-height: 48px; }
+
+.list-heading {margin-top: 0}
+.list-des {font-size: 13px}
+
+
+.toolbar .pull-right a{ color: #494848}
+
+.navbar-main .nav-justified>li { display: table-cell; width: 1%; float: none;}
+.navbar-main .nav-justified>li a{ margin-bottom: 0; padding: 10px}
+
+.form-group strong {margin-bottom: 8px; display: block}
+.input-group {margin-bottom: 8px}
+.form-group {margin-bottom: 8px}
+
+.input-group-addon {min-width: 64px; border-radius: 0; text-align: left; border-right: 0px none !important; background-color: #fff !important;}
+
+.alert span {padding-bottom: 10px; }
+.alert strong {float: left; margin-right: 10px}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 7px;
+    line-height: 1;
+    color: black;
+    background-color: #fff
+}
+
+@media (min-width: 768px) {
+
+    .toolbar .pull-right { margin-top: 15px}
+}
+
+@media (max-width: 640px) {
+.pt-pb {padding-top: 20px; padding-bottom: 20px;}
+
+.list-users .item{display: block; text-align: center; padding-bottom:0  }
+.list-users .item > div{ display: block; }
+.list-users .item > .list-body { padding-left: 8px; padding-right: 8px }
+.list-users .item > .list-img { text-align: center; min-width: 112px; margin: auto; }
+.list-users .item > .list-img .user-avatar .img-circle{ width: 56px; height: 56px; }
+
+.list-users .item > .list-meta,
+.list-users .item > .list-cta { display: block; width: 100%;}
+.list-users .item > .list-cta .cta{ line-height: 44px; }
+
+.page-title {text-align: center;}
+.toolbar h3 {margin-top: 0}
+.navbar-collapse .dropdown-toggle {display: none}
+.navbar-collapse .dropdown-menu {display: table; position: static; width: 100%; border: none; box-shadow: none; margin: 0}
+.navbar-collapse .dropdown-menu > li > a {line-height: 44px; text-align: center; border-top: 1px solid #eee}
+
+}
+
+header {z-index:1024;width:100%;}
+
+.url-Button {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    float:right;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.url-Button-remove {
+    display: block;
+    width: 80%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    float: left;
+}

@@ -67,13 +67,15 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="Service" Relationship="Self.FK_Services_UserServices" FromRole="UserServices" ToRole="Services" />
     <NavigationProperty Name="User" Relationship="Self.FK_Users_UserServices" FromRole="UserServices" ToRole="Users" />
-    <Property Name="AccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AccessToken" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="TokenExpiration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="StreamID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="StreamURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="StreamKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="StreamDate" Type="DateTime" Precision="7" />
     <Property Name="PictureURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fbUserID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="LongToken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_Services_UserServices">
     <End Role="Services" Type="Self.Service" Multiplicity="1" />
@@ -117,6 +119,7 @@
       <End Role="User" EntitySet="Users" />
       <End Role="TestUser" EntitySet="TestUsers" />
     </AssociationSet>
+    <EntitySet Name="VideoSwitchURLs" EntityType="InterceptDBModel.VideoSwitchURL" />
   </EntityContainer>
   <EntityType Name="TestUser">
     <Key>
@@ -129,6 +132,9 @@
     <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="User" Relationship="InterceptDBModel.FK_Users_TestUsers" FromRole="TestUser" ToRole="User" />
+    <Property Name="FaceBookID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="IsLinked" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="FK_Users_TestUsers">
     <End Type="InterceptDBModel.User" Role="User" Multiplicity="1" />
@@ -142,4 +148,17 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="VideoSwitchURL">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StreamURL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="VideoGUID" Type="Guid" Nullable="false" />
+  </EntityType>
 </Schema>

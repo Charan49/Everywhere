@@ -16,6 +16,10 @@ namespace Web.Models
         [Required]
         public string firstName;
         public string lastName;
+        public int accountState;
+        public Guid guid;
+
+        public string callbackURL;
     }
 
     public class JUserAdd
@@ -40,6 +44,8 @@ namespace Web.Models
         [Required]
         [StringTrim]
         public string role;
+
+        public string callbackURL;
     }
     public class ForgetPassword
     {
@@ -61,6 +67,8 @@ namespace Web.Models
         [StringLength(18, MinimumLength = 8)]
         [DataType(DataType.Password)]
         public string confirmPassword { get; set; }
+
+        public string email { get; set; }
     }
 
     public class ParamDisable

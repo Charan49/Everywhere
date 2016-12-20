@@ -100,9 +100,7 @@
                                 <h5>
                                     <label for="">Streaming Service URL</label>
                                 </h5>
-                                <select class="form-control">
-                                    <option value="">https://vs1.everywhere.live</option>
-                                    <option value="">https://vs2.everywhere.live</option>
+                                <select class="form-control" id="ddlVideoSwitch">
                                 </select>
                             </div>
 
@@ -212,8 +210,40 @@
         if (sessionStorage.getItem('loginToken') == null)
             location.href = '@Url.Action("Login", "Account")';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
+        getVideoUrl();
         getMembershipServices();
 
+    }
+
+    function getVideoUrl() {
+
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/video/Getvideo/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $.each(data, function (index) {
+                    $('#ddlVideoSwitch').append('<option value="">' + data[index].url + '</option>');
+
+                });
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
     }
 
     function getServices() {
@@ -225,7 +255,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/service/",
+            url: "http://web-test.everywhere.live:8081/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -271,7 +301,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/service_membership/",
+            url: "http://web-test.everywhere.live:8081/api/v1/service_membership/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -343,7 +373,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://ws.everywhere.live:8080/api/v1/signout/",
+            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -384,7 +414,7 @@
 
             if (confirmlink)
             {
-                var url = "http://ws.everywhere.live:8080/api/v1/service_membership/" +id;
+                var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/" +id;
 
         var headers = {};
         if (token) {
@@ -436,7 +466,7 @@
             var name = 'Younow';
             var token = sessionStorage.getItem('loginToken');
             var headers = {};
-            var url = "http://ws.everywhere.live:8080/api/v1/livestream/start/" + name;
+            var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start/" + name;
             if (token) {
                 headers.Authorization = 'Bearer ' + token;
             }
@@ -506,7 +536,7 @@
     else        {
             var token = sessionStorage.getItem('loginToken');
             var headers = {};
-            var url = "http://ws.everywhere.live:8080/api/v1/livestream/start/" + name;
+            var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start/" + name;
             if (token) {
                 headers.Authorization = 'Bearer ' + token;
             }
@@ -561,7 +591,7 @@
 
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
-        var url = "http://ws.everywhere.live:8080/api/v1/livestream/start";
+        var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start";
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }

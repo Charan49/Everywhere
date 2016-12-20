@@ -13,6 +13,8 @@ namespace Web.Models.Json
         [EmailAddress]
         public string email { get; set; }
 
+        public string callbackURL { get; set; }
+
 
     }
 
