@@ -9,6 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Everywhere | Profile Settings </title>
+   
+
 </head>
 <body>
     <section class="page-content">
@@ -32,7 +34,7 @@
                         <div class="list-users list-settings">
                             <div class="item">
                                 <div class="list-img">
-                                    <span class="user-avatar"></span>
+                                    <span class="user-avatar" id="uFirst" ></span>
                                 </div>
                                 <div class="list-body">
                                     <br />
@@ -112,9 +114,10 @@
 </html>
 <script type="text/javascript">
 
+  
 
     window.onload = function () {
-        
+        $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
         var getEmail = sessionStorage.getItem('email');
         getUser(getEmail);
     }
@@ -275,11 +278,11 @@ function getUser(email) {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-
+            var str = data[0].firstName;
+            $('#uFirst').text(str.substring(0, 1));
             $('#uName').val(data[0].firstName + ' ' + data[0].lastName);
             $('#uHidden').val(data[0].id);
             $('#uEmail').val(data[0].email);
-
 
             console.log(name);
         }, error: function (xhr, status, error) {

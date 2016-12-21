@@ -12,7 +12,7 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"> </script>
-    
+   
 </head>
 <body>
     
@@ -60,13 +60,47 @@
 </html>
 <script type="text/javascript">
 
+ 
     window.onload = function () {
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
         getVideoUrl();
       
     }
 
-    
+    function validateEmail() {
+        debugger;
+        var chk = true;
+        var re = new RegExp("^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.){1}([0-9A-Za-z]+\.)");
+
+        for (var i = 0; i <= $('.url-Button').length - 1; i++) {
+
+            var m = re.exec($('#tb' + i).val());
+            if (m == null) {
+
+                alert("Please enter the valid URL at Row: " + i);
+                chk = false;
+            }
+
+        }
+
+        return chk;
+    }
+
+    function saveData() {
+       
+        if (validateEmail()) {
+            for (var i = 0; i <= $('.url-Button').length - 1; i++) {
+
+                var id = $('#' + i).val();
+                if (id == undefined)
+                    id = 0;
+                saveUrl($('#tb' + i).val(), id);
+                iCnt++;
+            }
+        }
+
+    }
+
     var iCnt = 0;
     function getVideoUrl() {
 
@@ -123,40 +157,7 @@
                 window.location.href = url;
             }
         });
-    }
-
-   
-    function saveData() {
-            for (var i = 0; i <= $('.url-Button').length - 1; i++) {
-
-                var id = $('#' + i).val();
-                if (id == undefined)
-                    id = 0;
-                saveUrl($('#tb' + i).val(), id);
-                iCnt++;
-        }
-
-    }
-
-    function validateEmail() {
-
-        debugger;
-        var chk = true;
-        var re = new RegExp("^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.|https:\/\/ws.|http:\/\/ws.){1}([0-9A-Za-z]+\.)");
-
-        for (var i = 0; i <= $('.url-Button').length - 1; i++) {
-           
-            var str = re.exec($('#tb' + i).val());
-            if (str == null) {
-
-                alert("Please enter the valid URL at Row: " + i);
-                chk = false;
-            }
-
-        }
-
-        return chk;
-    }
+    }    
 
     function saveUrl(urldata,uid) {
         
@@ -189,7 +190,7 @@
         /// Add or Remove URL
 
     function addRows() {
-      
+        
         $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + $('.url-Button').length + ' /></div>');
             iCnt = iCnt + 1;
     }
