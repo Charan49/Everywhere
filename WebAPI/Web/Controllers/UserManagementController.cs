@@ -173,14 +173,12 @@ namespace Web.Controllers
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
             }
 
-            //Update Settings
-            if (String.Compare(user.Email, juser.email, true) != 0)
-            {
-                //Check if the Email Address is Available
+            //Check if the Email Address is Available
                 int count = await db.Users.CountAsync(x => String.Compare(x.Email, juser.email, true) == 0 && x.AccountState != (byte)Models.Enums.AccountState.Deleted);
 
                 if (count != 0)
                 {
+                    user.LastName = juser.lastName;
                     user.FirstName = juser.firstName;
                     user.ModifiedBy = this.ApiUser().Email;
                     user.ModifiedDate = DateTime.UtcNow;
@@ -190,6 +188,7 @@ namespace Web.Controllers
                 }
                 else
                 {
+                   
                     user.Email = juser.email;
                     
                     if (!String.IsNullOrEmpty(juser.lastName))
@@ -218,7 +217,7 @@ namespace Web.Controllers
                     user.ModifiedDate = DateTime.Now;
                     user.ConfirmationCode = vCode;
                 }
-                }
+                
 
             
 
