@@ -97,9 +97,8 @@
                                 <h5>
                                     <label for="">Streaming Service URL</label>
                                 </h5>
-                                <select class="form-control">
-                                    <option value="">https://vs1.everywhere.live</option>
-                                    <option value="">https://vs2.everywhere.live</option>
+                                <select class="form-control" id="ddlVideoSwitch">
+                                    
                                 </select>
                             </div>
 
@@ -320,7 +319,7 @@
 
         $("#youtubetestUserbtn").hide();
         $("#youtubetestUserbtnsm").hide();
-
+        getVideoUrl();
         getMembershipServices();
         $('#username').text("");
         $('#password').text("");
@@ -345,6 +344,38 @@
 
 
     }
+
+    function getVideoUrl() {
+
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+
+        $.ajax({
+            url: "http://web-test.everywhere.live:8081/api/v1/video/Getvideo/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $.each(data, function (index) {
+                    $('#ddlVideoSwitch').append('<option value="">' + data[index].url + '</option>');
+
+                });
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+    }
+
     function RedirectToYounow()
     {
         $("#younow").show();

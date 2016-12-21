@@ -87,8 +87,9 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 
-                $.each(data, function (index) {                    
-                    $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + index + ' value=' + data[index].url + ' /><input type="hidden" id=' + index + ' value=' + data[index].id + ' ></div>');
+                $.each(data, function (index) {
+                    
+                    $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + index + ' value="' + data[index].url + '" /><input type="hidden" id=' + index + ' value=' + data[index].id + ' ></div>');
 
                 });
             },
@@ -128,7 +129,7 @@
    
     function saveData() {
             for (var i = 0; i <= $('.url-Button').length - 1; i++) {
-
+                debugger;
                 var id = $('#' + i).val();
                 if (id == undefined)
                     id = 0;
