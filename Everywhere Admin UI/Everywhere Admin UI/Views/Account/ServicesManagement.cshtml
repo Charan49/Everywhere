@@ -137,7 +137,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            url: "http://localhost:8577/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -164,7 +164,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service/",
+            url: "http://localhost:8577/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -198,7 +198,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service/" + uname,
+            url: "http://localhost:8577/api/v1/service/" + uname,
             type: "GET",
             crossDomain: true,
             data: {},
@@ -232,7 +232,7 @@
 
         
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service/" + uid + "/",
+            url: "http://localhost:8577/api/v1/service/" + uid + "/",
             type: "PUT",
             dataType: "json",
             headers: headers,

@@ -584,6 +584,6 @@ F:\Final Everywhere\WebAPI\Web\bin\ko\System.Spatial.resources.dll
 F:\Final Everywhere\WebAPI\Web\bin\ru\System.Spatial.resources.dll
 F:\Final Everywhere\WebAPI\Web\bin\zh-Hans\System.Spatial.resources.dll
 F:\Final Everywhere\WebAPI\Web\bin\zh-Hant\System.Spatial.resources.dll
-F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.dll
 F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.pdb
+F:\Final Everywhere\WebAPI\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache

@@ -110,7 +110,7 @@
             sessionStorage.setItem('signUpEmail', email);
             
             $.ajax({
-                url: "http://web-test.everywhere.live:8081/api/v1/authenticate/",
+                url: "http://localhost:8577/api/v1/authenticate/",
                 type: "POST",
                 crossDomain: true,
                 data: JSON.stringify({ 'email':email, 'Password': password, 'key': key, 'uuid': uuid }),

@@ -155,7 +155,7 @@
         var eMail = $('#auEmail').val();
         var cURL = $('#RedirectToConfirm').val();
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/ForgotPassword/",
+            url: "http://localhost:8577/api/v1/ForgotPassword/",
             type: "POST",
             dataType: "json",
             headers: headers,
@@ -187,7 +187,7 @@
         var eMail = $('#auEmail').val(); 
         var cURL = $('#RedirectToConfirm').val();
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid+"/",
+            url: "http://localhost:8577/api/v1/users/" + uid+"/",
             type: "PUT",           
             dataType: "json",
             headers: headers,
@@ -214,7 +214,7 @@
     }    
   
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/type/" + "User",
+            url: "http://localhost:8577/api/v1/users/type/" + "User",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -276,7 +276,7 @@
     {
         var services = "";
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service_membership/" + data[index].guid + "/",
+            url: "http://localhost:8577/api/v1/service_membership/" + data[index].guid + "/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -319,7 +319,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid,
+            url: "http://localhost:8577/api/v1/users/" + uid,
             type: "GET",
             crossDomain: true,
             data: {},
@@ -343,7 +343,7 @@
                 }
 
                 $.ajax({
-                    url: "http://web-test.everywhere.live:8081/api/v1/service_membership/" + data[0].guid + "/",
+                    url: "http://localhost:8577/api/v1/service_membership/" + data[0].guid + "/",
                     type: "GET",
                     crossDomain: true,
                     data: {},
@@ -399,7 +399,7 @@
         alert("User is successfully " + get);
 
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/disable",
+            url: "http://localhost:8577/api/v1/users/disable",
             type: 'POST',
             dataType: 'json',
             headers: headers,
@@ -426,7 +426,7 @@
         alert("User is deleted!")
                
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/"+uid,
+            url: "http://localhost:8577/api/v1/users/"+uid,
             type: 'Delete',
             dataType: 'json',
             headers: headers,

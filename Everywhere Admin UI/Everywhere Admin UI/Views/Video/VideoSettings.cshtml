@@ -77,7 +77,7 @@
         }
 
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/video/Getvideo/",
+            url: "http://localhost:8577/api/v1/video/Getvideo/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -107,7 +107,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            url: "http://localhost:8577/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -133,7 +133,10 @@
                 var id = $('#' + i).val();
                 if (id == undefined)
                     id = 0;
-                saveUrl($('#tb' + i).val(), id);
+                if (i == 0 && $('#tb' + i).val() == "")
+                    continue;
+                else
+                    saveUrl($('#tb' + i).val(), id);
                 iCnt++;
         }
 
@@ -169,7 +172,7 @@
 
 
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/video/addvideoswitch/",
+            url: "http://localhost:8577/api/v1/video/addvideoswitch/",
             type: "POST",
             data:JSON.stringify({ 'url': urldata, 'id': uid }),
             dataType: "json",

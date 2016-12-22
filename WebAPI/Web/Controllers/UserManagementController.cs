@@ -53,8 +53,8 @@ namespace Web.Controllers
         public async Task<IEnumerable<JUser>> GetAdminUsers(string userType)
         {
             var users = await db.Users.Where(x => x.UserType == userType).Select(x => new JUser { id = x.UserID, email = x.Email, firstName = x.FirstName, lastName = x.LastName, accountState = x.AccountState, guid = x.UserGUID }).ToListAsync();
-            if(userType.Equals("Admin"))
-                users.Remove(users.Find(s=>s.email.Equals(this.ApiUser().Email)));
+             if(userType.Equals("Admin"))
+                users.Remove(users.FirstOrDefault(s=>s.email.Equals(this.ApiUser().Email)));
             if (users.Count > 0)
                 return users;
             throw new ApiDataException(1000, "Users not found", HttpStatusCode.NotFound);
@@ -82,11 +82,11 @@ namespace Web.Controllers
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
             }
 
-            if (Enum.IsDefined(typeof(Models.Enums.UserType), newUser.role))
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Role Not Supported");
-                throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Role Not Supported" };
-            }
+            //if (Enum.IsDefined(typeof(Models.Enums.UserType), newUser.role))
+            //{
+            //    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Role Not Supported");
+            //    throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Role Not Supported" };
+            //}
 
 
             //Check if Already Exists
