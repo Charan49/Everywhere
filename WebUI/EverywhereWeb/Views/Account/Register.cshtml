@@ -130,10 +130,15 @@
     </div>
 </section>
 <script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
     //document.getElementById("btnSignUP").addEventListener("click", callRegisterAPI, false);
+    var apiUrl = "";
+    $(document).ready(function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
 
+    });
     function callRegisterAPI(e) {
 
             var name = $('#ufName').val()+" "+$('#ulName').val();
@@ -144,7 +149,7 @@
             var callbackURL = "http://localhost:9178/Account/VerifyCode";
 
             $.ajax({
-                url: "http://web-test.everywhere.live:8081/api/v1/user/register/",
+                url: apiUrl+"/api/v1/user/register/",
                 type: "POST",
                 crossDomain: true,
                 data: JSON.stringify({ 'Name': name, 'Email': email, 'Password': password, 'DOB': dob, 'Location': '', 'url':callbackURL }),

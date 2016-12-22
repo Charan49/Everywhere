@@ -137,10 +137,12 @@
 </html>
 
 <script type="text/javascript">
-
+    var apiUrl = "";
     window.onload = function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
-    getUsers();
+        getUsers();
+
     }
 
     function resetUser() {
@@ -149,13 +151,13 @@
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
-       
+
         alert("Email has been sent!!!");
-        
+
         var eMail = $('#auEmail').val();
         var cURL = $('#RedirectToConfirm').val();
         $.ajax({
-            url: "http://localhost:8577/api/v1/ForgotPassword/",
+            url: apiUrl+"/api/v1/ForgotPassword/",
             type: "POST",
             dataType: "json",
             headers: headers,
@@ -181,40 +183,40 @@
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
-       
-        var name = $('#auName').val();     
-        var lastName = $('#auLast').val();     
-        var eMail = $('#auEmail').val(); 
+
+        var name = $('#auName').val();
+        var lastName = $('#auLast').val();
+        var eMail = $('#auEmail').val();
         var cURL = $('#RedirectToConfirm').val();
         $.ajax({
-            url: "http://localhost:8577/api/v1/users/" + uid+"/",
-            type: "PUT",           
+            url: apiUrl+"/api/v1/users/" + uid+"/",
+            type: "PUT",
             dataType: "json",
             headers: headers,
             crossDomain: true,
             data: JSON.stringify({ 'id': uid, 'email': eMail, 'firstName': name, 'lastName': lastName, 'accountState': '21', 'callbackURL': 'http://web.everywhere.live' + cURL }),
             async: false,
             contentType: "application/json; charset=utf-8",
-             success: function (data){ 
+             success: function (data){
                 console.log(name);
              }, error: function (xhr, status, error) {
                  var err = eval("(" + xhr.responseText + ")");
                  console.log(err.Message);
              }
-           
+
         });
-    }      
+    }
 
     function getUsers() {
-        
+
     var token = sessionStorage.getItem('loginToken');
     var headers = {};
     if (token) {
         headers.Authorization = 'Bearer ' + token;
-    }    
-  
+    }
+
         $.ajax({
-            url: "http://localhost:8577/api/v1/users/type/" + "User",
+            url: apiUrl+"/api/v1/users/type/" + "User",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -223,20 +225,20 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-              
+
                 $.each(data, function (index) {
 
                     var str = data[index].firstName;
                     var id = 0;
                     var enable = "Disabled";
-                   
+
                     if (data[index].accountState == 21) {
                         enable = "Enabled";
                     }
                     else {
-                        enable = "Disabled";        
+                        enable = "Disabled";
                     }
-                    
+
                     getUserList(data, str, index, headers, enable);
                 });
             return false;
@@ -259,7 +261,7 @@
                                     '<div class="list-body">' +
                                        '<h4 class="list-heading">' + data[index].firstName + ' ' + data[index].lastName + '</h4>' +
                                        '<h5 class="list-heading">' + data[index].email + '</h5>' +
-                                        '<div class="list-meta">' +                                    
+                                        '<div class="list-meta">' +
                                           '<span class="btn btn-default btn-sm" id="' + data[index].id + '" onclick="updateEnable(this.id)">' +
                                               '<b> User Accounts:</b>' +
                                           '  <strong class="text-success"  >' + enable + '</strong>' +
@@ -275,8 +277,9 @@
     function getLinkedServices(data, index, headers)
     {
         var services = "";
+
         $.ajax({
-            url: "http://localhost:8577/api/v1/service_membership/" + data[index].guid + "/",
+            url: apiUrl+"/api/v1/service_membership/" + data[index].guid + "/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -286,7 +289,7 @@
             contentType: "application/json; charset=utf-8",
             success: function (sdata) {
                 $.each(sdata, function (sindex) {
-                    
+
                     services+=sdata[sindex].name+', ';
                 });
                 $('#linkedServices').append(services);
@@ -306,20 +309,20 @@
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
-        
-                                    
+
+
 
     }
 
     function fillData(uid) {
-      
+
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://localhost:8577/api/v1/users/" + uid,
+            url: apiUrl+"/api/v1/users/" + uid,
             type: "GET",
             crossDomain: true,
             data: {},
@@ -327,9 +330,9 @@
             headers: headers,
             async: false,
             contentType: "application/json; charset=utf-8",
-            
-            success: function (data) {               
-               
+
+            success: function (data) {
+
                 $("#auName").val(data[0].firstName);
                 $("#auEmail").val(data[0].email);
                 $("#auLast").val(data[0].lastName);
@@ -343,7 +346,7 @@
                 }
 
                 $.ajax({
-                    url: "http://localhost:8577/api/v1/service_membership/" + data[0].guid + "/",
+                    url: apiUrl+"/api/v1/service_membership/" + data[0].guid + "/",
                     type: "GET",
                     crossDomain: true,
                     data: {},
@@ -352,15 +355,15 @@
                     async: false,
                     contentType: "application/json; charset=utf-8",
                     success: function (sdata) {
-                        
+
                         for (i = 0; i < sdata.length; i++) {
                             $('#UserLinkList').append(
                                 '<input type="text" class="form-control" value="' + sdata[i].name.toLowerCase() + '" readonly >'
                            // $("#" + data[i].name.toLowerCase() + "link").val(data[i].name)
                             );
                         }
-                        
-                                                                
+
+
                     }
              , error: function (xhr, status, error) {
                  var err = eval("(" + xhr.responseText + ")");
@@ -373,8 +376,8 @@
     }
 
 
-    function updateEnable(uid) {        
-                
+    function updateEnable(uid) {
+
         var text = $("#" + uid).find('strong').text();
         var enable = false;
         var get = "";
@@ -399,21 +402,21 @@
         alert("User is successfully " + get);
 
         $.ajax({
-            url: "http://localhost:8577/api/v1/users/disable",
+            url: apiUrl+"/api/v1/users/disable",
             type: 'POST',
             dataType: 'json',
             headers: headers,
             data: { 'id': uid, 'disable': enable, 'notify': 'Yes' },
             async: false,
-            success: function (data) {                
+            success: function (data) {
                 console.log(data);
             },
             error: function (xhr, status, error) {
                 var err = eval("(" + xhr.responseText + ")");
-                console.log(err.Message);               
+                console.log(err.Message);
             }
         });
-    }    
+    }
 
     function deleteUser(uid)
     {
@@ -424,21 +427,21 @@
         }
 
         alert("User is deleted!")
-               
+
         $.ajax({
-            url: "http://localhost:8577/api/v1/users/"+uid,
+            url: apiUrl+"/api/v1/users/"+uid,
             type: 'Delete',
             dataType: 'json',
             headers: headers,
             data: {},
             async: false,
-            success: function (data) {               
+            success: function (data) {
             },
             error: function (xhr, status, error) {
                 var err = eval("(" + xhr.responseText + ")");
                 console.log(err.Message);
             }
         });
-    }     
+    }
 </script>
 

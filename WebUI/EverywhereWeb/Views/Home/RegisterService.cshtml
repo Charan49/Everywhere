@@ -216,7 +216,7 @@
 </script>
 
 <script type="text/javascript">
-
+    var apiUrl = "";
     var fbObj = null;
     var sID = null;
     var sName = null;
@@ -310,7 +310,7 @@
 
 
     window.onload = function () {
-
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
         if (sessionStorage.getItem('loginToken') == null)
             location.href = '@Url.Action("Login", "Account")';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
@@ -354,7 +354,7 @@
         }
 
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/video/Getvideo/",
+            url: apiUrl+"/api/v1/video/Getvideo/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -396,7 +396,7 @@
         }
         $.ajax({
 
-            url: "http://web-test.everywhere.live:8081/api/v1/TestUsers/",
+            url: apiUrl+"/api/v1/TestUsers/",
 
             type: "GET",
             data: {},
@@ -456,7 +456,7 @@
             var name = 'Younow';
             var token = sessionStorage.getItem('loginToken');
             var headers = {};
-            var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start/" + name;
+            var url = apiUrl+"/api/v1/livestream/start/" + name;
             if (token) {
                 headers.Authorization = 'Bearer ' + token;
             }
@@ -521,7 +521,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service/",
+            url: apiUrl+"/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -615,7 +615,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service_membership/",
+            url: apiUrl+"/api/v1/service_membership/",
             type: "GET",
             data: {},
             dataType: "json",
@@ -675,9 +675,9 @@
         $("#youtubetestUserbtnsm").hide();
         var token = sessionStorage.getItem('loginToken');
 
-        var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/AddServiceMembership/";
+        var url = apiUrl+"/api/v1/service_membership/AddServiceMembership/";
 
-        //var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/AddServiceMembership/";
+        //var url = apiUrl+"/api/v1/service_membership/AddServiceMembership/";
 
         if (service == 'Facebook') {
             sID = sIDFB;
@@ -733,7 +733,7 @@
         sName = sNameYT;
         }
         var token = sessionStorage.getItem('loginToken');
-        var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/" + sID;
+        var url = apiUrl+"/api/v1/service_membership/" + sID;
 
 
 
@@ -800,7 +800,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            url: apiUrl+"/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},

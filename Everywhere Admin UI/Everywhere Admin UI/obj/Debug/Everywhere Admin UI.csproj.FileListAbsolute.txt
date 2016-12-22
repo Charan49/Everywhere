@@ -240,6 +240,6 @@ F:\Final Everywhere\Everywhere Admin UI\Everywhere Admin UI\bin\Microsoft.Owin.S
 F:\Final Everywhere\Everywhere Admin UI\Everywhere Admin UI\bin\Microsoft.Owin.Security.Google.xml
 F:\Final Everywhere\Everywhere Admin UI\Everywhere Admin UI\bin\Microsoft.Owin.Security.Twitter.xml
 F:\Final Everywhere\Everywhere Admin UI\Everywhere Admin UI\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-F:\Final Everywhere\Everywhere Admin UI\Everywhere Admin UI\obj\Debug\Everywhere Admin UI.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\Everywhere Admin UI\Everywhere Admin UI\obj\Debug\Everywhere Admin UI.dll
 F:\Final Everywhere\Everywhere Admin UI\Everywhere Admin UI\obj\Debug\Everywhere Admin UI.pdb
+F:\Final Everywhere\Everywhere Admin UI\Everywhere Admin UI\obj\Debug\Everywhere Admin UI.csprojResolveAssemblyReference.cache

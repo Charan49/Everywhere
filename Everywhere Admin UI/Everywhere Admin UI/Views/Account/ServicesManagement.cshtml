@@ -124,8 +124,9 @@
 </html>
 
 <script type="text/javascript">
-
+    var apiUrl = "";
     window.onload = function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
     getServices();
     }
@@ -137,7 +138,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://localhost:8577/api/v1/signout/",
+            url: apiUrl+"/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -164,7 +165,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://localhost:8577/api/v1/service/",
+            url: apiUrl+"/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -173,7 +174,7 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                
+
                 $.each(data, function (index) {
                     $('#UserList').append(
                     '<div class="item">' + '<div class="list-body">'
@@ -191,14 +192,14 @@
     }
 
     function fillData(uname) {
-        
+
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://localhost:8577/api/v1/service/" + uname,
+            url: apiUrl+"/api/v1/service/" + uname,
             type: "GET",
             crossDomain: true,
             data: {},
@@ -207,7 +208,7 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                
+
                 $("#auName").val(data[0].name);
                 $("#hideId").val(data[0].ID);
                 $("#accId").val(data[0].ID);
@@ -230,9 +231,9 @@
         var id = $('#accId').val();
 
 
-        
+
         $.ajax({
-            url: "http://localhost:8577/api/v1/service/" + uid + "/",
+            url: apiUrl+"/api/v1/service/" + uid + "/",
             type: "PUT",
             dataType: "json",
             headers: headers,

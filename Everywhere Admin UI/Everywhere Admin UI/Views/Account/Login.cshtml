@@ -88,11 +88,11 @@
     </div>
 </section>
 <footer></footer>
-
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
-        
+
         try { localStorage.test = 2; } catch (e) {
             $('#rForm').html("<p>Error while storing the session token. Could be due to Private Browsing mode. Please disable Private Browsing mode and try again</p>");
         }
@@ -101,16 +101,16 @@
 
     function callLoginAPI(e) {
 
-        ;
+        debugger;
         //$('#btnSignIn').click(function (e) {
             var email = $('#uEmail').val();
             var password = $('#uPass').val();
             var key = 'ADMIN_LOGIN_KEY';
             var uuid = '00001310-0000-0000-1012-000000000000';
             sessionStorage.setItem('signUpEmail', email);
-            
+            var apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
             $.ajax({
-                url: "http://localhost:8577/api/v1/authenticate/",
+                url: apiUrl+"/api/v1/authenticate/",
                 type: "POST",
                 crossDomain: true,
                 data: JSON.stringify({ 'email':email, 'Password': password, 'key': key, 'uuid': uuid }),
@@ -143,7 +143,7 @@
                        // alert('Your User Name or password is incorrect!!!')
                         $('#validSummary').show();
                     }
-                     
+
                 }
             });
         //});

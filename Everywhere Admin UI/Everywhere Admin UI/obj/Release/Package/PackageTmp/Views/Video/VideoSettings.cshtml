@@ -11,8 +11,8 @@
     <title>Everywhere | Video Switch Settings</title>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js">
-    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"> </script>
+    
 </head>
 <body>
     
@@ -87,8 +87,9 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 
-                $.each(data, function (index) {                    
-                    $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + index + ' value=' + data[index].url + ' /><input type="hidden" id=' + index + ' value=' + data[index].id + ' ></div>');
+                $.each(data, function (index) {
+                    
+                    $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + index + ' value="' + data[index].url + '" /><input type="hidden" id=' + index + ' value=' + data[index].id + ' ></div>');
 
                 });
             },
@@ -125,20 +126,40 @@
         });
     }
 
-
-    function saveData()
-    {
-               
-
-        for (var i = 0; i <= $('.url-Button').length-1; i++) {
-            
-            var id=$('#'+i).val();
-            if(id==undefined)
-                id=0;
-            saveUrl($('#tb' + i).val(), id);
-            iCnt++;
+   
+    function saveData() {
+            for (var i = 0; i <= $('.url-Button').length - 1; i++) {
+                debugger;
+                var id = $('#' + i).val();
+                if (id == undefined)
+                    id = 0;
+                if (i == 0 && $('#tb' + i).val() == "")
+                    continue;
+                else
+                    saveUrl($('#tb' + i).val(), id);
+                iCnt++;
         }
 
+    }
+
+    function validateEmail() {
+
+        debugger;
+        var chk = true;
+        var re = new RegExp("^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.|https:\/\/ws.|http:\/\/ws.){1}([0-9A-Za-z]+\.)");
+
+        for (var i = 0; i <= $('.url-Button').length - 1; i++) {
+           
+            var str = re.exec($('#tb' + i).val());
+            if (str == null) {
+
+                alert("Please enter the valid URL at Row: " + i);
+                chk = false;
+            }
+
+        }
+
+        return chk;
     }
 
     function saveUrl(urldata,uid) {
@@ -172,7 +193,7 @@
         /// Add or Remove URL
 
     function addRows() {
-        
+      
         $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + $('.url-Button').length + ' /></div>');
             iCnt = iCnt + 1;
     }

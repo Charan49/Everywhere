@@ -86,12 +86,17 @@
 </section>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
+    var apiUrl = "";
+    window.onload = function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
+
+    }
     function confirmEmail(e) {
 
         //$('#btnSignIn').click(function (e) {
         var id = $('#txtCode').val();
         $.ajax({
-            url: "http://localhost:8577/api/v1/ConfirmEmail/",
+            url: apiUrl+"/api/v1/ConfirmEmail/",
             type: "POST",
             crossDomain: true,
             data: JSON.stringify({ 'code': id }),
@@ -126,7 +131,7 @@
         //$('#btnSignIn').click(function (e) {
         var email = sessionStorage.getItem('signUpEmail');
         $.ajax({
-            url: "http://localhost:8577/api/v1/ResendVerificationEmail/"+email+"/",
+            url: apiUrl+"/api/v1/ResendVerificationEmail/"+email+"/",
             type: "POST",
             crossDomain: true,
             data: { 'email': email },

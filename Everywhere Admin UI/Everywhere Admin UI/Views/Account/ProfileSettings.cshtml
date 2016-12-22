@@ -114,9 +114,10 @@
 </html>
 <script type="text/javascript">
 
-  
 
+    var apiUrl = "";
     window.onload = function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
         var getEmail = sessionStorage.getItem('email');
         getUser(getEmail);
@@ -129,7 +130,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://localhost:8577/api/v1/signout/",
+            url: apiUrl+"/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -170,7 +171,7 @@ function updateEnable(uid) {
         }
 
         $.ajax({
-            url: "http://localhost:8577/api/v1/users/disable",
+            url: apiUrl+"/api/v1/users/disable",
             type: 'POST',
             dataType: 'json',
             headers: headers,
@@ -201,7 +202,7 @@ function resetUser() {
     var eMail = $('#uEmail').val();
 
     $.ajax({
-        url: "http://localhost:8577/api/v1/ForgotPassword/",
+        url: apiUrl+"/api/v1/ForgotPassword/",
         type: "POST",
         dataType: "json",
         headers: headers,
@@ -239,7 +240,7 @@ function updateUser(uid) {
 
 
     $.ajax({
-        url: "http://localhost:8577/api/v1/users/" + uid,
+        url: apiUrl+"/api/v1/users/" + uid,
         type: "PUT",
         dataType: "json",
         headers: headers,
@@ -267,9 +268,9 @@ function getUser(email) {
     }
 
    // var eMail = $('#uEmail').val();
-    
+
     $.ajax({
-        url: "http://localhost:8577/api/v1/users/getId/" + email + "/",
+        url: apiUrl+"/api/v1/users/getId/" + email + "/",
         type: "GET",
         dataType: "json",
         headers: headers,

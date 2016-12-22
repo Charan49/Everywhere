@@ -205,8 +205,10 @@
 <script src="~/Scripts/moment.js"></script>
 <script type="text/javascript">
     var obj = null;
+    var apiUrl = "";
 
     window.onload = function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
         if (sessionStorage.getItem('loginToken') == null)
             location.href = '@Url.Action("Login", "Account")';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
@@ -224,7 +226,7 @@
         }
 
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/video/Getvideo/",
+            url: apiUrl+"/api/v1/video/Getvideo/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -255,7 +257,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service/",
+            url: apiUrl+"/api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -301,7 +303,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service_membership/",
+            url: apiUrl+"/api/v1/service_membership/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -373,7 +375,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            url: apiUrl+"/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -414,7 +416,7 @@
 
             if (confirmlink)
             {
-                var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/" +id;
+                var url = apiUrl+"/api/v1/service_membership/" +id;
 
         var headers = {};
         if (token) {
@@ -466,7 +468,7 @@
             var name = 'Younow';
             var token = sessionStorage.getItem('loginToken');
             var headers = {};
-            var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start/" + name;
+            var url = apiUrl+"/api/v1/livestream/start/" + name;
             if (token) {
                 headers.Authorization = 'Bearer ' + token;
             }
@@ -536,7 +538,7 @@
     else        {
             var token = sessionStorage.getItem('loginToken');
             var headers = {};
-            var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start/" + name;
+            var url = apiUrl+"/api/v1/livestream/start/" + name;
             if (token) {
                 headers.Authorization = 'Bearer ' + token;
             }
@@ -591,7 +593,7 @@
 
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
-        var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start";
+        var url = apiUrl+"/api/v1/livestream/start";
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
