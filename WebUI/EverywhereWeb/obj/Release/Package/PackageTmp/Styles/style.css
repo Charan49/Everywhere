@@ -117,9 +117,7 @@ nav.navbar .navbar-right {padding-top: 10px;}
 .nav .open>a, .nav .open>a:focus, .nav .open>a:hover,
 .nav>li>a:focus, .nav>li>a:hover { background-color: transparent; }
 
-
 /*NAV CSS END*/
-
 
 
 /*Secure Section CSS START*/
@@ -152,9 +150,7 @@ nav.navbar .navbar-right {padding-top: 10px;}
 
 /*CMS Page CSS Start*/
 
-
 .content-section { padding-top: 30px; padding-bottom: 30px}
-
 
 .img-blue img{background-color: #69adb8; display: block; max-width: 100%; margin: auto}
 
@@ -192,7 +188,43 @@ label {font-weight: 400}
     .control-success label span { border-color:  #77B300; }
 	.control-success label input:checked ~ span { border-color:  #77B300; background-color: #77B300; }
 	.control-success label input:checked ~ span:after { color: #fff }
+    
+    #cspio-headline {
+    font-family: 'Pacifico';
+    font-weight: 400;
+  
+    font-size: 42px;
+    color: #ffffff;
+    line-height: 1.00em;
+    margin-top: 4px;
+}
 
+#navbar-header ul , .navbar-header ul,
+{
+   list-style: none !important; 
+}
+
+#navbar-header ul li , .navbar-header ul li,
+{
+    display:table-cell;  list-style: none !important; 
+}
+#navbar-header ul li a
+{
+    vertical-align:middle;
+    text-align:center;
+}
+
+#cspio-credit {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 7px;
+    line-height: 1;
+    color: black;
+    background-color: #fff
+}
 /*Custom switch*/
 
 .switch {  max-width: 48px;   }
@@ -300,7 +332,10 @@ footer {border-top: 1px solid #77B300;padding: 2em 0; display: none}
 }
 
 @media(min-width:992px){
-.modal-lg .modal-content{width: 750px;}
+.modal-lg .modal-content{width: 750px; margin:auto;}
+ 
+
+
 
 .panel {margin-bottom: 20px}
 .panel-body { padding: 20px; }
@@ -308,7 +343,7 @@ footer {border-top: 1px solid #77B300;padding: 2em 0; display: none}
 
 .text-justify.small {padding-right: 15px; border-right:1px solid #ddd }
 
-nav.navbar .navbar-center  {margin-top: 25px; margin-left: 31%;}
+nav.navbar .navbar-center  {margin-top: 25px;}
 nav.navbar .navbar-right  {margin-top: 15px;}
 .page-content {padding-top: 112px;  }
 .bg-opac-dark { padding-bottom: 56px;  }

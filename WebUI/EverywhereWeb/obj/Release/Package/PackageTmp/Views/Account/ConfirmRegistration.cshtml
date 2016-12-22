@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Confirm Email";
+﻿
+@{
+    ViewBag.Title = "Registration Confirmed";
 }
 
 <header>
@@ -31,7 +32,7 @@
                 </ul>
 
                 <div class="navbar-right">
-                    <p class="navbar-text">Don't have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Register", "Account") + "'");">Get Started</button>
+                    <p class="navbar-text">Don't have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Register", "Account") + "' ");">Get Started</button>
                 </div>
             </div><!-- /.navbar-collapse -->
         </div>
@@ -45,7 +46,7 @@
                 <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
 
                     <div class="well well-lg well-white row">
-                        @using (Html.BeginForm("ConfirmEmail", "Account", FormMethod.Post, new { role = "form", @class = "col-sm-10 col-sm-offset-1 form-group-lg", id = "rForm", style = "height:400px;" }))
+                        @using (Html.BeginForm("ForgotPasswordConfirmation", "Account", FormMethod.Post, new { role = "form", @class = "col-sm-10 col-sm-offset-1 form-group-lg", id = "rForm", style = "height:400px;" }))
                         {
                             @Html.AntiForgeryToken()
                             <hgroup class="title">
@@ -53,7 +54,7 @@
                             </hgroup>
                             <div>
                                 <p>
-                                    User registration is completed Successfully! Please @Html.ActionLink("click here to log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+                                    User registration is completed Successfully! Please <u>@Html.ActionLink("click here to log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</u>
                                 </p>
                             </div>
 
@@ -69,3 +70,4 @@
         </div>
     </div>
 </section>
+

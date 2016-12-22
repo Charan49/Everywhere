@@ -171,8 +171,9 @@
 
 
 <script type="text/javascript">
-
+    var apiUrl = "";
     window.onload = function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
     getAdminManagment();
     }
@@ -184,7 +185,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            url: apiUrl+"/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -209,14 +210,14 @@
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
-       
-        
+
+
         alert("Email has been sent!!!");
 
         var eMail = $('#aEmail').val();
         var cURL = $('#RedirectToConfirm').val();
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/ForgotAdminPassword/",
+            url: apiUrl+"/api/v1/ForgotAdminPassword/",
             type: "POST",
             dataType: "json",
             headers: headers,
@@ -242,7 +243,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/type/" + "Admin",
+            url: apiUrl+"/api/v1/users/type/" + "Admin",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -253,10 +254,10 @@
             success: function (data) {
 
                 $.each(data, function (index) {
-                    
+
                     var str = data[index].firstName;
                     var enable = "Disabled";
-                   
+
                     if (data[index].accountState == 21) {
                         enable = "Enabled";
                     }
@@ -275,7 +276,7 @@
                                     //+ '<p class="list-des">Are you one of thousands of iPhone owners who has no idea that they can get free...</p>'
                                     + '<div class="list-meta">'
                                       + '  <span class="btn btn-default btn-sm" id="' + data[index].id + '" onclick="updateEnable(this.id)">'
-                                        
+
                                         + '    <b>Admin:</b>'
                                           + '  <strong class="text-success">'+enable+'</strong>'
                                         + '</span>'
@@ -291,11 +292,11 @@
             }
         });
     }
-    
+
 
     function saveUser() {
 
-        
+
         if(validate()){
 
             var token = sessionStorage.getItem('loginToken');
@@ -311,7 +312,7 @@
             var cURL = $("#RedirectToConfirm").val();
             console.log(name);
             $.ajax({
-                url: "http://web-test.everywhere.live:8081/api/v1/users/",
+                url: apiUrl+"/api/v1/users/",
                 type: "POST",
                 data: JSON.stringify({ 'firstName': name, 'lastName': lastName, 'password': 'password', 'email': email, 'role': role, 'callbackURL': 'http://admin.everywhere.live' + cURL }),
                 dataType: "json",
@@ -325,11 +326,11 @@
                     if (data.statusText=="Created") {
                         alert("Done");
                     } else {
-                                
+
                     }
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
-                    
+
                     console.log(jqXhr.Message);
                 }
             });
@@ -363,14 +364,14 @@
         alert("User is successfully " + get);
 
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/disable",
+            url: apiUrl+"/api/v1/users/disable",
             type: 'POST',
             dataType: 'json',
             headers: headers,
             data: { 'id': uid, 'disable': enable, 'notify': 'Yes' },
             async: false,
             success: function (data) {
-               
+
             },
             error: function (xhr, status, error) {
                 var err = eval("(" + xhr.responseText + ")");
@@ -389,7 +390,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid,
+            url: apiUrl+"/api/v1/users/" + uid,
             type: "GET",
             crossDomain: true,
             data: {},
@@ -432,7 +433,7 @@
         var eMail = $('#aEmail').val();
         var cURL = $("#RedirectToConfirm").val();
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/users/" + uid + "/",
+            url: apiUrl+"/api/v1/users/" + uid + "/",
             type: "PUT",
             dataType: "json",
             headers: headers,
@@ -447,7 +448,7 @@
                 console.log(err.Message);
             }
 
-        });       
+        });
     }
 
     function validate() {
@@ -478,5 +479,5 @@
         return true;
     }
 
-   
+
 </script>

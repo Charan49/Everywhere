@@ -156,7 +156,7 @@ namespace Web.Controllers
                 string vCode = GenerateCode.CreateRandomCode(4);
                 MailMessage message = new MailMessage("test@test.com", model.email);
                 
-                message.Subject = "Everywhere Admin account";
+                message.Subject = "Everywhere password reset";
 
 
                 message.Body = "Hi " + emailAddress.FirstName + ", " +

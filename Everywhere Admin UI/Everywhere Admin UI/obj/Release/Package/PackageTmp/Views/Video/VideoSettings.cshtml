@@ -59,14 +59,15 @@
 </body>
 </html>
 <script type="text/javascript">
-
+    var apiUrl = "";
     window.onload = function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
         getVideoUrl();
-      
+
     }
 
-    
+
     var iCnt = 0;
     function getVideoUrl() {
 
@@ -77,7 +78,7 @@
         }
 
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/video/Getvideo/",
+            url: apiUrl+"/api/v1/video/Getvideo/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -86,9 +87,9 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                
+
                 $.each(data, function (index) {
-                    
+
                     $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + index + ' value="' + data[index].url + '" /><input type="hidden" id=' + index + ' value=' + data[index].id + ' ></div>');
 
                 });
@@ -107,7 +108,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            url: apiUrl+"/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -126,7 +127,7 @@
         });
     }
 
-   
+
     function saveData() {
             for (var i = 0; i <= $('.url-Button').length - 1; i++) {
                 debugger;
@@ -149,7 +150,7 @@
         var re = new RegExp("^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.|https:\/\/ws.|http:\/\/ws.){1}([0-9A-Za-z]+\.)");
 
         for (var i = 0; i <= $('.url-Button').length - 1; i++) {
-           
+
             var str = re.exec($('#tb' + i).val());
             if (str == null) {
 
@@ -163,7 +164,7 @@
     }
 
     function saveUrl(urldata,uid) {
-        
+
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
@@ -172,7 +173,7 @@
 
 
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/video/addvideoswitch/",
+            url: apiUrl+"/api/v1/video/addvideoswitch/",
             type: "POST",
             data:JSON.stringify({ 'url': urldata, 'id': uid }),
             dataType: "json",
@@ -181,10 +182,10 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-             
+
             },
             error: function (jqXhr, textStatus, errorThrown) {
-                
+
                 console.log(jqXhr.Message);
             }
         });
@@ -193,7 +194,7 @@
         /// Add or Remove URL
 
     function addRows() {
-      
+
         $('#mainURL').append('<div class="row"><input type="text" placeholder="Url" class="url-Button" id=tb' + $('.url-Button').length + ' /></div>');
             iCnt = iCnt + 1;
     }

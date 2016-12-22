@@ -3,36 +3,165 @@
     ViewBag.Title = "Verify";
 }
 
-<h2>@ViewBag.Title.</h2>
+<header>
+    <nav class="navbar navbar-main navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-main">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar top-bar"></span>
+                    <span class="icon-bar middle-bar"></span>
+                    <span class="icon-bar bottom-bar"></span>
+                </button>
+                @*<a class="navbar-brand" href="#"><img src="~/images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>*@
+                <ul>
+                    <li>
+                        <a class="navbar-brand" href="#"><img src="../images/everywhere_logo.png"><span class="sr-only"> Everywhere </span></a>
+                        <a class="navbar-brand" href="#"><h1 id="cspio-headline">everywhere™</h1></a>
+                    </li>
+                </ul>
+            </div>
 
-@using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
-    @Html.AntiForgeryToken()
-    @Html.Hidden("provider", @Model.Provider)
-    @Html.Hidden("rememberMe", @Model.RememberMe)
-    <h4>Enter verification code</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Code, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-collapse-main">
+                <ul class="nav navbar-nav navbar-center">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">How it Works</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+
+                <div class="navbar-right">
+                    <p class="navbar-text">Already have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Register", "Account") + "'");" >Sign in</button>
+                </div>
+            </div><!-- /.navbar-collapse -->
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <div class="checkbox">
-                @Html.CheckBoxFor(m => m.RememberBrowser)
-                @Html.LabelFor(m => m.RememberBrowser)
+    </nav>
+</header>
+<section class="bg-photo bg-photo-2">
+    <div class="bg-opac-dark page-content">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+
+                    <div class="well well-lg well-white row">
+
+                        @*<form action="POST" method="POST" role="form" class="col-sm-10 col-sm-offset-1 form-group-lg">*@
+                        @using (Html.BeginForm("VerifyCode", "Account", FormMethod.Post, new { role = "form", @class = "col-sm-10 col-sm-offset-1 form-group-lg", id = "rForm", @onsubmit = "confirmEmail(event)" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-head">
+                                <h2 class="have-icon-verify">Verification Code</h2>
+                            </div>
+                            if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                            {
+                                <div class="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! Code is not valid.</span>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-sm-7">
+                                    <p class="text-justify small">If your Everywhere verification code email is not in your inbox, please check the junk or spam folder or click <a href="#" onclick="resendVerificationCode(event)"><u>Resend</u></a> the verification code. Add Everywhere to your email contacts or un-mark as spam or junk to avoid missing important messages in the future.</p>
+                                </div>
+                                <div class="col-sm-5">
+
+                                    <div class="form-group letter-space">
+                                        @Html.LabelFor(m => m.Code, new { @class = "control-label" })
+                                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "1234", id = "txtCode" })
+                                        @*<label for="">Enter the 4 Digit Code</label>
+                                        <input maxlength="4" type="text" class="form-control" id="txtCode" placeholder="1234">*@
+                                    </div>
+                                    <button type="submit" class="btn btn-success cta btn-lg btn-block">Verifiy</button>
+                                </div>
+                            </div>
+
+                            <p class="small">If you did not recieve email for verification code then please click this <a href="#">link</a> to start signup process again.</p>
+                            
+                        }
+                        @Html.Hidden("loginURL", Url.Action("ConfirmRegistration", "Account"));
+                        @*</form>*@
+
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Submit" />
-        </div>
-    </div>
-}
+</section>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    var apiUrl = "";
+    $(document).ready(function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    });
+    function confirmEmail(e) {
+        
+        //$('#btnSignIn').click(function (e) {
+        var id = $('#txtCode').val();
+        $.ajax({
+            url: apiUrl+"/api/v1/ConfirmEmail/",
+            type: "POST",
+            crossDomain: true,
+            data: JSON.stringify({ 'code': id }),
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                e.preventDefault();
+                var url = $("#loginURL").val();
+                window.location.href = url;
+
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                
+                if (jqXhr.statusText == "OK") {
+                    e.preventDefault();
+                    var url = $("#loginURL").val();
+                    window.location.href = url;
+                }
+                else {
+                    e.preventDefault();
+                    alert('Incorrect Confirmation code');
+                    $('#validSummary').show();
+                }
+            }
+        });
+        //});
+    }
+
+    function resendVerificationCode(e) {
+
+        //$('#btnSignIn').click(function (e) {
+        var email = sessionStorage.getItem('signUpEmail');
+        $.ajax({
+            url: apiUrl+"/api/v1/ResendVerificationEmail/"+email+"/",
+            type: "POST",
+            crossDomain: true,
+            data: { 'email': email },
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                e.preventDefault();
+                var url = $("#RedirectTo").val();
+                window.location.href = url;
+
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                e.preventDefault();
+                if (jqXhr.statusText == "OK") {
+                    alert("Email sent.");
+                }
+                else
+                    $('#validSummary').show();
+            }
+        });
+        //});
+    }
+</script>

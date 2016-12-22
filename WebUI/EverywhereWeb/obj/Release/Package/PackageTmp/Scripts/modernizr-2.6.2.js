@@ -791,13 +791,13 @@ window.Modernizr = (function( window, document, undefined ) {
     };
 
 
-    // In FF4, if disabled, window.localStorage should === null.
+    // In FF4, if disabled, window.sessionStorage should === null.
 
     // Normally, we could not test that directly and need to do a
-    //   `('localStorage' in window) && ` test first because otherwise Firefox will
+    //   `('sessionStorage' in window) && ` test first because otherwise Firefox will
     //   throw bugzil.la/365772 if cookies are disabled
 
-    // Also in iOS5 Private Browsing mode, attempting to use localStorage.setItem
+    // Also in iOS5 Private Browsing mode, attempting to use sessionStorage.setItem
     // will throw the exception:
     //   QUOTA_EXCEEDED_ERRROR DOM Exception 22.
     // Peculiarly, getItem and removeItem calls do not throw.
@@ -808,10 +808,10 @@ window.Modernizr = (function( window, document, undefined ) {
     //   www.quirksmode.org/dom/html5.html
     // But IE8 doesn't support either with local files
 
-    tests['localstorage'] = function() {
+    tests['sessionStorage'] = function() {
         try {
-            localStorage.setItem(mod, mod);
-            localStorage.removeItem(mod);
+            sessionStorage.setItem(mod, mod);
+            sessionStorage.removeItem(mod);
             return true;
         } catch(e) {
             return false;

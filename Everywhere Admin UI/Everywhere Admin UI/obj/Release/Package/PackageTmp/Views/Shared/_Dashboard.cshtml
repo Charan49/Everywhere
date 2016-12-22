@@ -99,7 +99,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            url: apiUrl+"api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},

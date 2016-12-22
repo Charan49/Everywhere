@@ -15,14 +15,20 @@
                     <span class="icon-bar middle-bar"></span>
                     <span class="icon-bar bottom-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="~/images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+                @*<a class="navbar-brand" href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");"><img src="../images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>*@
+                <ul>
+                    <li>
+                        <a class="navbar-brand" href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");"><img src="../images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+                        <a class="navbar-brand" href="#"><h1 id="cspio-headline">everywhere™</h1></a>
+                    </li>
+                </ul>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-collapse-main">
                 <ul class="nav navbar-nav navbar-center">
-                    <li><a href="#">Home</a></li>
-                    <li class="visible-xs"><a href="#">Dashboard</a></li>
+                    <li><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Home</a></li>
+                    <li class="visible-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
                     <li><a href="#">How it Works</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
@@ -30,7 +36,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="hidden-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">John Johnson <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" id="userName" data-toggle="dropdown"><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Account Settings</a></li>
                             <li><a href="#" onclick="Logout()">Logout</a></li>
@@ -42,32 +48,65 @@
     </nav>
 </header>
 <section class="bg-photo">
-    <div class="page-content">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
-                    <h1>Service Registration <button class="btn btn-default btn-lg pull-right">Add Services</button> </h1>
-                    <p>&nbsp;</p>
-                    <br>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#77B300">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">YouNow Stream Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <label class="control-label" style="color:red;" id="ErrorStreamURL" for=""></label>
+                        <br />
+                        <label class="control-label" for="uStreamURL">Stream URL</label>
+                        <input class="form-control" id="uStreamURL" name="uStreamID" placeholder="" type="text" value="">
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" style="color:red;" id="ErrorStreamID" for=""></label>
+                        <br />
+                        <label class="control-label" for="uStreamID">Stream ID</label>
+                        <input class="form-control" id="uStreamID" name="uStreamID" placeholder="" type="text" value="">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="YounowService();">Save</button>
                 </div>
             </div>
+
         </div>
+    </div>
+    <div class="page-content">
+
         <div style="background-color:#fafafa; height:100%; position:relative; padding-top:20px; padding-bottom:20px" class="clearfix">
 
             <div class="container">
                 <div class="row">
                     <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
+                        <h1>Service Registration<button class="btn btn-default btn-lg pull-right" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</button> </h1>
+                        <p>&nbsp;</p>
+                        <br>
                         <form action="POST" method="POST" role="form">
 
                             <div class="form-group form-group-lg">
                                 <h5>
                                     <label for="">Streaming Service URL</label>
                                 </h5>
-                                <select class="form-control">
-                                    <option value="">https://</option>
+                                <select class="form-control" id="ddlVideoSwitch">
+                                    
                                 </select>
                             </div>
+
+                            <div id="testAccounts" class="form-group add-accounts">
+
+
+                            </div>
+
 
                             <div id="accountsRegistered" class="form-group add-accounts">
                                 <h4>
@@ -80,7 +119,7 @@
                                 <h4>
                                     <label for="">Available Accounts</label>
                                 </h4>
-                                
+
                             </div>
 
                         </form>
@@ -92,7 +131,6 @@
     </div>
 </section>
 <footer></footer>
-
 
 <div class="modal modal-lg fade" id="modal-schedule">
     <div class="modal-dialog">
@@ -160,12 +198,38 @@
     </div>
 </div>
 
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+</script>
+<script>
+    function start() {
+        gapi.load('auth2', function () {
+            auth2 = gapi.auth2.init({
+                client_id: '523666141221-3thnnbdici8m7apt0dadsosmmna59824.apps.googleusercontent.com',
+                // Scopes to request in addition to 'profile' and 'email'
+                scope: 'https://www.googleapis.com/auth/youtube',
+                access_type: 'offline',
+               approval_prompt:'force'
+         
+            });
+        });
+    }
+</script>
+
 <script type="text/javascript">
-    var obj = null;
+    var apiUrl = "";
     var fbObj = null;
+    var sID = null;
+    var sName = null;
+    var sIDFB = null;
+    var sNameFB = null;
+    var sIDYT = null;
+    var sNameYT = null
+    var sIDYN = null;
+    var sNameYN = null
     window.fbAsyncInit = function () {
         FB.init({
-            appId: '340485602973415',
+            //appId: '340485602973415',
+            appId: '720765954737644',
             xfbml: true,
             version: 'v2.8'
         });
@@ -181,68 +245,116 @@
     }(document, 'script', 'facebook-jssdk'));
 
     var accessToken;
-
+    var profilePicture;
     function facebookLogin() {
         FB.login(function (response) {
 
             if (response.authResponse) {
-                console.log('Welcome!  Fetching your information.... ');
+                console.log(response);
                 //console.log(response); // dump complete info
                 accessToken = response.authResponse.accessToken; //get access token
                 user_id = response.authResponse.userID; //get FB UID
+                FB.api(
+                "/" + user_id + "/picture?width=146&height=124&redirect=true",
+                function (response) {
+                    if (response && !response.error) {
+                        profilePicture = response.data.url;
+                        $('#profilePic').attr('src', response.data.url);
+                        console.log(profilePicture);
+                        //addRegisteredServiceRow('Facebook', profilePicture);
+                        //addUserServices(accessToken, profilePicture);
+                        addRegisteredServiceRow('Facebook', profilePicture, user_id);
+                        addUserServices('Facebook', accessToken, profilePicture, user_id);
+                    }
+                }
+                );
 
-                FB.api('/me', function (response) {
-                    user_email = response.email; //get user email
-                    // you can store this data into your database
-                });
-                
                 //addLinkButton();
-                addRegisteredServiceRow('Facebook');
-                addUserServices(accessToken);
+
             } else {
                 //user hit cancel button
                 console.log('User cancelled login or did not fully authorize.');
 
             }
         }, {
-            scope: 'publish_actions,public_profile,email'
+            scope: 'publish_actions,email,publish_stream,public_profile,read_stream'
         });
-        
-    }
-    
-    
 
-    function Generate() {
-        alert(accessToken);
-        FB.api(
-    "/me/live_videos?access_token=" + accessToken, "POST",
-    function (response) {
-        
-        if (response && !response.error) {
-           // alert(response.stream_url);
-           // document.write(response.stream_url);
-            alert(response.stream_url);
+
+    }
+
+    function youtubeLogin() {
+        auth2.grantOfflineAccess({ 'redirect_uri': 'postmessage' }).then(signInCallback);
+
+    }
+    function signInCallback(authResult) {
+        if (authResult['code']) {
+            $('#youtube').attr('style', 'display: none');
+            var code = authResult['code'];
+
+            //addRegisteredServiceRow('Youtube', profilePicture);
+            //addUserServices(code, profilePicture);
+            addRegisteredServiceRow('Youtube', "", "");
+            addUserServices('Youtube', code, "", "");
+
+            window.location.href = '@Url.Action("RegisterService", "Home")';
+        } else {
+
         }
     }
-    );
-    }
-    
-    window.onload = function () {
-        //code. . .
-        getServices();
-        getMembershipServices();
-        
+
+    function get_raw_facebook_avatar_url(uid) {
+        var array = 'https://graph.facebook.com/' + uid + '/picture?width=146&height=124&redirect=true';
+        return array;
     }
 
-    function getServices() {
-        
-        var token = localStorage.getItem('loginToken');
+
+    window.onload = function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
+        if (sessionStorage.getItem('loginToken') == null)
+            location.href = '@Url.Action("Login", "Account")';
+        $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
+        //code. . .
+        getServices();
+
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
+        getVideoUrl();
+        getMembershipServices();
+        $('#username').text("");
+        $('#password').text("");
+        $('#youtubemessage').text("Before linking your YouTube account, please enable Live Streaming in your YouTube account as per the steps below. \n"
+        + "1-Login to your GMail/YouTube account \n"
+        + "2-Go to https://youtube.com/features  \n"
+        + "3-In Live streaming section click on Enable")
+        $('#youtubemessagesm').text("Before linking your YouTube account, please enable Live Streaming in your YouTube account as per the steps below. \n"
+       + "1-Login to your GMail/YouTube account \n"
+       + "2-Go to https://youtube.com/features \n"
+       + "3-In Live streaming section click on Enable")
+
+        $('#younowmessage').text("Before linking your YouNow account, please go to Younow website by clicking on 'Goto Younow' button. \n"
+      + "1-Create a new younow account \n"
+      + "2-Go to https://www.younow.com/settings  \n"
+      + "3-Copy stream URL and stream ID and click link button on everywhere and enter the copied values ")
+        $('#younowmessagesm').text("Before linking your YouNow account, please go to Younow website by clicking on 'Goto Younow' button. \n"
+      + "1-Create a new younow account \n"
+      + "2-Go to https://www.younow.com/settings  \n"
+      + "3-Copy stream URL and stream ID and click link button on everywhere and enter the copied values ")
+
+
+
+    }
+
+    function getVideoUrl() {
+
+        var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
+
         $.ajax({
-            url: "https://ws.everywhere.live/api/v1/service/",
+            url: apiUrl+"/api/v1/video/Getvideo/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -251,36 +363,41 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                
-                if (data != null && data.length > 0) {
-                    $('#accounts').show();
-                    for (i = 0; i < data.length; i++) {
-                        obj = data;
-                        addServiceRow(data[i].name);
-                    }
-                }
-                else
-                    $('#accounts').hide();
-                
-                return false;
+
+                $.each(data, function (index) {
+                    $('#ddlVideoSwitch').append('<option value="">' + data[index].url + '</option>');
+
+                });
             },
             error: function (jqXhr, textStatus, errorThrown) {
-                
+
                 alert(jqXhr.statusText);
             }
         });
-        //});
     }
 
-    function getMembershipServices() {
-        
-        var token = localStorage.getItem('loginToken');
+    function RedirectToYounow()
+    {
+        $("#younow").show();
+        $("#younowtestUserbtn").hide();
+        window.open('https://www.younow.com', '_blank');
+
+        //alert("An Everywhere Facebook account has been created and emailed to you. Please check your email with the subject \"Everywhere Facebook account\". Follow the procedure in the email to Login with Facebook and allow Everywhere to publish your live streams.");
+
+    }
+
+    function CreateNewTestAccount() {
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
+        var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "https://ws.everywhere.live/api/v1/service_membership/",
+
+            url: apiUrl+"/api/v1/TestUsers/",
+
             type: "GET",
             data: {},
             dataType: "json",
@@ -288,12 +405,255 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                
+                if (data != null && data.length > 0) {
+
+                    //$('#message').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account");
+                    //$('#username').text("Email :"+data[0].email);
+                    //$('#password').text("Password :" + data[0].password);
+
+                    //$('#messagesm').text("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account");
+                    //$('#usernamesm').text("Email :" + data[0].email);
+                    //$('#passwordsm').text("Password :" + data[0].password);
+
+                    $("#facebook").show();
+                    $("#facebooktestUserbtn").hide();
+
+                    $("#facebooksm").show();
+                    $("#facebooktestUserbtnsm").hide();
+
+                    $("#Younowbook").show();
+                    $("#YounowtestUserbtn").hide();
+
+
+                    alert("An Everywhere Facebook account has been created and emailed to you. Please check your email with the subject \"Everywhere Facebook account\". Follow the procedure in the email to Login with Facebook and allow Everywhere to publish your live streams.");
+                    //alert("If you are already logged into Facebook, sign out and click “Link” button and login with Everywhere app account Email:"+data[0].email+" and Password:"+data[0].password);
+
+
+                }
+                else
+                    return false;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+
+    }
+    function younowLogin()
+    {
+        $('#myModal').modal('show');
+    }
+    function YounowService() {
+
+
+        if ($('#uStreamID').val().length > 0 && $('#uStreamURL').val().length > 0)
+        {
+            var currentDate = new Date();
+            currentDate=currentDate.toISOString();
+            addRegisteredServiceRow('Younow', "", "");
+            addUserServices('Younow', "", "", "");
+            var name = 'Younow';
+            var token = sessionStorage.getItem('loginToken');
+            var headers = {};
+            var url = apiUrl+"/api/v1/livestream/start/" + name;
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+            }
+            $.ajax({
+                url: url,
+                type: "POST",
+                crossDomain: true,
+                data: JSON.stringify({ 'serviceName': "Younow", 'streamId': $('#uStreamID').val(), 'streamUrl': $('#uStreamURL').val(), 'streamDate': currentDate }),
+                dataType: "json",
+                headers: headers,
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    //alert("Stream URL has been generated Successfully!");
+
+                    //$('#txtStreamKey').val(data.streamId);
+                    //$('#txtStreamLink').val(data.streamUrl);
+                    //$('#txtStreamDate').val(getUTCTime(data.streamDate));
+                    //$('#txtStreamKeyMobile').val(data.streamId);
+                    //$('#txtStreamLinkMobile').val(data.streamUrl);
+                    //$('#txtStreamDateMobile').val(getUTCTime(data.streamDate));
+
+                    //$('#txtStreamKey' + name).val(data.streamId);
+                    //$('#txtStreamLink' + name).val(data.streamUrl);
+                    //$('#txtStreamDate' + name).val(getUTCTime(data.streamDate));
+                    //$('#txtStreamKeyMobile' + name).val(data.streamId);
+                    //$('#txtStreamLinkMobile' + name).val(data.streamUrl);
+                    //$('#txtStreamDateMobile' + name).val(getUTCTime(data.streamDate));
+
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+
+                    //alert("Failed to generate Stream URL");
+
+
+                }
+            });
+
+
+            window.location.href = '@Url.Action("RegisterService", "Home")';
+        }
+        else
+        {
+            if ($('#uStreamID').text().length <= 0)
+                $('#ErrorStreamID').text("Please Enter Stream ID");
+            if ($('#uStreamURL').text().length <= 0)
+                $('#ErrorStreamURL').text("Please Enter Stream URL");
+            return false;
+        }
+
+    }
+
+
+
+    function getServices() {
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: apiUrl+"/api/v1/service/",
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#accounts').html('');
+                $('#accounts').append('<h4><label for="">Available Accounts</label></h4>');
+                if (data != null && data.length > 0) {
+                    $('#accounts').show();
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].IsDeleted != 'True') {
+
+                            addServiceRow(data[i].name);
+                            $("#youtubetestUserbtn").hide();
+                            $("#youtubetestUserbtnsm").hide();
+
+                            if (data[i].name == 'Younow') {
+                                sIDYN = data[i].ID;
+                                sNameYN = data[i].Name;
+                                $("#younow").hide();
+                            }
+
+                            if (data[i].name == 'Facebook') {
+                                sIDFB = data[i].ID;
+                                sNameFB = data[i].Name;
+
+                                if (data[i].IsTestUsersExists) {
+                                    $("#facebook").show();
+                                    $("#facebooktestUserbtn").hide();
+
+                                    $("#facebooksm").show();
+                                    $("#facebooktestUserbtnsm").hide();
+
+                                }
+                                else {
+                                    $("#facebook").hide();
+
+                                    $("#facebooktestUserbtn").show();
+
+                                    $("#facebooksm").hide();
+                                    $("#facebooktestUserbtnsm").show();
+                                }
+
+                            }
+                            if (data[i].name == 'YouTube') {
+
+                                sIDYT = data[i].ID;
+                                sNameYT = data[i].Name;
+                                if (data[i].IsTestUsersExists) {
+                                    $("#facebook").show();
+                                    $("#facebooktestUserbtn").hide();
+
+                                    $("#facebooksm").show();
+                                    $("#facebooktestUserbtnsm").hide();
+
+                                }
+                                else {
+                                    $("#facebook").hide();
+                                    $("#facebooktestUserbtn").show();
+
+                                    $("#facebooksm").hide();
+                                    $("#facebooktestUserbtnsm").show();
+                                }
+
+                            }
+                        }
+                    }
+                }
+                else
+                    $('#accounts').hide();
+
+                return false;
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+        //});
+    }
+
+    function getMembershipServices() {
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
+        var token = sessionStorage.getItem('loginToken');
+        var headers = {};
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        $.ajax({
+            url: apiUrl+"/api/v1/service_membership/",
+            type: "GET",
+            data: {},
+            dataType: "json",
+            headers: headers,
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
                 if (data != null && data.length > 0) {
                     $('#accountsRegistered').show();
                     for (i = 0; i < data.length; i++) {
                         //addServiceRow(data[i].name);
-                        addRegisteredServiceRow(data[i].name);
+
+                        //addRegisteredServiceRow(data[i].name, data[i].pictureUrl);
+
+                        if (data[i].name == 'Facebook') {
+                            var picUrl = 'https://graph.facebook.com/' + data[i].fbUserID + '/picture?width=146&height=124';
+
+
+                            addRegisteredServiceRow(data[i].name, picUrl, data[i].fbUserID);
+                        }
+                        else if (data[i].name == 'Younow') {
+
+                            addRegisteredServiceRow(data[i].name, data[i].pictureUrl, data[i].fbUserID);
+                        }
+                        else {
+
+                            //var imageurl = 'https://www.googleapis.com/plus/v1/people/'+data[i].fbUserID+'?fields=image&key=AIzaSyBFjMMUvL1D9Osl3fK0UcxZnVeOlAKTG-s';
+                            //var xmlHttp = new XMLHttpRequest();
+                            //xmlHttp.open("GET", imageurl, false); // false for synchronous request
+                            //xmlHttp.send(null);
+                            //var a = JSON.parse(xmlHttp.responseText);
+                            //var imgurl = a.image.url;
+                            //var imgurls100 = imgurl.replace("sz=50", "sz=150");
+                            addRegisteredServiceRow(data[i].name, data[i].pictureUrl, data[i].fbUserID);
+                        }
+
+
                     }
                 }
                 else
@@ -302,20 +662,36 @@
                 return false;
             },
             error: function (jqXhr, textStatus, errorThrown) {
-                
+
                 alert(jqXhr.statusText);
             }
         });
         //});
     }
 
-    function addUserServices(accessToken) {
-        
-        
-        fbObj = $.grep(obj, function (e) { return e.name == 'Facebook'; });
-        var token = localStorage.getItem('loginToken');
-        var url = "https://ws.everywhere.live/api/v1/service_membership/AddServiceMembership";
-        
+    function addUserServices(service, accessToken, picURL, userID) {
+        //function addUserServices(accessToken, picURL) {
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
+        var token = sessionStorage.getItem('loginToken');
+
+        var url = apiUrl+"/api/v1/service_membership/AddServiceMembership/";
+
+        //var url = apiUrl+"/api/v1/service_membership/AddServiceMembership/";
+
+        if (service == 'Facebook') {
+            sID = sIDFB;
+            sName = sNameFB;
+        }
+        if (service == 'Youtube') {
+            sID = sIDYT;
+            sName = sNameYT;
+        }
+        if (service == 'Younow') {
+            sID = sIDYN;
+            sName = sNameYN;
+        }
+
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
@@ -324,14 +700,13 @@
             url: url,
             type: "POST",
             crossDomain: true,
-            data: JSON.stringify({ 'id': fbObj[0].ID, 'accessToken': accessToken, 'tokenExpiresAt': Date.now() }),
+            data: JSON.stringify({ 'id': sID, 'accessToken': accessToken, 'tokenExpiresAt': Date.now(), 'pictureURL': picURL, 'fbUserID': userID }),
             dataType: "json",
             headers: headers,
             async: false,
             contentType: "application/json; charset=utf-8",
             error: function (jqXhr, textStatus, errorThrown) {
-                
-                alert(fbObj[0].ID);
+
             },
             success: function (data) {
 
@@ -342,51 +717,90 @@
     }
 
     function removeUserServices(name) {
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
+        if (name == 'Facebook') {
+            sID = sIDFB;
+            sName = sNameFB;
+        }
+        else if (name == 'Younow')
+        {
+            sID = sIDYN;
+            sName = sNameYN;
+        }
+        else {
+            sID = sIDYT;
+        sName = sNameYT;
+        }
+        var token = sessionStorage.getItem('loginToken');
+        var url = apiUrl+"/api/v1/service_membership/" + sID;
 
-        
-        fbObj = $.grep(obj, function (e) { return e.name == 'Facebook'; });
-        var token = localStorage.getItem('loginToken');
-        var url = "https://ws.everywhere.live/api/v1/service_membership/RemoveServiceMembership?id=" + fbObj[0].ID;
+
 
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
-        $.ajax({
-            url: url,
-            crossDomain: true,
-            type: "DELETE",
-            data: {},
-            dataType: "json",
-            headers: headers,
-            async: false,
-            contentType: "application/json; charset=utf-8",
-            error: function (jqXhr, textStatus, errorThrown) {
-                
-                $('#acc' + fbObj[0].name).show();
-                $('#acc' + fbObj[0].name+'Link').remove();
-                $('#accountsRegistered').hide();
-                
-            },
-            success: function (data) {
+        var confirmlink = false;
 
-                
-                $('#acc' + fbObj[0].name).show();
-                $('#acc' + fbObj[0].name + 'Link').hide();
-                
-            }
-        });
-        //});
+        if (name == 'Facebook')
+            var confirmlink = confirm("Unlink will delete your Everywhere App Facebook account. Please click OK to Confirm or Cancel");
+        else if (name == 'Younow')
+            confirmlink = confirm("Unlinking will delete your Younow streaming details. Please click OK to confirm or Cancel");
+        else
+            var confirmlink = confirm("Unlinking will sign you out of Youtube and live streaming will be disabled. Please click OK to confirm or Cancel");
+        if (confirmlink) {
+            $('#Youtubemessage').text("");
+            $('#Youtubemessagesm').text("");
+
+
+            $('#username').text("");
+            $('#password').text("");
+
+            $('#usernamesm').text("");
+            $('#passwordsm').text("");
+
+            $.ajax({
+                url: url,
+                crossDomain: true,
+                type: "DELETE",
+                data: {},
+                dataType: "json",
+                headers: headers,
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                error: function (jqXhr, textStatus, errorThrown) {
+
+                    getServices();
+                    $('#accFacebookLink').remove();
+                    $('#accountsRegistered').hide();
+                    $("#facebook").hide();
+                    $("#facebooksm").hide();
+                    location.href = '@Url.Action("RegisterService", "Home")';
+
+                },
+                success: function (data) {
+
+                    getServices();
+                    $('#acc' + sName).show();
+                    $('#accFacebookLink').remove();
+                    location.href = '@Url.Action("RegisterService", "Home")';
+
+                }
+            });
+            //});
+        }
+
     }
 
     function Logout() {
-        var token = localStorage.getItem('loginToken');
+        var token = sessionStorage.getItem('loginToken');
         var headers = {};
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "https://ws.everywhere.live/api/v1/signout/",
+            url: apiUrl+"/api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -405,12 +819,59 @@
         });
     }
 
-
-    function addRegisteredServiceRow(name) {
-        
+    function addRegisteredServiceRow(name, picURL, fbID) {
+        //function addRegisteredServiceRow(name, picURL) {
+        $("#youtubetestUserbtn").hide();
+        $("#youtubetestUserbtnsm").hide();
         $('#accountsRegistered').show();
         $('#acc' + name).hide();
         $('#accountsRegistered').append('<div id="acc' + name + 'Link" class="panel">' +
+                                    '<div class="panel-body">' +
+                                        '<div class="media">' +
+                                            '<a class="pull-left" href="#">' +
+                                                '<img class="media-object" id="profilePic' + name + '" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                            '</a>' +
+                                            '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
+                                                '<h4 class="media-heading">' + name +
+                                                    '<span class="pull-right hidden-xs" style="padding-left:5px;">' +
+                                                    '</div></span>' +
+                                                    '<span class="pull-right hidden-xs">' +
+                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-chain-xs.png"> </i> Unlink</button>' +
+                                                    '</span>' +
+                                                '</h4>' +
+                                                '<div class="meta-des"></div>' +
+
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="visible-xs mt-15">' +
+
+                                            '<div class="row">' +
+                                                '<p class="col-xs-6">' +
+                                                '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-chain-xs.png"> </i> Unlink</button>' +
+                                               ' </p>' +
+                                               '<p class="col-xs-6">' +
+                                               ' </p>' +
+                                           ' </div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>');
+        //$('#profilePic').attr('src', picURL);
+        $('#profilePic' + name).attr('src', picURL);
+    }
+
+    function addServiceRow(name, picURL) {
+        var testlink;
+        var functioncall;
+        if (name == 'Facebook') {
+            var testlink = 'Create Account';
+            var functioncall = 'CreateNewTestAccount();';
+        }
+        else {
+            var testlink = 'Go to YouNow';
+            var functioncall = 'RedirectToYounow();';
+        }
+        $('#accounts').show();
+        $('#accounts').append('<div id="acc' + name + '" class="panel">' +
                                     '<div class="panel-body">' +
                                         '<div class="media">' +
                                             '<a class="pull-left greyscale" href="#">' +
@@ -418,56 +879,49 @@
                                             '</a>' +
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +
-                                                    '<span class="pull-right hidden-xs" style="padding-left:5px;">' +
-                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Edit</button>' +
-                                                    '</span>' +
                                                     '<span class="pull-right hidden-xs">' +
-                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-chain-xs.png"> </i> Unlink</button>' +
+                                                  '<label id= "' + name.toLowerCase().trim() + 'message" style="text-transform:none !important;font-size:small;white-space: pre-wrap;" for=""></label>' +
+                                                 '</span>' +
+                                                    '<span class="pull-right hidden-xs">' +
+
+                                    '<label id="username" style="text-transform:none !important;" for=""></label>' +
+                                    '<br />' +
+                                    '<label id="password" style="text-transform:none !important;" for=""></label>' +
+                                                        '<button type="button" class="btn btn-xs btn-grey" id="' + name.toLowerCase().trim() + 'testUserbtn" onclick="' + functioncall + '"><i><img src="../images/icon-chain-xs.png"> </i>' + testlink + '</button>' +
+                                                        '<button type="button" class="btn btn-xs btn-grey"   id="' + name.toLowerCase().trim() + '"  onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
                                                     '</span>' +
                                                 '</h4>' +
-                                                '<div class="meta-des">Are you one of the thousands of iPhone owners who has no idea that they can get free.</div>' +
+                                                '<div class="meta-des"></div>' +
 
                                             '</div>' +
                                         '</div>' +
                                         '<div class="visible-xs mt-15">' +
                                             '<div class="row">' +
-                                                '<p class="col-xs-6 col-xs-offset-3">' +
-                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
+                                                                                         '<p class="col-xs-15">' +
+                                                                                        '<label id= "' + name.toLowerCase().trim() + 'messagesm" style="text-transform:none !important;font-size:small;white-space: pre-wrap;" for=""></label>' +
+ ' </p>' +
+  ' </div>' +
+ '<div class="row">' +
+                                            '<p class="col-xs-6">' +
+
+
+                                             '<label id="messagesm" style="text-transform:none !important;" for=""></label>' +
+                                    '<label id="usernamesm" style="text-transform:none !important;" for=""></label>' +
+                                    '<br />' +
+                                    '<label id="passwordsm" style="text-transform:none !important;" for=""></label>' +
+'<br />' +
+ ' </p>' +
+                                                '<p class="col-xs-6">' +
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'testUserbtnsm" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
+                                                    ' </p>' +
+                                                    '<p class="col-xs-6">' +
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'sm" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
                                                ' </p>' +
                                            ' </div>' +
                                         '</div>' +
                                     '</div>' +
                                 '</div>');
-    }
 
-    function addServiceRow(name) {
-        
-        $('#accounts').show();
-        $('#accounts').append('<div id="acc' + name + '" class="panel">'+
-                                    '<div class="panel-body">'+
-                                        '<div class="media">'+
-                                            '<a class="pull-left greyscale" href="#">'+
-                                                '<img class="media-object" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
-                                            '</a>'+
-                                            '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
-                                                '<h4 class="media-heading">' + name +
-                                                    '<span class="pull-right hidden-xs">'+
-                                                        '<button type="button" class="btn btn-xs btn-grey" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
-                                                    '</span>'+
-                                                '</h4>' +
-                                                '<div class="meta-des">Are you one of the thousands of iPhone owners who has no idea that they can get free.</div>'+
-
-                                            '</div>'+
-                                        '</div>'+
-                                        '<div class="visible-xs mt-15">'+
-                                            '<div class="row">'+
-                                                '<p class="col-xs-6 col-xs-offset-3">'+
-                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
-                                               ' </p>'+
-                                           ' </div>'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>');
     }
 
 </script>

@@ -150,7 +150,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service/",
+            url: apiUrl+"api/v1/service/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -196,7 +196,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/service_membership/",
+            url: apiUrl+"api/v1/service_membership/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -238,7 +238,7 @@
             headers.Authorization = 'Bearer ' + token;
         }
         $.ajax({
-            url: "http://web-test.everywhere.live:8081/api/v1/signout/",
+            url: apiUrl+"api/v1/signout/",
             type: "GET",
             crossDomain: true,
             data: {},
@@ -260,7 +260,7 @@
     function removeUserServices(name) {
 
         var token = sessionStorage.getItem('loginToken');
-        var url = "http://web-test.everywhere.live:8081/api/v1/service_membership/" + obj[0].id;
+        var url = apiUrl+"api/v1/service_membership/" + obj[0].id;
 
         var headers = {};
         if (token) {
@@ -296,7 +296,7 @@
 
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
-        var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start/" + name;
+        var url = apiUrl+"api/v1/livestream/start/" + name;
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }
@@ -333,7 +333,7 @@
 
         var token = sessionStorage.getItem('loginToken');
         var headers = {};
-        var url = "http://web-test.everywhere.live:8081/api/v1/livestream/start";
+        var url = apiUrl+"api/v1/livestream/start";
         if (token) {
             headers.Authorization = 'Bearer ' + token;
         }

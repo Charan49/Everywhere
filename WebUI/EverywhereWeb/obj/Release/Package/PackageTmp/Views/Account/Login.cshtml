@@ -15,7 +15,13 @@
                     <span class="icon-bar middle-bar"></span>
                     <span class="icon-bar bottom-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="~/images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+                <ul class="list-unstyled">
+                    <li>
+                        <a class="navbar-brand" href="#"><img src="../images/everywhere_logo.png"><span class="sr-only"> Everywhere </span></a>
+                        <a class="navbar-brand" href="#"><h1 id="cspio-headline">everywhere<sup>™</sup></h1></a>
+                        </li>
+                    </ul>
+
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -45,8 +51,8 @@
                         <div class="well well-lg well-white row">
 
                             @*<form action="POST" method="POST" role="form" class="col-sm-10 col-sm-offset-1 form-group-lg">*@
-@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { role = "form", @class = "col-sm-10 col-sm-offset-1 form-group-lg", id = "rForm" }))
-{
+                            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { role = "form", @class = "col-sm-10 col-sm-offset-1 form-group-lg", id = "rForm", @onsubmit = "callLoginAPI(event)" }))
+                            {
                                 @Html.AntiForgeryToken()
                                 <div class="form-head">
                                     <h2>Login to your account</h2>
@@ -55,7 +61,7 @@
                                 <div id="validSummary" hidden>
                                     <div class="alert">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                        <strong><img src="~/images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! email or password is not valid.</span>
+                                        <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! email or password is not valid.</span>
                                     </div>
                                 </div>
 
@@ -63,7 +69,7 @@
                                 {
                                     <div class="alert">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                        <strong><img src="~/images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! email or password is not valid.</span>
+                                        <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Something went wrong! email or password is not valid.</span>
                                     </div>
                                 }
 
@@ -71,26 +77,27 @@
                                     @Html.LabelFor(m => m.Email, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "john.s@company.co", id = "uEmail" })
                                     @*<label for="uEmail">Email</label>
-                                    <input type="Email" class="form-control" id="uEmail" placeholder="john.s@company.co">*@
+                                        <input type="Email" class="form-control" id="uEmail" placeholder="john.s@company.co">*@
                                 </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Password, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "6+ characters", id = "uPass", type = "password" })
                                     @*<label for="uPass">Password</label>
-                                    <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
+                                        <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
                                     <p>
-                                        <a href=""><small class="text-muted">Forgot Password?</small></a>
+                                        <a href="@Url.Action("ForgotPassword", "Account")"><small class="text-muted">Forgot Password?</small></a>
                                     </p>
                                 </div>
 
 
-                                <button type="button" onclick="callLoginAPI()" id="btnSignIn" class="btn btn-success cta btn-lg">Login</button>
-                            @*</form>*@
-}
-                            @Html.Hidden("RedirectTo", Url.Action("RegisterService", "Home"));
+                                <button type="submit" id="btnSignIn" class="btn btn-success cta btn-lg">Login</button>
+                                @*</form>*@
+                            }
+                            @Html.Hidden("RedirectTo", Url.Action("Dashboard", "Home"))
+                            @Html.Hidden("RedirectToConfirm", Url.Action("VerifyCode", "Account"))
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -98,22 +105,27 @@
         </div>
     </div>
 </section>
-
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
-    //document.getElementById('rForm').onsubmit = function(e) {
-    //    callRegisterAPI();
-    //    e.preventDefault();
-    //}
-    //document.getElementById("rForm").addEventListener("click", callLoginAPI, false);
+    var apiUrl = "";
+    $(document).ready(function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
+        try { localStorage.test = 2; } catch (e) {
+            $('#rForm').html("<p>Error while storing the session token. Could be due to Private Browsing mode. Please disable Private Browsing mode and try again</p>");
+        }
+    });
+
+
     function callLoginAPI(e) {
+
         //$('#btnSignIn').click(function (e) {
-        
             var email = $('#uEmail').val();
             var password = $('#uPass').val();
             var key = 'APP_REGISTER_KEY';
             var uuid = '00001310-0000-0000-1012-000000000000';
+            sessionStorage.setItem('signUpEmail', email);
             $.ajax({
-                url: "https://ws.everywhere.live/api/v1/authenticate/",
+                url: apiUrl+"/api/v1/authenticate/",
                 type: "POST",
                 crossDomain: true,
                 data: JSON.stringify({ 'email':email, 'Password': password, 'key': key, 'uuid': uuid }),
@@ -121,16 +133,24 @@
                 async: false,
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    
-                    localStorage.setItem('loginToken', data.token);
+
+                    e.preventDefault();
+                    sessionStorage.setItem('loginToken', data.token);
+                    sessionStorage.setItem('userName', data.name);
                     var url = $("#RedirectTo").val();
-                    location.href = url;
-                    return false;
+                    window.location.href = url;
+
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
-                    
+                    e.preventDefault();
+
                     if (jqXhr.statusText == "Created") {
                         var url = $("#RedirectTo").val();
+                        location.href = url;
+                    }
+                    if (jqXhr.statusText == "Found")
+                    {
+                        var url = $("#RedirectToConfirm").val();
                         location.href = url;
                     }
                     else

@@ -15,7 +15,13 @@
                     <span class="icon-bar middle-bar"></span>
                     <span class="icon-bar bottom-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="~/images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>
+                @*<a class="navbar-brand" href="#"><img src="../images/everywhere_logo.png"> <span class="sr-only"> Everywhere </span></a>*@
+                <ul>
+                    <li>
+                        <a class="navbar-brand" href="#"><img src="../images/everywhere_logo.png"><span class="sr-only"> Everywhere </span></a>
+                        <a class="navbar-brand" href="#"><h1 id="cspio-headline">everywhere™</h1></a>
+                    </li>
+                </ul>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -27,7 +33,7 @@
                 </ul>
 
                 <div class="navbar-right">
-                    <p class="navbar-text">Don't have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");" >Login</button>
+                    <p class="navbar-text"></p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");">Login</button>
                 </div>
             </div>
             <!-- /.navbar-collapse -->
@@ -46,54 +52,73 @@
                         <div class="well well-lg well-white row">
 
                             @*<form action="POST" method="POST" role="form" class="col-sm-10 col-sm-offset-1 form-group-lg">*@
-                            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form", @class="col-sm-10 col-sm-offset-1 form-group-lg", id="rForm" }))
+                            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form", @class = "col-sm-10 col-sm-offset-1 form-group-lg", id = "rForm", @onsubmit = "callRegisterAPI(event)" }))
                             {
                                 @Html.AntiForgeryToken()
                                 <div class="form-head">
                                     <h2>Get started for free</h2>
                                     <p>Please fill out the info below to create an new account</p>
                                 </div>
+                                <div id="regValidSummary" hidden>
+                                    <div class="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">User already exist.</span>
+                                    </div>
+                                </div>
                                 @Html.ValidationSummary("", new { @class = "text-danger" })
                                 <div class="form-group">
-                                    @Html.LabelFor(m => m.Name, new { @class = "control-label" })
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "John Stewart", id = "uName" })
+                                    @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "John", id = "ufName" })
+
+                                    @*<input type="text" class="form-control" id="uName" placeholder="John Stewart">*@
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Smith", id = "ulName" })
+
                                     @*<input type="text" class="form-control" id="uName" placeholder="John Stewart">*@
                                 </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Email, new { @class = "control-label" })
                                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "john.s@company.co", id = "uEmail" })
+
                                     @*<label for="uEmail">Email</label>
-                                    <input type="email" class="form-control" id="uEmail" placeholder="john.s@company.co">*@
+                                        <input type="email" class="form-control" id="uEmail" placeholder="john.s@company.co">*@
                                 </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-                                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "6+ characters", id = "uPass", type="password" })
+                                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "6+ characters", id = "uPass", type = "password" })
+
                                     @*<label for="uPass">Password</label>
-                                    <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
+                                        <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
                                 </div>
 
                                 <div class="form-group">
                                     <label for="">Date of Birth</label>
                                     <div class="row">
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtMonth" placeholder="Month">
+                                            @*<input type="text" class="form-control text-center" id="txtMonth" placeholder="Month">*@
+                                            @Html.TextBoxFor(m => m.Month, new { @class = "form-control text-center", placeholder = "Month", id = "txtMonth" })
                                         </div>
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtDay" placeholder="Day">
+                                            @*<input type="text" class="form-control text-center" id="txtDay" placeholder="Day">*@
+                                            @Html.TextBoxFor(m => m.Day, new { @class = "form-control text-center", placeholder = "Day", id = "txtDay" })
                                         </div>
                                         <div class="col-xs-4">
-                                            <input type="text" class="form-control text-center" id="txtYear" placeholder="Year">
+                                            @*<input type="text" class="form-control text-center" id="txtYear" placeholder="Year">*@
+                                            @Html.TextBoxFor(m => m.Year, new { @class = "form-control text-center", placeholder = "Year", id = "txtYear" })
                                         </div>
                                     </div>
                                 </div>
-
-                                <button type="button" id="btnSignUP" onclick="callRegisterAPI(this);" class="btn btn-success cta btn-lg" >Sign Up</button>
+                                @Html.Hidden("RedirectTo", Url.Action("VerifyCode", "Account"));
+                                @Html.Hidden("RedirectToLogin", Url.Action("Login", "Account"));
+                                <button type="submit" id="btnSignUP" class="btn btn-success cta btn-lg">Sign Up</button>
                                 <p class="text-center text-muted"><small>By clicking “Sign Up” I agree to Everywhere’s Terms of Service.</small></p>
                             }
-                            @*</form>*@
-                            
+
+
                         </div>
 
 
@@ -104,23 +129,30 @@
         </div>
     </div>
 </section>
-
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
     //document.getElementById("btnSignUP").addEventListener("click", callRegisterAPI, false);
+    var apiUrl = "";
+    $(document).ready(function () {
+        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
 
+    });
     function callRegisterAPI(e) {
-        debugger;
-            var name = $('#uName').val();
+
+            var name = $('#ufName').val()+" "+$('#ulName').val();
             var email = $('#uEmail').val();
             var password = $('#uPass').val();
+            sessionStorage.setItem('signUpEmail', email);
             var dob = $('#txtMonth').val() + '/' + $('#txtDay').val() + '/' + $('#txtYear').val();
+            var callbackURL = "http://localhost:9178/Account/VerifyCode";
 
             $.ajax({
-                url: "https://ws.everywhere.live/api/v1/user/register/",
+                url: apiUrl+"/api/v1/user/register/",
                 type: "POST",
                 crossDomain: true,
-                data: JSON.stringify({ 'Name': name, 'Email': email, 'Password': password, 'DOB': dob, 'Location': '' }),
+                data: JSON.stringify({ 'Name': name, 'Email': email, 'Password': password, 'DOB': dob, 'Location': '', 'url':callbackURL }),
                 dataType: "json",
                 async:false,
                 contentType: "application/json; charset=utf-8",
@@ -136,11 +168,23 @@
                     }
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
-                    debugger;
+                    e.preventDefault();
                     if (jqXhr.statusText == "Created")
                     {
-                        location.href = '/Account/Login';
-                        
+                        var url = $("#RedirectTo").val();
+                        location.href = url;
+
+                    }
+                    else if (jqXhr.statusText == "Conflict") {
+                        alert('A User exists with this email. Please check and try again.');
+                    }
+                    else {
+                        $('#regValidSummary').html('<div class="alert">'+
+                                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                                        '<strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Please try again....</span>'+
+                                    '</div>');
+                        $('#regValidSummary').show();
+
                     }
                 }
             });
