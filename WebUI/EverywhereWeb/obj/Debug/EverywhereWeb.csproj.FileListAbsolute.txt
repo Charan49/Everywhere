@@ -204,4 +204,3 @@ F:\Final Everywhere\WebUI\EverywhereWeb\bin\Microsoft.Owin.Security.Twitter.xml
 F:\Final Everywhere\WebUI\EverywhereWeb\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 F:\Final Everywhere\WebUI\EverywhereWeb\obj\Debug\EverywhereWeb.dll
 F:\Final Everywhere\WebUI\EverywhereWeb\obj\Debug\EverywhereWeb.pdb
-F:\Final Everywhere\WebUI\EverywhereWeb\obj\Debug\EverywhereWeb.csprojResolveAssemblyReference.cache

@@ -26,5 +26,7 @@ namespace Web.Models
 
         [Display(Name = "UUID")]
         public string uuid { get; set; }    //Needed in case of User Login from App
+
+        public string role { get; set; }
     }
 }

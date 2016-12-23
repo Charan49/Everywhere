@@ -42,7 +42,7 @@ namespace Web.Controllers
 
 
             //Check if User Exists and Account is Available
-            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available);
+            var existingUser = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState >= (int)Models.Enums.AccountState.Available && String.Compare(u.UserType, loginInfo.role.Trim(), true) == 0);
             if (existingUser == null)
             {
                 var unconfirmed = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState == (int)Models.Enums.AccountState.UnconfirmedEmail);

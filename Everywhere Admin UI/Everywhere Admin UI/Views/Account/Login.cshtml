@@ -113,7 +113,7 @@
                 url: apiUrl+"/api/v1/authenticate/",
                 type: "POST",
                 crossDomain: true,
-                data: JSON.stringify({ 'email':email, 'Password': password, 'key': key, 'uuid': uuid }),
+                data: JSON.stringify({ 'email':email, 'Password': password, 'key': key, 'uuid': uuid, 'role':'Admin' }),
                 dataType: "json",
                 async: false,
                 contentType: "application/json; charset=utf-8",
