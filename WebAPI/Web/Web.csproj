@@ -298,6 +298,7 @@
     <Compile Include="Controllers\ServiceMembershipController.cs" />
     <Compile Include="Controllers\TestUsersController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VideoSwitchContoller.cs" />
     <Compile Include="DB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
