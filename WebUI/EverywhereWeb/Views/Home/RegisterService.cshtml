@@ -204,7 +204,7 @@
     function start() {
         gapi.load('auth2', function () {
             auth2 = gapi.auth2.init({
-                client_id: '523666141221-3thnnbdici8m7apt0dadsosmmna59824.apps.googleusercontent.com',
+                client_id: YouTubeAppId,
                 // Scopes to request in addition to 'profile' and 'email'
                 scope: 'https://www.googleapis.com/auth/youtube',
                 access_type: 'offline',
@@ -217,6 +217,8 @@
 
 <script type="text/javascript">
     var apiUrl = "";
+    var FacebookAppId = "";
+    var YouTubeAppId = "";
     var fbObj = null;
     var sID = null;
     var sName = null;
@@ -229,7 +231,7 @@
     window.fbAsyncInit = function () {
         FB.init({
             //appId: '340485602973415',
-            appId: '720765954737644',
+            appId: FacebookAppId,
             xfbml: true,
             version: 'v2.8'
         });
@@ -311,6 +313,8 @@
 
     window.onload = function () {
         apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
+        FacebookAppId = '@System.Configuration.ConfigurationManager.AppSettings["FacebookAppId"]';
+        YouTubeAppId = '@System.Configuration.ConfigurationManager.AppSettings["YouTubeAppId"]';
         if (sessionStorage.getItem('loginToken') == null)
             location.href = '@Url.Action("Login", "Account")';
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
@@ -380,6 +384,8 @@
     {
         $("#younow").show();
         $("#younowtestUserbtn").hide();
+        $("#younowsm").show();
+        $("#younowtestUserbtnsm").hide();
         window.open('https://www.younow.com', '_blank');
 
         //alert("An Everywhere Facebook account has been created and emailed to you. Please check your email with the subject \"Everywhere Facebook account\". Follow the procedure in the email to Login with Facebook and allow Everywhere to publish your live streams.");
@@ -530,7 +536,7 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                
+
                 $('#accounts').html('');
                 $('#accounts').append('<h4><label for="">Available Accounts</label></h4>');
                 if (data != null && data.length > 0) {
@@ -546,6 +552,7 @@
                                 sIDYN = data[i].ID;
                                 sNameYN = data[i].Name;
                                 $("#younow").hide();
+                                $("#younowsm").hide();
                             }
 
                             if (data[i].name == 'Facebook') {
@@ -624,7 +631,7 @@
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                
+
                 if (data != null && data.length > 0) {
                     $('#accountsRegistered').show();
                     for (i = 0; i < data.length; i++) {
@@ -913,7 +920,7 @@
 '<br />' +
  ' </p>' +
                                                 '<p class="col-xs-6">' +
-                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'testUserbtnsm" onclick="CreateNewTestAccount();"><i><img src="../images/icon-chain-xs.png"> </i>Create Account</button>' +
+                                                    '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'testUserbtnsm" onclick="' + functioncall + '"><i><img src="../images/icon-chain-xs.png"> </i>' + testlink + '</button>' +
                                                     ' </p>' +
                                                     '<p class="col-xs-6">' +
                                                     '<button type="button" class="btn btn-sm btn-grey btn-block" id="' + name.toLowerCase().trim() + 'sm" onclick="' + name.toLowerCase().trim() + 'Login();"><i><img src="../images/icon-chain-xs.png"> </i> Link</button>' +
