@@ -206,6 +206,7 @@
     <Content Include="images\stream_thumb_02.jpg" />
     <Content Include="images\stream_thumb_facebook.png" />
     <Content Include="images\stream_thumb_twitter.png" />
+    <Content Include="images\stream_thumb_younow.png" />
     <Content Include="images\stream_thumb_youtube.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
