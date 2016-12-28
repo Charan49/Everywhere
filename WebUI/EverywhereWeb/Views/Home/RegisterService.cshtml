@@ -286,6 +286,7 @@
     }
 
     function youtubeLogin() {
+        start()
         auth2.grantOfflineAccess({ 'redirect_uri': 'postmessage' }).then(signInCallback);
 
     }
