@@ -26,8 +26,9 @@ namespace EverywhereWeb.Models
     public class VerifyCodeViewModel
     {
         [Required]
-        [Display(Name = "Code")]
-        public string Code { get; set; }
+        [Display(Name = "Mobile Code")]
+        public string MobileCode { get; set; }
+        
     }
 
     public class ForgotViewModel
@@ -35,6 +36,12 @@ namespace EverywhereWeb.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    public class ConfirmPhoneModel
+    {
+        [Required]
+        public string Mobile { get; set; }
     }
 
     public class LoginViewModel
@@ -88,6 +95,10 @@ namespace EverywhereWeb.Models
         [Display(Name = "Year")]
         [Range(1, 3000, ErrorMessage = "Invalid year.")]
         public int Year { get; set; }
+
+        [Required]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
     }
 
     public class ResetPasswordViewModel
@@ -107,8 +118,8 @@ namespace EverywhereWeb.Models
         [Display(Name = "Confirm password")]
         [System.ComponentModel.DataAnnotations.CompareAttribute("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        public string Code { get; set; }
+        [Display(Name = "Mobile Code")]
+        public string MobileCode { get; set; }
     }
 
     public class ForgotPasswordViewModel

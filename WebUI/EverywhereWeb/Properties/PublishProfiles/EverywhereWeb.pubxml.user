@@ -19,19 +19,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/28/2016 04:50:59</publishTime>
     </File>
     <File Include="bin/EverywhereWeb.dll">
-      <publishTime>12/20/2016 18:35:32</publishTime>
+      <publishTime>01/14/2017 19:10:36</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.EntityFramework.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.dll">
       <publishTime>11/28/2016 04:51:01</publishTime>
@@ -106,25 +106,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/28/2016 04:51:01</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/System.Web.Optimization.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/System.Web.Razor.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Deployment.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Razor.dll">
-      <publishTime>11/28/2016 04:51:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>11/28/2016 04:51:03</publishTime>
@@ -136,13 +136,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 23:46:04</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>11/17/2016 23:46:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="crossdomain.xml">
       <publishTime>11/18/2016 16:31:46</publishTime>
     </File>
     <File Include="favicon.ico">
-      <publishTime>11/17/2016 23:46:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
       <publishTime>11/17/2016 23:46:04</publishTime>
@@ -157,7 +157,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 23:46:04</publishTime>
     </File>
     <File Include="Global.asax">
-      <publishTime>11/17/2016 23:46:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="images/bg-photo-1.jpg">
       <publishTime>11/17/2016 09:55:24</publishTime>
@@ -179,6 +179,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="images/favicon.ico">
       <publishTime>12/02/2016 15:37:30</publishTime>
+    </File>
+    <File Include="images/flags%402x.png">
+      <publishTime>12/30/2016 14:34:12</publishTime>
+    </File>
+    <File Include="images/flags.png">
+      <publishTime>12/30/2016 14:34:12</publishTime>
     </File>
     <File Include="images/icon-broken-chain-xs.png">
       <publishTime>11/16/2016 02:59:04</publishTime>
@@ -216,6 +222,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="images/stream_thumb_twitter.png">
       <publishTime>11/18/2016 16:30:02</publishTime>
     </File>
+    <File Include="images/stream_thumb_younow.png">
+      <publishTime>12/15/2016 14:45:40</publishTime>
+    </File>
     <File Include="images/stream_thumb_youtube.png">
       <publishTime>11/18/2016 16:29:47</publishTime>
     </File>
@@ -227,6 +236,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/bootstrap.min.js">
       <publishTime>11/16/2016 04:38:04</publishTime>
+    </File>
+    <File Include="Scripts/intlTelInput.js">
+      <publishTime>12/30/2016 14:34:12</publishTime>
+    </File>
+    <File Include="Scripts/intlTelInput.min.js">
+      <publishTime>12/30/2016 14:34:12</publishTime>
     </File>
     <File Include="Scripts/jquery-1.10.2.js">
       <publishTime>11/17/2016 23:46:05</publishTime>
@@ -264,11 +279,20 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/respond.min.js">
       <publishTime>11/17/2016 23:46:17</publishTime>
     </File>
+    <File Include="Scripts/utils.js">
+      <publishTime>12/30/2016 14:34:12</publishTime>
+    </File>
     <File Include="Scripts/_references.js">
-      <publishTime>12/15/2016 14:44:25</publishTime>
+      <publishTime>01/06/2017 16:43:16</publishTime>
     </File>
     <File Include="Styles/bootstrap.min.css">
       <publishTime>11/18/2016 16:22:34</publishTime>
+    </File>
+    <File Include="Styles/intlTelInput.css">
+      <publishTime>01/06/2017 18:15:58</publishTime>
+    </File>
+    <File Include="Styles/phone.css">
+      <publishTime>01/10/2017 06:24:26</publishTime>
     </File>
     <File Include="Styles/style.css">
       <publishTime>12/20/2016 18:35:32</publishTime>
@@ -276,8 +300,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Account/ConfirmEmail.cshtml">
       <publishTime>12/20/2016 18:35:32</publishTime>
     </File>
+    <File Include="Views/Account/ConfirmPhone.cshtml">
+      <publishTime>01/14/2017 19:10:01</publishTime>
+    </File>
     <File Include="Views/Account/ConfirmRegistration.cshtml">
-      <publishTime>12/20/2016 18:35:32</publishTime>
+      <publishTime>12/23/2016 04:59:42</publishTime>
     </File>
     <File Include="Views/Account/ExternalLoginConfirmation.cshtml">
       <publishTime>11/17/2016 23:46:21</publishTime>
@@ -286,43 +313,43 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 23:46:21</publishTime>
     </File>
     <File Include="Views/Account/ForgotPassword.cshtml">
-      <publishTime>12/22/2016 22:55:48</publishTime>
+      <publishTime>01/11/2017 21:02:07</publishTime>
     </File>
     <File Include="Views/Account/ForgotPasswordConfirmation.cshtml">
-      <publishTime>12/20/2016 18:35:32</publishTime>
+      <publishTime>12/23/2016 04:59:53</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>12/22/2016 22:54:16</publishTime>
+      <publishTime>01/14/2017 19:10:01</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
-      <publishTime>12/22/2016 22:57:06</publishTime>
+      <publishTime>01/14/2017 19:10:01</publishTime>
     </File>
     <File Include="Views/Account/ResetPassword.cshtml">
-      <publishTime>12/22/2016 22:56:37</publishTime>
+      <publishTime>01/14/2017 19:10:01</publishTime>
     </File>
     <File Include="Views/Account/ResetPasswordConfirmation.cshtml">
-      <publishTime>12/20/2016 18:35:32</publishTime>
+      <publishTime>12/23/2016 05:00:05</publishTime>
     </File>
     <File Include="Views/Account/SendCode.cshtml">
       <publishTime>11/17/2016 23:46:21</publishTime>
     </File>
     <File Include="Views/Account/VerifyCode.cshtml">
-      <publishTime>12/22/2016 22:56:49</publishTime>
+      <publishTime>01/14/2017 18:29:53</publishTime>
     </File>
     <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
       <publishTime>11/17/2016 23:46:21</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
-      <publishTime>11/17/2016 23:46:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/Home/Contact.cshtml">
-      <publishTime>11/17/2016 23:46:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/Home/Dashboard.cshtml">
-      <publishTime>12/22/2016 22:52:30</publishTime>
+      <publishTime>12/27/2016 20:18:27</publishTime>
     </File>
     <File Include="Views/Home/RegisterService.cshtml">
-      <publishTime>12/23/2016 03:15:29</publishTime>
+      <publishTime>12/28/2016 22:10:35</publishTime>
     </File>
     <File Include="Views/Manage/AddPhoneNumber.cshtml">
       <publishTime>11/17/2016 23:46:21</publishTime>
@@ -349,19 +376,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/17/2016 23:46:21</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>12/20/2016 18:35:32</publishTime>
+      <publishTime>01/06/2017 17:02:13</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>11/17/2016 23:46:21</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>11/17/2016 23:46:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
-      <publishTime>11/17/2016 23:46:00</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/23/2016 04:21:51</publishTime>
+      <publishTime>01/14/2017 19:10:36</publishTime>
     </File>
   </ItemGroup>
 </Project>

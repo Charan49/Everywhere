@@ -43,8 +43,9 @@ namespace Web.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.BadRequest, ErrorDescription = "Bad Request..." };
             }
-
-            string vCode = GenerateCode.CreateRandomCode(4);
+            string linkUrl = string.Empty;
+            
+            string vEmailCode = GenerateCode.CreateRandomCode(4);
 
             //Create user and save to database
             //////////////////////////////////
@@ -74,10 +75,11 @@ namespace Web.Controllers
 
                 Email = model.email.Trim(),
                 Password = Helper.PasswordHash.HashPassword(model.password),
-                ConfirmationCode = vCode,
+                EmailVerificationCode = vEmailCode,
                 ConfirmationDueDate = DateTime.Now,
                 CreatedDate = DateTime.UtcNow,
-                UserGUID = Guid.NewGuid()
+                UserGUID = Guid.NewGuid(),
+                MobileNumber=model.mobilenumber
             };
 
 
@@ -89,28 +91,32 @@ namespace Web.Controllers
                     int count = await db.Users.CountAsync(u => String.Compare(u.Email, model.email.Trim(), true) == 0 && u.AccountState != (byte)Models.Enums.AccountState.Deleted && String.Compare(u.UserType, "User", true) == 0);
                     if (count > 0)
                     {
+                        int unConfirmed = await db.Users.CountAsync(u => String.Compare(u.Email, model.email.Trim(), true) == 0 && u.AccountState == (byte)Models.Enums.AccountState.UnconfirmedEmail && String.Compare(u.UserType, "User", true) == 0);
+                        if(unConfirmed>0)
+                            return Request.CreateResponse(HttpStatusCode.Found);
                         return Request.CreateErrorResponse(HttpStatusCode.Conflict, "User already exists.");
                         throw new ApiDataException(1002, "User is already exist in system.", HttpStatusCode.Conflict);
 
                     }
 
-                    var callbackURL = Url.Link("Default", new { controller = "VerifyCode", action = "Account" });
-                    UriBuilder builder = new UriBuilder(callbackURL);
-                    string newUri = builder.Uri.ToString();
+                    if (!string.IsNullOrEmpty(model.url))
+                        linkUrl = " Please click the link below to enter your verification codes: " + model.url + "<br />";
 
-                
 
                     MailMessage message = new MailMessage("test@test.com", model.email);
                     message.Subject= "Everywhere signup confirmation";
                     message.Body = "Hi " + user.FirstName + ",<br />" +
                                         "<br />" +
-                                        "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform.<br />" +
-                                        "<br />" +
+                                        "Thanks for signing up to Everywhere. We sent a phone number verification code to your mobile phone as a text message.  Please complete the sign up by entering the code in app/web to complete the signup. <br />" +
+                                        linkUrl +" <br />"+
+                                        "You are then ready to live stream videos through Everywhere platform. <br />" +
                                         "Best regards<br />" +
                                         "Team Everywhere<br />" +
                                         "www.Everywhere.live<br /> ";
                     await SendEmail.sendMail(message);
-
+                    string vMobileCode = GenerateCode.CreateRandomCode(4);
+                    await SMS.SendSMS(model.mobilenumber,vMobileCode);
+                    user.MobileConfirmationCode = vMobileCode;
                     db.Users.Add(user);
                     db.SaveChanges();
 
@@ -130,31 +136,37 @@ namespace Web.Controllers
         }
 
         [AllowAnonymous]
-        [Route("api/v1/ResendVerificationEmail/{email}")]
+        [Route("api/v1/user/ResendVerificationEmail")]
         [HttpPost]
-        public async Task<IHttpActionResult> ResendVerificationEmail(string email)
+        public async Task<IHttpActionResult> ResendVerificationEmail(JForgetPassword model)
         {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
+            string linkUrl = string.Empty;
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
             if (emailAddress != null)
             {
-                
+                string vEmailCode = GenerateCode.CreateRandomCode(4);
 
+                if (!string.IsNullOrEmpty(model.callbackURL))
+                    linkUrl = " Please click the link below to enter your verification codes: " + model.callbackURL + "<br />";
 
-                string vCode = GenerateCode.CreateRandomCode(4);
-
-                MailMessage message = new MailMessage("test@test.com", email);
+                MailMessage message = new MailMessage("test@test.com", model.email);
                 message.Subject = "Everywhere signup confirmation";
-                message.Body = "Hi " + emailAddress.FirstName + ", <br>" +
-                                        "Thanks for signing up to Everywhere. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform. <br>" +
-                                        "Best regards <br>" +
-                                        "Team Everywhere <br>" +
-                                        "www.Everywhere.live <br>";
+                message.Body = "Hi " + emailAddress.FirstName + ",<br />" +
+                                        "<br />" +
+                                        "To finish setting up your Everywhere account, we just need to make sure this email address is yours. Here is your email address verification code: <b>" + vEmailCode + "</b> Likewise we sent a phone number verification code to your mobile phone as a text message. < br />" +
+                                        linkUrl + " <br />" +
+                                        "If you didn't request this code, you can safely ignore this email. Someone else might have typed your email address by mistake. <br />" +
+                                        "Best regards<br />" +
+                                        "Team Everywhere<br />" +
+                                        "www.Everywhere.live<br /> ";
                 await SendEmail.sendMail(message);
+                string vMobileCode = GenerateCode.CreateRandomCode(4);
 
-                
+                await SMS.SendSMS(emailAddress.MobileNumber, vMobileCode);
                 emailAddress.ConfirmationDueDate = DateTime.Now;
                 emailAddress.ModifiedDate = DateTime.Now;
-                emailAddress.ConfirmationCode = vCode;
+                emailAddress.MobileConfirmationCode = vMobileCode;
+                emailAddress.EmailVerificationCode = vEmailCode;
                 await db.SaveChangesAsync();
                 return Ok();
             }

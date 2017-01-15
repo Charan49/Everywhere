@@ -214,8 +214,9 @@
         $('#userName').html(sessionStorage.getItem('userName') + '<b class="caret"></b>');
         getVideoUrl();
         getMembershipServices();
-
-    }
+        $('#btnScheduleStreamYounow').hide();
+        $('#btnScheduleStreamsmYounow').hide();
+   }
 
     function getVideoUrl() {
 
@@ -668,7 +669,7 @@
                                                    ' <div class="meta-des"></div>' +
 
                                                     '<div class="text-right hidden-xs">'+
-                                                        '<button type="button" class="btn btn-xs btn-grey" data-toggle="modal" onclick="GetLivestreamURL(' + "'" + name + "'" + ')"><i><img src="../images/icon-circular-clock-xs.png"> </i> Schedule Streaming</button>' +
+                                                        '<button type="button" class="btn btn-xs btn-grey" data-toggle="modal" id="btnScheduleStream' + "" + name + "" + '" onclick="GetLivestreamURL(' + "'" + name + "'" + ')"><i><img src="../images/icon-circular-clock-xs.png"> </i> Schedule Streaming</button>' +
                                                         '<button type="button" class="btn btn-xs btn-grey" onclick="removeUserServices(' + "'" + name + "'" + ')"><i><img src="../images/icon-broken-chain-xs.png"> </i> Unlink</button>' +
                                                         '<button type="button" class="btn btn-xs btn-grey"  onclick="editStreamDetails(' + "'" + name + "'" + ')"><i><img src="../images/icon-edit-xs.png"> </i> Edit</button>' +
                                                     '</div>'+
@@ -703,7 +704,7 @@
                                                         '<button type="button" class="btn btn-sm btn-grey btn-block"  onclick="editStreamDetails(' + "'" + name + "'" + ')"><i><img src="../images/icon-edit-xs.png"> </i> Edit</button>' +
                                                     '</p>' +
                                                     '<p class="col-xs-12" style="align:center;">' +
-                                                        '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="GetLivestreamURL(' + "'" + name + "'" + ')"><i><img src="../images/icon-circular-clock-xs.png"> </i> Schedule Streaming</button>' +
+                                                        '<button type="button" class="btn btn-sm btn-grey btn-block" id="btnScheduleStreamsm' + "" + name + "" + '"  onclick="GetLivestreamURL(' + "'" + name + "'" + ')"><i><img src="../images/icon-circular-clock-xs.png"> </i> Schedule Streaming</button>' +
                                                     '</p>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">' +
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream Date:</span>' +

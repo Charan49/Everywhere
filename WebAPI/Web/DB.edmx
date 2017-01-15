@@ -60,7 +60,7 @@
           <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DOB" Type="datetime2" Precision="7" />
           <Property Name="Location" Type="nvarchar(max)" />
-          <Property Name="ConfirmationCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="MobileConfirmationCode" Type="nvarchar" MaxLength="50" />
           <Property Name="UserType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AccountState" Type="int" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
@@ -68,6 +68,8 @@
           <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
           <Property Name="ConfirmationDueDate" Type="datetime2" Precision="7" />
+          <Property Name="MobileNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailVerificationCode" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="UserServices">
           <Key>
@@ -213,9 +215,11 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="UserServices" Relationship="Self.FK_Users_UserServices" FromRole="Users" ToRole="UserServices" />
-          <Property Name="ConfirmationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ConfirmationDueDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="TestUsers" Relationship="InterceptDBModel.FK_Users_TestUsers" FromRole="User" ToRole="TestUser" />
+          <Property Name="MobileNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailVerificationCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MobileConfirmationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="UserService">
           <Key>
@@ -365,8 +369,10 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="InterceptDBModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="MobileConfirmationCode" ColumnName="MobileConfirmationCode" />
+                <ScalarProperty Name="EmailVerificationCode" ColumnName="EmailVerificationCode" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
                 <ScalarProperty Name="ConfirmationDueDate" ColumnName="ConfirmationDueDate" />
-                <ScalarProperty Name="ConfirmationCode" ColumnName="ConfirmationCode" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />

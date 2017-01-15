@@ -12,11 +12,13 @@ namespace Web.Models.Json
         [StringTrim]
         [EmailAddress]
         public string email { get; set; }
-
+        [StringTrim]
+        public string phone { get; set; }
         public string callbackURL { get; set; }
 
-
+        public string type { get; set; }
     }
+    
 
     public class JResetPasswordModel
     {

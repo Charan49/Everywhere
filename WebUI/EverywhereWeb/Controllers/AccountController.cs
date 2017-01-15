@@ -115,11 +115,11 @@ namespace EverywhereWeb.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync("",model.Code, isPersistent: true, rememberBrowser: true);
+            var result = await SignInManager.TwoFactorSignInAsync("",model.MobileCode, isPersistent: true, rememberBrowser: true);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(model.Code);
+                    return RedirectToLocal(model.MobileCode);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.Failure:
@@ -223,6 +223,20 @@ namespace EverywhereWeb.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        public ActionResult ConfirmPhone()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmPhone(ConfirmPhoneModel model)
+        {
+            return View(model);
+        }
+
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
@@ -256,7 +270,7 @@ namespace EverywhereWeb.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.MobileCode, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");

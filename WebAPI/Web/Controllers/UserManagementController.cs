@@ -97,7 +97,7 @@ namespace Web.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Already Exists");
                 throw new ApiDataException(1002, "User is already exist in system.", HttpStatusCode.Conflict);
             }
-            string vCode = GenerateCode.CreateRandomCode(4);
+            string vEmailCode = GenerateCode.CreateRandomCode(4);
 
             //Create New User
             User user = new User()
@@ -108,7 +108,7 @@ namespace Web.Controllers
 
                 FirstName = newUser.firstName,
                 LastName = newUser.lastName,
-                ConfirmationCode = vCode,
+                EmailVerificationCode=vEmailCode,
                 ConfirmationDueDate = DateTime.Now,
 
                 AccountState = (byte)Models.Enums.AccountState.UnconfirmedEmail,
@@ -129,7 +129,7 @@ namespace Web.Controllers
 
             message.Body = "Hi " + user.FirstName + ",<br />" +
                                 "<br />" +
-                                "Welcome to Everywhere. Admin account is created for you. Please complete the registration by entering the following verification code: <b>" + vCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform.<br />" +
+                                "Welcome to Everywhere. Admin account is created for you. Please complete the registration by entering the following verification code: <b>" + vEmailCode + "</b> in the portal/app to complete registration. You are then ready to live stream videos through Everywhere platform.<br />" +
                                 "Please click on the given URL to complete the registration " + newUser.callbackURL + "<br />" +
                                 "<br />" +
                                 "Best regards<br />" +
@@ -138,7 +138,7 @@ namespace Web.Controllers
             await SendEmail.sendMail(message);
             user.ConfirmationDueDate = DateTime.Now;
             user.ModifiedDate = DateTime.Now;
-            user.ConfirmationCode = vCode;
+            user.EmailVerificationCode = vEmailCode;
 
             db.Users.Add(user);
             try
@@ -215,7 +215,7 @@ namespace Web.Controllers
                     await SendEmail.sendMail(message);
                     user.ConfirmationDueDate = DateTime.Now;
                     user.ModifiedDate = DateTime.Now;
-                    user.ConfirmationCode = vCode;
+                    user.EmailVerificationCode = vCode;
                 }
                 
 

@@ -27,6 +27,8 @@ namespace Web.Models
         public string location { get; set; }
         public string url { get; set; }
 
+        [Required]
+        public string mobilenumber { get; set; }
         public void Trim()
         {
             //Trim Strings

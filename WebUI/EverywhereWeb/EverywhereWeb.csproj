@@ -194,6 +194,8 @@
     <Content Include="images\bg-photo-5.jpg" />
     <Content Include="images\everywhere_logo.png" />
     <Content Include="images\favicon.ico" />
+    <Content Include="images\flags%402x.png" />
+    <Content Include="images\flags.png" />
     <Content Include="images\icon-broken-chain-xs.png" />
     <Content Include="images\icon-chain-xs.png" />
     <Content Include="images\icon-circular-clock-xs.png" />
@@ -213,6 +215,8 @@
     <None Include="Properties\PublishProfiles\EverywhereWeb.pubxml" />
     <None Include="Properties\PublishProfiles\Hhh.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\intlTelInput.js" />
+    <Content Include="Scripts\intlTelInput.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -225,8 +229,11 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\utils.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Styles\bootstrap.min.css" />
+    <Content Include="Styles\intlTelInput.css" />
+    <Content Include="Styles\phone.css" />
     <Content Include="Styles\style.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -264,6 +271,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\RegisterService.cshtml" />
     <Content Include="Views\Account\ConfirmRegistration.cshtml" />
+    <Content Include="Views\Account\ConfirmPhone.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

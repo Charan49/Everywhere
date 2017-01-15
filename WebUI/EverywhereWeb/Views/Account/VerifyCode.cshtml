@@ -32,7 +32,7 @@
                 </ul>
 
                 <div class="navbar-right">
-                    <p class="navbar-text">Already have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Register", "Account") + "'");" >Sign in</button>
+                    <p class="navbar-text">Already have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");" >Sign in</button>
                 </div>
             </div><!-- /.navbar-collapse -->
         </div>
@@ -63,13 +63,13 @@
                             }
                             <div class="row">
                                 <div class="col-sm-7">
-                                    <p class="text-justify small">If your Everywhere verification code email is not in your inbox, please check the junk or spam folder or click <a href="#" onclick="resendVerificationCode(event)"><u>Resend</u></a> the verification code. Add Everywhere to your email contacts or un-mark as spam or junk to avoid missing important messages in the future.</p>
+                                    <p class="text-justify small">A verification code has been sent to your mobile phone. Please check your text messages. It may take few minutes to receive the message.  If you still haven't  received the message please click on <a href="#" onclick="resendVerificationCode(event)"><u>Resend</u></a> the verification code link.</p>
                                 </div>
                                 <div class="col-sm-5">
 
                                     <div class="form-group letter-space">
-                                        @Html.LabelFor(m => m.Code, new { @class = "control-label" })
-                                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "1234", id = "txtCode" })
+                                        @Html.LabelFor(m => m.MobileCode, new { @class = "control-label" })
+                                        @Html.TextBoxFor(m => m.MobileCode, new { @class = "form-control", placeholder = "1234", id = "txtMobileCode" })
                                         @*<label for="">Enter the 4 Digit Code</label>
                                         <input maxlength="4" type="text" class="form-control" id="txtCode" placeholder="1234">*@
                                     </div>
@@ -77,9 +77,10 @@
                                 </div>
                             </div>
 
-                            <p class="small">If you did not recieve email for verification code then please click this <a href="#">link</a> to start signup process again.</p>
+                            
                             
                         }
+                        @Html.Hidden("RedirectTo", Url.Action("VerifyCode", "Account"));
                         @Html.Hidden("loginURL", Url.Action("ConfirmRegistration", "Account"));
                         @*</form>*@
 
@@ -100,12 +101,12 @@
     function confirmEmail(e) {
         
         //$('#btnSignIn').click(function (e) {
-        var id = $('#txtCode').val();
+        var mCode = $('#txtMobileCode').val();
         $.ajax({
             url: apiUrl+"/api/v1/ConfirmEmail/",
             type: "POST",
             crossDomain: true,
-            data: JSON.stringify({ 'code': id }),
+            data: JSON.stringify({ 'mobilecode': mCode }),
             dataType: "json",
             async: false,
             contentType: "application/json; charset=utf-8",
@@ -134,14 +135,14 @@
     }
 
     function resendVerificationCode(e) {
-
+        var cURL = 'http://web.everywhere.live' + $('#RedirectTo').val();
         //$('#btnSignIn').click(function (e) {
         var email = sessionStorage.getItem('signUpEmail');
         $.ajax({
-            url: apiUrl+"/api/v1/ResendVerificationEmail/"+email+"/",
+            url: apiUrl + "/api/v1/user/ResendVerificationEmail/",
             type: "POST",
             crossDomain: true,
-            data: { 'email': email },
+            data: JSON.stringify({ 'email': email, 'callbackURL': cURL }),
             dataType: "json",
             async: false,
             contentType: "application/json; charset=utf-8",
@@ -156,7 +157,7 @@
 
                 e.preventDefault();
                 if (jqXhr.statusText == "OK") {
-                    alert("Email sent.");
+                    alert("Verification codes are sent to your mobile phone and email.");
                 }
                 else
                     $('#validSummary').show();

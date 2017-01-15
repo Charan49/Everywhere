@@ -55,7 +55,7 @@
     <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DOB" Type="datetime2" Precision="7" />
     <Property Name="Location" Type="nvarchar(max)" />
-    <Property Name="ConfirmationCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="MobileConfirmationCode" Type="nvarchar" MaxLength="50" />
     <Property Name="UserType" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="AccountState" Type="int" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
@@ -63,6 +63,8 @@
     <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
     <Property Name="ConfirmationDueDate" Type="datetime2" Precision="7" />
+    <Property Name="MobileNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="EmailVerificationCode" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="UserServices">
     <Key>

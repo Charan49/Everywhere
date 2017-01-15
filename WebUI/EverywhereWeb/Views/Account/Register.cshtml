@@ -4,6 +4,7 @@
 }
 
 
+
 <header>
     <nav class="navbar navbar-main navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
         <div class="container">
@@ -33,7 +34,7 @@
                 </ul>
 
                 <div class="navbar-right">
-                    <p class="navbar-text"></p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");">Login</button>
+                    <p class="navbar-text">Already have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");">Sign in</button>
                 </div>
             </div>
             <!-- /.navbar-collapse -->
@@ -94,24 +95,30 @@
                                     @*<label for="uPass">Password</label>
                                         <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
                                 </div>
-
                                 <div class="form-group">
+                                    @*<label for="uPass" class = "control-label" >PHONE NUMBER</label>*@
+                                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+                                    <div>
+                                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "", id = "phone" })
+                                    </div>
+                                    @*<label for="uPass">Password</label>
+                                        <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
+                                </div>
+                                @*<div class="form-group">
                                     <label for="">Date of Birth</label>
                                     <div class="row">
                                         <div class="col-xs-4">
-                                            @*<input type="text" class="form-control text-center" id="txtMonth" placeholder="Month">*@
                                             @Html.TextBoxFor(m => m.Month, new { @class = "form-control text-center", placeholder = "Month", id = "txtMonth" })
                                         </div>
                                         <div class="col-xs-4">
-                                            @*<input type="text" class="form-control text-center" id="txtDay" placeholder="Day">*@
                                             @Html.TextBoxFor(m => m.Day, new { @class = "form-control text-center", placeholder = "Day", id = "txtDay" })
                                         </div>
                                         <div class="col-xs-4">
-                                            @*<input type="text" class="form-control text-center" id="txtYear" placeholder="Year">*@
                                             @Html.TextBoxFor(m => m.Year, new { @class = "form-control text-center", placeholder = "Year", id = "txtYear" })
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
+
                                 @Html.Hidden("RedirectTo", Url.Action("VerifyCode", "Account"));
                                 @Html.Hidden("RedirectToLogin", Url.Action("Login", "Account"));
                                 <button type="submit" id="btnSignUP" class="btn btn-success cta btn-lg">Sign Up</button>
@@ -129,30 +136,39 @@
         </div>
     </div>
 </section>
+<script src="~/Scripts/jquery.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script type="text/javascript">
 
+<script src="~/Scripts/intlTelInput.js"></script>
+<script type="text/javascript">
+    $("#phone").intlTelInput({
+        separateDialCode: true,
+        utilsScript: "../Scripts/utils.js"
+    });
     //document.getElementById("btnSignUP").addEventListener("click", callRegisterAPI, false);
     var apiUrl = "";
     $(document).ready(function () {
         apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
-
+        
     });
-    function callRegisterAPI(e) {
 
+
+    function callRegisterAPI(e) {
+        
             var name = $('#ufName').val()+" "+$('#ulName').val();
             var email = $('#uEmail').val();
             var password = $('#uPass').val();
             sessionStorage.setItem('signUpEmail', email);
-            var dob = $('#txtMonth').val() + '/' + $('#txtDay').val() + '/' + $('#txtYear').val();
-            var callbackURL = "http://localhost:9178/Account/VerifyCode";
+            var phone = null;
+            if ($('#phone').val() != "")
+                phone = $(".selected-dial-code").text() + $('#phone').val();
+            var callbackURL = 'http://web.everywhere.live' + $("#RedirectTo").val();
 
             $.ajax({
                 url: apiUrl+"/api/v1/user/register/",
                 type: "POST",
                 crossDomain: true,
-                data: JSON.stringify({ 'Name': name, 'Email': email, 'Password': password, 'DOB': dob, 'Location': '', 'url':callbackURL }),
+                data: JSON.stringify({ 'Name': name, 'Email': email, 'Password': password, 'Location': '', 'url': callbackURL, 'mobilenumber': phone }),
                 dataType: "json",
                 async:false,
                 contentType: "application/json; charset=utf-8",
@@ -168,9 +184,16 @@
                     }
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
+                    
                     e.preventDefault();
                     if (jqXhr.statusText == "Created")
                     {
+                        var url = $("#RedirectTo").val();
+                        location.href = url;
+
+                    }
+                    if (jqXhr.statusText == "Found") {
+                        alert('A User exists with this email with unconfirmed status. Please verify the account.');
                         var url = $("#RedirectTo").val();
                         location.href = url;
 

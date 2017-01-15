@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Twilio;
 using WebApi.ErrorHelper;
 
 namespace Web.Helper
@@ -44,7 +45,7 @@ namespace Web.Helper
                         detalle.Append(" -- Error #" + i.ToString() + " : " + ex.Errors[i]);
                     }
 
-                    throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Bad Request...  "+ ex.InnerException };
+                    throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Bad Request...  " + ex.InnerException };
                 }
             }
             else
@@ -58,10 +59,10 @@ namespace Web.Helper
     {
         public static Task sendMail(MailMessage message)
         {
-          
+
 
             string emailAccount = ConfigurationManager.AppSettings["mailAccount"].ToString();
-            string emailAccountpassword =ConfigurationManager.AppSettings["mailPassword"].ToString();
+            string emailAccountpassword = ConfigurationManager.AppSettings["mailPassword"].ToString();
             string smtp = ConfigurationManager.AppSettings["smtpAddress"].ToString();
             string port = ConfigurationManager.AppSettings["smtpport"].ToString();
 
@@ -77,25 +78,55 @@ namespace Web.Helper
             client.Credentials = basicAuthenticationInfo;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
 
-                          try
-                {
-                    client.Send(sendmessage);
-                }
-                catch (InvalidApiRequestException ex)
-                {
-                    var detalle = new StringBuilder();
+            try
+            {
+                client.Send(sendmessage);
+            }
+            catch (InvalidApiRequestException ex)
+            {
+                var detalle = new StringBuilder();
 
-                    detalle.Append("ResponseStatusCode: " + ex.ResponseStatusCode + ".   ");
-                    for (int i = 0; i < ex.Errors.Count(); i++)
-                    {
-                        detalle.Append(" -- Error #" + i.ToString() + " : " + ex.Errors[i]);
-                    }
-
-                    throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Bad Request...  " + ex.InnerException };
+                detalle.Append("ResponseStatusCode: " + ex.ResponseStatusCode + ".   ");
+                for (int i = 0; i < ex.Errors.Count(); i++)
+                {
+                    detalle.Append(" -- Error #" + i.ToString() + " : " + ex.Errors[i]);
                 }
+
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Bad Request...  " + ex.InnerException };
+            }
             return Task.FromResult(0);
 
 
+        }
+    }
+
+    public static class SMS
+    {
+        public static Task SendSMS(string cellNumber, string message)
+        {
+            string twilioSID = ConfigurationManager.AppSettings["twilioSID"].ToString();
+            string twilioAuthToken = ConfigurationManager.AppSettings["twilioAuthToken"].ToString();
+            string twilioPhoneNumber = ConfigurationManager.AppSettings["twilioPhoneNumber"].ToString();
+
+            var client = new TwilioRestClient(twilioSID, twilioAuthToken);
+            
+            try
+            {
+                var result = client.SendMessage(twilioPhoneNumber, cellNumber, "Your Everywhere verification code is: " + message);
+            }
+            catch (InvalidApiRequestException ex)
+            {
+                var detalle = new StringBuilder();
+
+                detalle.Append("ResponseStatusCode: " + ex.ResponseStatusCode + ".   ");
+                for (int i = 0; i < ex.Errors.Count(); i++)
+                {
+                    detalle.Append(" -- Error #" + i.ToString() + " : " + ex.Errors[i]);
+                }
+
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.InternalServerError, ErrorDescription = "Bad Request...  " + ex.InnerException };
+            }
+            return Task.FromResult(0);
         }
     }
 }

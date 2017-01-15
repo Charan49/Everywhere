@@ -35,8 +35,10 @@ namespace Web
         public string ModifiedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public string ConfirmationCode { get; set; }
         public Nullable<System.DateTime> ConfirmationDueDate { get; set; }
+        public string MobileNumber { get; set; }
+        public string EmailVerificationCode { get; set; }
+        public string MobileConfirmationCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserService> UserServices { get; set; }

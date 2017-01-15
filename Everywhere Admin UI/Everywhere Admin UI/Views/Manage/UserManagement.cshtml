@@ -162,7 +162,7 @@
             dataType: "json",
             headers: headers,
             crossDomain: true,
-            data: JSON.stringify({ 'email': eMail, 'callbackURL': 'http://web.everywhere.live' + cURL }),
+            data: JSON.stringify({ 'email': eMail, 'callbackURL': 'http://web.everywhere.live' + cURL, 'type':'forgot' }),
             async: false,
             contentType: "application/json; charset=utf-8",
             success: function (data) {

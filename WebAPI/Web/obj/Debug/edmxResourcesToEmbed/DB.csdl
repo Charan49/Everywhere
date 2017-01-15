@@ -49,9 +49,11 @@
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="UserServices" Relationship="Self.FK_Users_UserServices" FromRole="Users" ToRole="UserServices" />
-    <Property Name="ConfirmationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ConfirmationDueDate" Type="DateTime" Precision="7" />
     <NavigationProperty Name="TestUsers" Relationship="InterceptDBModel.FK_Users_TestUsers" FromRole="User" ToRole="TestUser" />
+    <Property Name="MobileNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EmailVerificationCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="MobileConfirmationCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="UserService">
     <Key>

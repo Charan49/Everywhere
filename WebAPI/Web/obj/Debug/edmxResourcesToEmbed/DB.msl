@@ -35,8 +35,10 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="InterceptDBModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="MobileConfirmationCode" ColumnName="MobileConfirmationCode" />
+          <ScalarProperty Name="EmailVerificationCode" ColumnName="EmailVerificationCode" />
+          <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
           <ScalarProperty Name="ConfirmationDueDate" ColumnName="ConfirmationDueDate" />
-          <ScalarProperty Name="ConfirmationCode" ColumnName="ConfirmationCode" />
           <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="UserGUID" ColumnName="UserGUID" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />

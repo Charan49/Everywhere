@@ -204,12 +204,12 @@
     function start() {
         gapi.load('auth2', function () {
             auth2 = gapi.auth2.init({
-                client_id: YouTubeAppId,
+                client_id: '@System.Configuration.ConfigurationManager.AppSettings["YouTubeAppId"]',
                 // Scopes to request in addition to 'profile' and 'email'
                 scope: 'https://www.googleapis.com/auth/youtube',
                 access_type: 'offline',
                approval_prompt:'force'
-         
+
             });
         });
     }
@@ -227,11 +227,11 @@
     var sIDYT = null;
     var sNameYT = null
     var sIDYN = null;
-    var sNameYN = null
+    var sNameYN = null;
     window.fbAsyncInit = function () {
         FB.init({
             //appId: '340485602973415',
-            appId: FacebookAppId,
+            appId: '@System.Configuration.ConfigurationManager.AppSettings["FacebookAppId"]',
             xfbml: true,
             version: 'v2.8'
         });
@@ -286,7 +286,7 @@
     }
 
     function youtubeLogin() {
-        start()
+        start();
         auth2.grantOfflineAccess({ 'redirect_uri': 'postmessage' }).then(signInCallback);
 
     }

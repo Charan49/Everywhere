@@ -52,7 +52,7 @@ namespace Web.Models
         [Required]
         [StringTrim]
         [EmailAddress]
-        public string ConfirmationCode { get; set; }
+        public string MobileConfirmationCode { get; set; }
 
     }
 
@@ -69,6 +69,10 @@ namespace Web.Models
         public string confirmPassword { get; set; }
 
         public string email { get; set; }
+
+        public string emailcode { get; set; }
+
+        public string usertype { get; set; }
     }
 
     public class ParamDisable
@@ -90,7 +94,8 @@ namespace Web.Models
     {
         [Required]
         [StringTrim]
-        public string code { get; set; }
+        public string mobilecode { get; set; }
+        
 
     }
 }

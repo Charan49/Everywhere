@@ -207,7 +207,7 @@ function resetUser() {
         dataType: "json",
         headers: headers,
         crossDomain: true,
-        data: JSON.stringify({ 'email': eMail }),
+        data: JSON.stringify({ 'email': eMail, 'type':'forgot' }),
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data) {

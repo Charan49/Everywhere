@@ -5,7 +5,7 @@
 }
 
 <header>
-    <nav class="navbar navbar-main navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+    <nav class="navbar navbar-main navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="40" data-offset-bottom="200">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -96,6 +96,7 @@
                             }
                             @Html.Hidden("RedirectTo", Url.Action("Dashboard", "Home"))
                             @Html.Hidden("RedirectToConfirm", Url.Action("VerifyCode", "Account"))
+                            @Html.Hidden("RedirectToPhone", Url.Action("ConfirmPhone", "Account"))
                         </div>
 
                     </div>
@@ -105,17 +106,19 @@
         </div>
     </div>
 </section>
+
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
 <script type="text/javascript">
     var apiUrl = "";
     $(document).ready(function () {
+        sessionStorage.clear();
         apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
         try { localStorage.test = 2; } catch (e) {
             $('#rForm').html("<p>Error while storing the session token. Could be due to Private Browsing mode. Please disable Private Browsing mode and try again</p>");
         }
     });
-
-
+    
     function callLoginAPI(e) {
 
         //$('#btnSignIn').click(function (e) {
@@ -133,7 +136,6 @@
                 async: false,
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-
                     e.preventDefault();
                     sessionStorage.setItem('loginToken', data.token);
                     sessionStorage.setItem('userName', data.name);
@@ -143,14 +145,22 @@
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
                     e.preventDefault();
-
+                    
                     if (jqXhr.statusText == "Created") {
                         var url = $("#RedirectTo").val();
                         location.href = url;
                     }
-                    if (jqXhr.statusText == "Found")
+                    else if (jqXhr.statusText == "Found")
                     {
+                        var url = $("#RedirectToPhone").val();
+                        location.href = url;
+                    }
+                    else if (jqXhr.statusText == "Unauthorized") {
                         var url = $("#RedirectToConfirm").val();
+                        location.href = url;
+                    }
+                    else if (jqXhr.statusText == "Not Acceptable") {
+                        var url = $("#RedirectToPhone").val();
                         location.href = url;
                     }
                     else

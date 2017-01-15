@@ -204,3 +204,8 @@ F:\Final Everywhere\WebAPI\Web\bin\zh-Hant\System.Spatial.resources.dll
 F:\Final Everywhere\WebAPI\Web\obj\Release\Web.csprojResolveAssemblyReference.cache
 F:\Final Everywhere\WebAPI\Web\obj\Release\Web.dll
 F:\Final Everywhere\WebAPI\Web\obj\Release\Web.pdb
+F:\Final Everywhere\WebAPI\Web\bin\RestSharp.dll
+F:\Final Everywhere\WebAPI\Web\bin\Twilio.Api.dll
+F:\Final Everywhere\WebAPI\Web\bin\RestSharp.xml
+F:\Final Everywhere\WebAPI\Web\bin\Twilio.Api.pdb
+F:\Final Everywhere\WebAPI\Web\bin\Twilio.Api.xml
