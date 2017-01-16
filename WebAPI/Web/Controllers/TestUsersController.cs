@@ -88,7 +88,7 @@ namespace Web.Controllers
                 }
 
                 MailMessage message = new MailMessage("test@test.com", rUser.Email);
-                message.Body = "Hi " + rUser.Name + " " + rUser.LastName + ",<br /><br />Here is your Everywhere Facebook account"
+                message.Body = "Hi " + rUser.Name + " ,<br /><br />Here is your Everywhere Facebook account"
                                + "<br /><br />Email: " + result1[3] + " <br />Password: " + result1[4] +
                "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
                "<br />1 - Go to http://web.everywhere.live and login." +
@@ -153,7 +153,7 @@ namespace Web.Controllers
                     }
 
                     MailMessage message = new MailMessage("test@test.com", rUser.Email);
-                    message.Body = "Hi " + rUser.Name + " " + rUser.LastName + ",<br /><br />Here is your Everywhere Facebook account"
+                    message.Body = "Hi " + rUser.Name + " ,<br /><br />Here is your Everywhere Facebook account"
                                    + "<br /><br />Email: " + result1[3] + " <br />Password: " + result1[4] +
                    "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
                    "<br />1 - Go to http://web.everywhere.live and login." +
