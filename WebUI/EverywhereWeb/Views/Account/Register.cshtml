@@ -162,7 +162,7 @@
             var phone = null;
             if ($('#phone').val() != "")
                 phone = $(".selected-dial-code").text() + $('#phone').val();
-            var callbackURL = 'http://web.everywhere.live' + $("#RedirectTo").val();
+            var callbackURL = 'https://web.everywhere.live' + $("#RedirectTo").val();
 
             $.ajax({
                 url: apiUrl+"/api/v1/user/register/",

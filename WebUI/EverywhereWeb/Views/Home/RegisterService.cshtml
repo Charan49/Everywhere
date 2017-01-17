@@ -329,8 +329,14 @@
         $('#username').text("");
         $('#password').text("");
 
-        $('#facebookmessage').text("If you are already logged into Facebook, sign out and click Link button and login with Everywhere app account")
-        $('#facebookmessagesm').text("If you are already logged into Facebook, sign out and click Link button and login with Everywhere app account")
+         $('#facebookmessage').text("1-Before linking your Facebook account, sign into your Facebook account and enable live streaming. \n" 
+        +"2-Sign out of your Facebook account.\n" 
+        +"3-Click on Link button and enter your Facebook credentials. Enable everywhere app to post- needed for live streaming to appear on your Facebook.")
+
+        $('#facebookmessagesm').text("1-Before linking your Facebook account, sign into your Facebook account and enable live streaming. \n"
+       + "2-Sign out of your Facebook account.\n"
+       + "3-Click on Link button and enter your Facebook credentials. Enable everywhere app to post- needed for live streaming to appear on your Facebook.")
+
 
         $('#youtubemessage').text("Before linking your YouTube account, please enable Live Streaming in your YouTube account as per the steps below. \n"
         + "1-Login to your GMail/YouTube account \n"
@@ -427,6 +433,8 @@
                     //$('#passwordsm').text("Password :" + data[0].password);
 
                     $("#facebook").show();
+                    $('#facebookmessage').show();
+                    $('#facebookmessagesm').show();
                     $("#facebooktestUserbtn").hide();
 
                     $("#facebooksm").show();
@@ -566,6 +574,8 @@
 
                                 if (data[i].IsTestUsersExists) {
                                     $("#facebook").show();
+                                    $('#facebookmessage').show();
+                                    $('#facebookmessagesm').show();
                                     $("#facebooktestUserbtn").hide();
 
                                     $("#facebooksm").show();
@@ -574,6 +584,8 @@
                                 }
                                 else {
                                     $("#facebook").hide();
+                                    $('#facebookmessage').hide();
+                                    $('#facebookmessagesm').hide();
 
                                     $("#facebooktestUserbtn").show();
 
@@ -588,6 +600,8 @@
                                 sNameYT = data[i].Name;
                                 if (data[i].IsTestUsersExists) {
                                     $("#facebook").show();
+                                    $('#facebookmessage').show();
+                                    $('#facebookmessagesm').show();
                                     $("#facebooktestUserbtn").hide();
 
                                     $("#facebooksm").show();
@@ -596,6 +610,8 @@
                                 }
                                 else {
                                     $("#facebook").hide();
+                                    $('#facebookmessage').hide();
+                                    $('#facebookmessagesm').hide();
                                     $("#facebooktestUserbtn").show();
 
                                     $("#facebooksm").hide();
@@ -788,6 +804,8 @@
                     $('#accFacebookLink').remove();
                     $('#accountsRegistered').hide();
                     $("#facebook").hide();
+                    $('#facebookmessage').hide();
+                    $('#facebookmessagesm').hide();
                     $("#facebooksm").hide();
                     location.href = '@Url.Action("RegisterService", "Home")';
 
@@ -797,6 +815,9 @@
                     getServices();
                     $('#acc' + sName).show();
                     $('#accFacebookLink').remove();
+
+                  
+
                     location.href = '@Url.Action("RegisterService", "Home")';
 
                 }

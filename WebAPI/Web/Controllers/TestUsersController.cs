@@ -91,11 +91,11 @@ namespace Web.Controllers
                 message.Body = "Hi " + rUser.Name + " ,<br /><br />Here is your Everywhere Facebook account"
                                + "<br /><br />Email: " + result1[3] + " <br />Password: " + result1[4] +
                "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
-               "<br />1 - Go to http://web.everywhere.live and login." +
+               "<br />1 - Go to https://web.everywhere.live and login." +
                "<br />2 - Logout of Facebook if you already logged in." +
                "<br />3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
 
-               "<br /><br />Best regards, <br /> Team Everywhere <br /> Everywhere.live";
+               "<br /><br />Best regards, <br /> Team Everywhere <br /> www.Everywhere.live";
                 message.Subject= "Everywhere Facebook account ";
                 await SendEmail.sendMail(message);
 
@@ -156,11 +156,11 @@ namespace Web.Controllers
                     message.Body = "Hi " + rUser.Name + " ,<br /><br />Here is your Everywhere Facebook account"
                                    + "<br /><br />Email: " + result1[3] + " <br />Password: " + result1[4] +
                    "<br /><br />Please follow the procedure below to allow Everywhere to publish your live streams to Facebook." +
-                   "<br />1 - Go to http://web.everywhere.live and login." +
+                   "<br />1 - Go to https://web.everywhere.live and login." +
                    "<br />2 - Logout of Facebook if you already logged in." +
                    "<br />3 - Click on Add Services. Against Facebook click \"Link\" button and sign into Facebook with the above credentials. In the Login With Facebook page click \"OK\" to allow Everywhere Web to post to Facebook for you." +
 
-                   "<br /><br />Best regards, <br /> Team Everywhere <br /> Everywhere.live";
+                   "<br /><br />Best regards, <br /> Team Everywhere <br /> www.Everywhere.live";
                     message.Subject = "Everywhere Facebook account ";
                     await SendEmail.sendMail(message);
 
