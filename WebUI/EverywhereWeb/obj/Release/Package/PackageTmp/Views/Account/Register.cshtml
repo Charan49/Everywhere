@@ -29,8 +29,8 @@
             <div class="collapse navbar-collapse navbar-collapse-main">
                 <ul class="nav navbar-nav navbar-center">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">How it Works</a></li>
-                    <li><a href="#">Contact</a></li>
+                    @*<li><a href="#">How it Works</a></li>
+                    <li><a href="#">Contact</a></li>*@
                 </ul>
 
                 <div class="navbar-right">
@@ -99,7 +99,7 @@
                                     @*<label for="uPass" class = "control-label" >PHONE NUMBER</label>*@
                                     @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
                                     <div>
-                                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "", id = "phone" })
+                                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", id = "phone", placeholder = "Enter 10 digit mobile phone number" })
                                     </div>
                                     @*<label for="uPass">Password</label>
                                         <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
@@ -142,6 +142,7 @@
 <script src="~/Scripts/intlTelInput.js"></script>
 <script type="text/javascript">
     $("#phone").intlTelInput({
+        autoPlaceholder: false,
         separateDialCode: true,
         utilsScript: "../Scripts/utils.js"
     });
@@ -162,7 +163,7 @@
             var phone = null;
             if ($('#phone').val() != "")
                 phone = $(".selected-dial-code").text() + $('#phone').val();
-            var callbackURL = 'http://web.everywhere.live' + $("#RedirectTo").val();
+            var callbackURL = 'https://web.everywhere.live' + $("#RedirectTo").val();
 
             $.ajax({
                 url: apiUrl+"/api/v1/user/register/",

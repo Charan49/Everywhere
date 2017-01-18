@@ -29,8 +29,7 @@
                 <ul class="nav navbar-nav navbar-center">
                     <li><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Home</a></li>
                     <li class="visible-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
-                    <li><a href="#">How it Works</a></li>
-                    <li><a href="#">Contact</a></li>
+                    
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -185,6 +184,7 @@
                                             <label for="">
                                                 PM <input type="radio" hidden id="">
                                             </label>
+                                            <img src="~/images/empty.png" style="background-image:url(../../images/);background-size:cover;" />
                                         </div>
                                     </div>
                                 </div>
@@ -204,12 +204,12 @@
     function start() {
         gapi.load('auth2', function () {
             auth2 = gapi.auth2.init({
-                client_id: YouTubeAppId,
+                client_id: '@System.Configuration.ConfigurationManager.AppSettings["YouTubeAppId"]',
                 // Scopes to request in addition to 'profile' and 'email'
                 scope: 'https://www.googleapis.com/auth/youtube',
                 access_type: 'offline',
                approval_prompt:'force'
-         
+
             });
         });
     }
@@ -227,11 +227,11 @@
     var sIDYT = null;
     var sNameYT = null
     var sIDYN = null;
-    var sNameYN = null
+    var sNameYN = null;
     window.fbAsyncInit = function () {
         FB.init({
             //appId: '340485602973415',
-            appId: FacebookAppId,
+            appId: '@System.Configuration.ConfigurationManager.AppSettings["FacebookAppId"]',
             xfbml: true,
             version: 'v2.8'
         });
@@ -286,7 +286,7 @@
     }
 
     function youtubeLogin() {
-        start()
+        start();
         auth2.grantOfflineAccess({ 'redirect_uri': 'postmessage' }).then(signInCallback);
 
     }
@@ -328,6 +328,16 @@
         getMembershipServices();
         $('#username').text("");
         $('#password').text("");
+
+         $('#facebookmessage').text("1-Before linking your Facebook account, sign into your Facebook account and enable live streaming. \n" 
+        +"2-Sign out of your Facebook account.\n" 
+        +"3-Click on Link button and enter your Facebook credentials. Enable everywhere app to post- needed for live streaming to appear on your Facebook.")
+
+        $('#facebookmessagesm').text("1-Before linking your Facebook account, sign into your Facebook account and enable live streaming. \n"
+       + "2-Sign out of your Facebook account.\n"
+       + "3-Click on Link button and enter your Facebook credentials. Enable everywhere app to post- needed for live streaming to appear on your Facebook.")
+
+
         $('#youtubemessage').text("Before linking your YouTube account, please enable Live Streaming in your YouTube account as per the steps below. \n"
         + "1-Login to your GMail/YouTube account \n"
         + "2-Go to https://youtube.com/features  \n"
@@ -423,6 +433,8 @@
                     //$('#passwordsm').text("Password :" + data[0].password);
 
                     $("#facebook").show();
+                    $('#facebookmessage').show();
+                    $('#facebookmessagesm').show();
                     $("#facebooktestUserbtn").hide();
 
                     $("#facebooksm").show();
@@ -562,6 +574,8 @@
 
                                 if (data[i].IsTestUsersExists) {
                                     $("#facebook").show();
+                                    $('#facebookmessage').show();
+                                    $('#facebookmessagesm').show();
                                     $("#facebooktestUserbtn").hide();
 
                                     $("#facebooksm").show();
@@ -570,6 +584,8 @@
                                 }
                                 else {
                                     $("#facebook").hide();
+                                    $('#facebookmessage').hide();
+                                    $('#facebookmessagesm').hide();
 
                                     $("#facebooktestUserbtn").show();
 
@@ -584,6 +600,8 @@
                                 sNameYT = data[i].Name;
                                 if (data[i].IsTestUsersExists) {
                                     $("#facebook").show();
+                                    $('#facebookmessage').show();
+                                    $('#facebookmessagesm').show();
                                     $("#facebooktestUserbtn").hide();
 
                                     $("#facebooksm").show();
@@ -592,6 +610,8 @@
                                 }
                                 else {
                                     $("#facebook").hide();
+                                    $('#facebookmessage').hide();
+                                    $('#facebookmessagesm').hide();
                                     $("#facebooktestUserbtn").show();
 
                                     $("#facebooksm").hide();
@@ -784,6 +804,8 @@
                     $('#accFacebookLink').remove();
                     $('#accountsRegistered').hide();
                     $("#facebook").hide();
+                    $('#facebookmessage').hide();
+                    $('#facebookmessagesm').hide();
                     $("#facebooksm").hide();
                     location.href = '@Url.Action("RegisterService", "Home")';
 
@@ -793,6 +815,9 @@
                     getServices();
                     $('#acc' + sName).show();
                     $('#accFacebookLink').remove();
+
+                  
+
                     location.href = '@Url.Action("RegisterService", "Home")';
 
                 }
@@ -838,7 +863,7 @@
                                     '<div class="panel-body">' +
                                         '<div class="media">' +
                                             '<a class="pull-left" href="#">' +
-                                                '<img class="media-object" id="profilePic' + name + '" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                                '<img class="media-object" id="profilePic' + name + '" src="../../images/empty.png" style="background-image:url(../../images/stream_thumb_' + name.toLowerCase().trim() + '.png);background-size:cover;" alt="Image">' +
                                             '</a>' +
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +
@@ -865,7 +890,8 @@
                                     '</div>' +
                                 '</div>');
         //$('#profilePic').attr('src', picURL);
-        $('#profilePic' + name).attr('src', picURL);
+        //$('#profilePic' + name).attr('src', picURL);
+        $('#profilePic' + name).css('background-image', 'url(' + picURL + ')');
     }
 
     function addServiceRow(name, picURL) {
@@ -884,7 +910,7 @@
                                     '<div class="panel-body">' +
                                         '<div class="media">' +
                                             '<a class="pull-left greyscale" href="#">' +
-                                                '<img class="media-object" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                                '<img class="media-object" id="profilePic' + name + '" src="../../images/empty.png" style="background-image:url(../../images/stream_thumb_' + name.toLowerCase().trim() + '.png);background-size:cover;" alt="Image">' +
                                             '</a>' +
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +

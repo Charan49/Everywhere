@@ -27,8 +27,7 @@
                 <ul class="nav navbar-nav navbar-center">
                     <li><a href="#">Home</a></li>
                     <li class="visible-xs"><a href="#">Dashboard</a></li>
-                    <li><a href="#">How it Works</a></li>
-                    <li><a href="#">Contact</a></li>
+                    
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -203,6 +202,7 @@
 </div>
 
 <script src="~/Scripts/moment.js"></script>
+<script src="~/Scripts/moments.js"></script>
 <script type="text/javascript">
     var obj = null;
     var apiUrl = "";
@@ -285,7 +285,7 @@
         FB.api(
     "/me/live_videos?access_token=" + accessToken, "POST",
     function (response) {
-
+        debugger;
         if (response && !response.error) {
            // alert(response.stream_url);
            // document.write(response.stream_url);
@@ -581,13 +581,17 @@
         }
     }
 
+    
     function copyToClipboard(element) {
-
-        var $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val($('#' + element).val()).select();
-        document.execCommand("copy");
-        $temp.remove();
+        //$('#' + element).focusAndSelect();
+        document.getElementById(element).focus();
+        document.getElementById(element).select();
+        //$('#' + element).get(0).setSelectionRange(0, 9999);
+        //var $temp = $("<input>");
+        //$("body").append($temp);
+        //$temp.val($('#' + element).val()).select();
+        ////document.execCommand("copy");
+        //$temp.remove();
     }
 
     function GetLivestreamURLs() {
@@ -635,9 +639,15 @@
     function getUTCTime(d) {
         if (d != undefined || d != null || d != "") {
             if (d != "") {
+                debugger;
                 var utcDate = moment.utc(d);
-
-                return moment(utcDate).local().format("MM/DD/YYYY HH:mm:ss");
+                var timeZone = moment.tz.guess();
+                var zone = utcDate.tz(timeZone).format('z');
+                return moment(utcDate).local().format("MM/DD/YYYY HH:mm:ss") + " " + zone;
+                //return moment(utcDate).local().format("MM/DD/YYYY HH:mm:ss");
+                //var utcDate = moment.utc(d);
+                //var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                //return moment(utcDate).local().format("MM/DD/YYYY HH:mm:ss");
                 //return utcDate.format("MM/DD/YYYY hh:mm:ss");
             }
             else {
@@ -658,12 +668,12 @@
                                         '<div class="panel-body">'+
                                             '<div class="media">'+
                                                 '<a class="pull-left" href="#">'+
-                                                    '<img class="media-object" id="profilePic' + name + '" src="../images/stream_thumb_01.jpg" alt="Image">'+
+                                                    '<img class="media-object" id="profilePic' + name + '" src="../../images/empty.png" style="background-image:url(../../images/stream_thumb_' + name.toLowerCase().trim() + '.png);background-size:cover;" alt="Image">' +
                                                ' </a>'+
                                                 '<div class="media-body">'+
                                                     '<h4 class="media-heading">' + name +
                                                         '<small class="pull-right group-radio control-success right-check">'+
-                                                            '<label class="check">Select <input type="checkbox" name="uSelect1" value=""> <span></span></label>'+
+                                                            '<label class="check">Select <input type="checkbox" text="abc" name="uSelect1" style="height:0px; margin-top:0px;width:auto;top:0px" value=""><span></span></label>' +
                                                         '</small>'+
                                                     '</h4>'+
                                                    ' <div class="meta-des"></div>' +
@@ -709,27 +719,26 @@
                                                     '<div class="visible-xs has-success mt-15 stream-key">' +
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream Date:</span>' +
 
-                                                            '<input id="txtStreamDateMobile' + "" + name + "" + '"  class="form-control" aria-label="" value="' + streamDate + '" readonly>' +
+                                                            '<input id="txtStreamDateMobile' + "" + name + "" + '"  class="form-control" aria-label="" value="' + getUTCTime(streamDate) + '" readonly>' +
 
                                                        ' </div>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">' +
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream ID:</span>' +
                                                             '<input id="txtStreamKeyMobile' + "" + name + "" + '"  class="form-control" aria-label=""  onclick="this.select();" value="' + streamId + '" readonly>' +
-
-                                                            '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'txtStreamKeyMobile" + name + "'" + ')">Copy StreamID</button>' +
+                                                            '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'txtStreamKeyMobile" + name + "'" + ')">Select StreamID</button>' +
                                                        ' </div>' +
                                                     '<div class="visible-xs has-success mt-15 stream-key">'+
                                                             '<span class="input-group-addon addon-boxfree"><i><img src="../images/icon-key-xs.png"> </i> Stream URL:</span>'+
                                                             '<input id="txtStreamLinkMobile' + "" + name + "" + '"   class="form-control" aria-label="" onclick="this.select();" value="' + streamUrl + '" readonly>' +
-                                                            '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'txtStreamLinkMobile" + name + "'" + ')">Copy StreamURL</button>' +
-
+                                                            '<button type="button" class="btn btn-sm btn-grey btn-block" onclick="copyToClipboard(' + "'txtStreamLinkMobile" + name + "'" + ')">Select StreamURL</button>' +
                                                        ' </div>' +
                                                     '</div>' +
                                                 '</div>' +
                                             '</div>' +
                                         '</div>' +
                                     '</div>');
-        $('#profilePic' + name).attr('src', picURL);
+        $('#profilePic' + name).css('background-image', 'url(' + picURL + ')');
+        //$('#profilePic' + name).attr('src', picURL);
         //$('#profilePic').attr('src', 'https://graph.facebook.com/' + fbID + '/picture?width=146&height=124&redirect=tru');
         //$('#txtStreamKey').val(streamId);
         //$('#txtStreamLink').val(streamUrl);

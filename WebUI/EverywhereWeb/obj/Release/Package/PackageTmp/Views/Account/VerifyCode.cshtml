@@ -27,8 +27,8 @@
             <div class="collapse navbar-collapse navbar-collapse-main">
                 <ul class="nav navbar-nav navbar-center">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">How it Works</a></li>
-                    <li><a href="#">Contact</a></li>
+                    @*<li><a href="#">How it Works</a></li>
+                    <li><a href="#">Contact</a></li>*@
                 </ul>
 
                 <div class="navbar-right">
@@ -63,7 +63,7 @@
                             }
                             <div class="row">
                                 <div class="col-sm-7">
-                                    <p class="text-justify small">A verification code has been sent to your mobile phone. Please check your text messages. It may take few minutes to receive the message.  If you still haven't  received the message please click on <a href="#" onclick="resendVerificationCode(event)"><u>Resend</u></a> the verification code link.</p>
+                                    <p class="text-justify small">A verification code has been sent to your mobile phone. Please check your text messages. It may take few minutes to receive the message.  If you still haven't  received the message please click on <a href="#" onclick="resendVerificationCode(event)"><u>Resend</u></a> the verification code.</p>
                                 </div>
                                 <div class="col-sm-5">
 
@@ -135,7 +135,7 @@
     }
 
     function resendVerificationCode(e) {
-        var cURL = 'http://web.everywhere.live' + $('#RedirectTo').val();
+        var cURL = 'https://web.everywhere.live' + $('#RedirectTo').val();
         //$('#btnSignIn').click(function (e) {
         var email = sessionStorage.getItem('signUpEmail');
         $.ajax({
@@ -157,7 +157,7 @@
 
                 e.preventDefault();
                 if (jqXhr.statusText == "OK") {
-                    alert("Verification codes are sent to your mobile phone and email.");
+                    alert("Verification code is sent to your mobile phone.");
                 }
                 else
                     $('#validSummary').show();

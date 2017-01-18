@@ -27,8 +27,8 @@
             <div class="collapse navbar-collapse navbar-collapse-main">
                 <ul class="nav navbar-nav navbar-center">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">How it Works</a></li>
-                    <li><a href="#">Contact</a></li>
+                    @*<li><a href="#">How it Works</a></li>
+                    <li><a href="#">Contact</a></li>*@
                 </ul>
 
                 <div class="navbar-right">
@@ -70,7 +70,7 @@
                             }
                             <div class="form-group">
                                 @Html.LabelFor(m => m.Mobile, new { @class = "control-label" })
-                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", id = "phone" })
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", id = "phone", placeholder= "Enter 10 digit mobile phone number" })
                                 @*<label for="uEmail">Email</label>
                                 <input type="Email" class="form-control" id="uEmail" placeholder="john.s@company.co">*@
                             </div>
@@ -99,6 +99,7 @@
     });
 
     $("#phone").intlTelInput({
+        autoPlaceholder:false,
         separateDialCode: true,
         utilsScript: "../Scripts/utils.js"
     });

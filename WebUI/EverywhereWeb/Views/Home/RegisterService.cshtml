@@ -29,8 +29,7 @@
                 <ul class="nav navbar-nav navbar-center">
                     <li><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Home</a></li>
                     <li class="visible-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
-                    <li><a href="#">How it Works</a></li>
-                    <li><a href="#">Contact</a></li>
+                    
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -185,6 +184,7 @@
                                             <label for="">
                                                 PM <input type="radio" hidden id="">
                                             </label>
+                                            <img src="~/images/empty.png" style="background-image:url(../../images/);background-size:cover;" />
                                         </div>
                                     </div>
                                 </div>
@@ -863,7 +863,7 @@
                                     '<div class="panel-body">' +
                                         '<div class="media">' +
                                             '<a class="pull-left" href="#">' +
-                                                '<img class="media-object" id="profilePic' + name + '" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                                '<img class="media-object" id="profilePic' + name + '" src="../../images/empty.png" style="background-image:url(../../images/stream_thumb_' + name.toLowerCase().trim() + '.png);background-size:cover;" alt="Image">' +
                                             '</a>' +
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +
@@ -890,7 +890,8 @@
                                     '</div>' +
                                 '</div>');
         //$('#profilePic').attr('src', picURL);
-        $('#profilePic' + name).attr('src', picURL);
+        //$('#profilePic' + name).attr('src', picURL);
+        $('#profilePic' + name).css('background-image', 'url(' + picURL + ')');
     }
 
     function addServiceRow(name, picURL) {
@@ -909,7 +910,7 @@
                                     '<div class="panel-body">' +
                                         '<div class="media">' +
                                             '<a class="pull-left greyscale" href="#">' +
-                                                '<img class="media-object" src="../images/stream_thumb_' + name.toLowerCase().trim() + '.png" alt="Image">' +
+                                                '<img class="media-object" id="profilePic' + name + '" src="../../images/empty.png" style="background-image:url(../../images/stream_thumb_' + name.toLowerCase().trim() + '.png);background-size:cover;" alt="Image">' +
                                             '</a>' +
                                             '<div id="' + name.toLowerCase().trim() + 'Link" class="media-body">' +
                                                 '<h4 class="media-heading">' + name +
