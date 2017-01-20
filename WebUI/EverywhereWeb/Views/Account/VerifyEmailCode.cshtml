@@ -113,7 +113,7 @@
             url: apiUrl + "/api/v1/user/ConfirmEmail/",
             type: "POST",
             crossDomain: true,
-            data: JSON.stringify({ 'emailcode': eCode }),
+            data: JSON.stringify({ 'emailcode': eCode, 'code':'email' }),
             dataType: "json",
             headers: headers,
             async: false,

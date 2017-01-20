@@ -106,7 +106,7 @@
             url: apiUrl+"/api/v1/ConfirmEmail/",
             type: "POST",
             crossDomain: true,
-            data: JSON.stringify({ 'mobilecode': mCode }),
+            data: JSON.stringify({ 'mobilecode': mCode,'code':'mobile' }),
             dataType: "json",
             async: false,
             contentType: "application/json; charset=utf-8",
