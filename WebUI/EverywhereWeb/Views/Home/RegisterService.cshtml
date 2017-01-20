@@ -26,17 +26,19 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-collapse-main">
-                <ul class="nav navbar-nav navbar-center">
+                @*<ul class="nav navbar-nav navbar-center">
                     <li><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Home</a></li>
                     <li class="visible-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
                     
-                </ul>
+                </ul>*@
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "'");">Dashboard</a></li>
+                <ul class="nav navbar-nav navbar-right" style="margin-right:186px;">
+                    <li><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "' ");">Home</a></li>
+                    <li class="hidden-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("Dashboard", "Home") + "' ");">Dashboard</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" id="userName" data-toggle="dropdown"><b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                            
                             <li><a href="#">Account Settings</a></li>
                             <li><a href="#" onclick="Logout()">Logout</a></li>
                         </ul>
