@@ -81,7 +81,11 @@ namespace Web.Controllers
                             id = existingUser.UserID.ToString(),
                             name = existingUser.FirstName + " " + existingUser.LastName
                         };
-                        return Request.CreateResponse(token);
+                    if (string.IsNullOrEmpty(existingUser.EmailVerificationCode) && existingUser.UserType.Equals("User"))
+                    {
+                        return Request.CreateResponse(HttpStatusCode.NotImplemented);
+                    }
+                    return Request.CreateResponse(token);
 
                 }
                     catch (Exception ex)

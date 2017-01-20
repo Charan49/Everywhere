@@ -274,6 +274,7 @@
     <Content Include="Views\Home\RegisterService.cshtml" />
     <Content Include="Views\Account\ConfirmRegistration.cshtml" />
     <Content Include="Views\Account\ConfirmPhone.cshtml" />
+    <Content Include="Views\Account\VerifyEmailCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -31,7 +31,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("RegisterService", "Home") + "'");">Add Services</a></li>
+                    <li class="hidden-xs"><a href="#" onclick="@("window.location.href='" + @Url.Action("RegisterService", "Home") + "'");">Add Streaming Services</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" id="userName" data-toggle="dropdown"><b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -82,7 +82,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
-                    <h1>Live Streaming Dashboard<button class="btn btn-default btn-lg pull-right" onclick="@("window.location.href='" + @Url.Action("RegisterService", "Home") + "'");">Add Service</button></h1>
+                    <h1>Live Streaming Dashboard<button class="btn btn-default btn-lg pull-right" onclick="@("window.location.href='" + @Url.Action("RegisterService", "Home") + "'");">Add Streaming Services</button></h1>
                     <p>Select service to stream and link account</p>
                     <br>
                 </div>
@@ -112,12 +112,12 @@
                                 <div id="nonLinked">
                                     <br />
                                     <br />
-                                    <p>Please add the service</p>
+                                    
                                     <br />
                                     <br />
                                 </div>
                                 <button type="button" id="selectStream" class="btn btn-success btn-lg cta" onclick="GetLivestreamURLs()">Stream Selected</button>
-                                <p id="message" style="text-align:center;">No service configured</p>
+                                <p id="message" style="text-align:center;">You have not yet linked any live streaming services. Please click <a href="~/Views/Home/RegisterService.cshtml"><u>here</u></a> to add/link streaming services.</p>
                                 <hr>
 
                             </div>
@@ -285,7 +285,7 @@
         FB.api(
     "/me/live_videos?access_token=" + accessToken, "POST",
     function (response) {
-        debugger;
+        
         if (response && !response.error) {
            // alert(response.stream_url);
            // document.write(response.stream_url);
@@ -553,7 +553,7 @@
                 async: false,
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-
+                    
                     alert("Stream URL has been generated Successfully!");
 
                     //$('#txtStreamKey').val(data.streamId);
@@ -595,51 +595,63 @@
     }
 
     function GetLivestreamURLs() {
-
-        var token = sessionStorage.getItem('loginToken');
-        var headers = {};
-        var url = apiUrl+"/api/v1/livestream/start";
-        if (token) {
-            headers.Authorization = 'Bearer ' + token;
-        }
-        $.ajax({
-            url: url,
-            type: "GET",
-            crossDomain: true,
-            data: { 'serviceName': name },
-            dataType: "json",
-            headers: headers,
-            async: false,
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-
-                alert("Stream URL has been generated Successfully!");
-                for (i = 0; i < data.length; i++) {
-                    $('#txtStreamKey' + data[i].serviceName).val(data[i].streamId);
-                    $('#txtStreamLink' + data[i].serviceName).val(data[i].streamUrl);
-                    $('#txtStreamDate' + data[i].serviceName).val(getUTCTime(data[i].streamDate));
-                    $('#txtStreamKeyMobile' + data[i].serviceName).val(data[i].streamId);
-                    $('#txtStreamLinkMobile' + data[i].serviceName).val(data[i].streamUrl);
-                    $('#txtStreamDateMobile' + data[i].serviceName).val(getUTCTime(data[i].streamDate));
-                }
-            },
-            error: function (jqXhr, textStatus, errorThrown) {
-                alert("Failed to generate Stream URL");
-                $('#txtStreamKey').val(data[0].streamId);
-                $('#txtStreamLink').val(data[0].streamUrl);
-                $('#txtStreamDate').val(getUTCTime(data[0].streamDate));
-                $('#txtStreamKeyMobile').val(data[0].streamId);
-                $('#txtStreamLinkMobile').val(data[0].streamUrl);
-                $('#txtStreamDateMobile').val(getUTCTime(data[0].streamDate));
-
+        debugger;
+        var channels = '';
+        if ($('#chkFacebook').is(":checked"))
+            channels = channels + 'Facebook, ';
+        if ($('#chkYouTube').is(":checked"))
+            channels = channels + 'Youtube, ';
+        if ($('#chkYouNow').is(":checked"))
+            channels = channels + 'Younow, ';
+        if (channels != '') {
+            var token = sessionStorage.getItem('loginToken');
+            var headers = {};
+            var url = apiUrl + "/api/v1/livestream/start";
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
             }
-        });
+            $.ajax({
+                url: url,
+                type: "GET",
+                crossDomain: true,
+                data: JSON.stringify({ 'serviceNames': channels }),
+                dataType: "json",
+                headers: headers,
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    alert("Stream URL has been generated Successfully!");
+                    for (i = 0; i < data.length; i++) {
+
+                        $('#txtStreamKey' + data[i].serviceName).val(data[i].streamId);
+                        $('#txtStreamLink' + data[i].serviceName).val(data[i].streamUrl);
+                        $('#txtStreamDate' + data[i].serviceName).val(getUTCTime(data[i].streamDate));
+                        $('#txtStreamKeyMobile' + data[i].serviceName).val(data[i].streamId);
+                        $('#txtStreamLinkMobile' + data[i].serviceName).val(data[i].streamUrl);
+                        $('#txtStreamDateMobile' + data[i].serviceName).val(getUTCTime(data[i].streamDate));
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    alert("Failed to generate Stream URL");
+                    $('#txtStreamKey').val(data[0].streamId);
+                    $('#txtStreamLink').val(data[0].streamUrl);
+                    $('#txtStreamDate').val(getUTCTime(data[0].streamDate));
+                    $('#txtStreamKeyMobile').val(data[0].streamId);
+                    $('#txtStreamLinkMobile').val(data[0].streamUrl);
+                    $('#txtStreamDateMobile').val(getUTCTime(data[0].streamDate));
+
+                }
+            });
+        }
+        else
+            alert("Please select atleast one service.");
     }
 
     function getUTCTime(d) {
         if (d != undefined || d != null || d != "") {
             if (d != "") {
-                debugger;
+                
                 var utcDate = moment.utc(d);
                 var timeZone = moment.tz.guess();
                 var zone = utcDate.tz(timeZone).format('z');
@@ -660,7 +672,9 @@
 
     function addLinkedAccount(name, picURL, streamId, streamUrl, streamDate, fbUserID)
     {
-
+        debugger;
+        var tempVar = '';
+        
         $('#selectStream').show();
         $('#message').hide();
         $('#nonLinked').remove();
@@ -673,7 +687,7 @@
                                                 '<div class="media-body">'+
                                                     '<h4 class="media-heading">' + name +
                                                         '<small class="pull-right group-radio control-success right-check">'+
-                                                            '<label class="check">Select <input type="checkbox" text="abc" name="uSelect1" style="height:0px; margin-top:0px;width:auto;top:0px" value=""><span></span></label>' +
+                                                            '<label class="check">Select <input type="checkbox" id="chk' + name + '" text="abc" name="uSelect1" style="height:0px; margin-top:0px;width:auto;top:0px" value=""><span></span></label>' +
                                                         '</small>'+
                                                     '</h4>'+
                                                    ' <div class="meta-des"></div>' +

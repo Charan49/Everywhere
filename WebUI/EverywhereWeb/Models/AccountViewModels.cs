@@ -31,6 +31,14 @@ namespace EverywhereWeb.Models
         
     }
 
+    public class VerifyEmailCodeViewModel
+    {
+        [Required]
+        [Display(Name = "Email Code")]
+        public string EmailCode { get; set; }
+
+    }
+
     public class ForgotViewModel
     {
         [Required]
@@ -97,7 +105,7 @@ namespace EverywhereWeb.Models
         public int Year { get; set; }
 
         [Required]
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Mobile Phone Number")]
         public string PhoneNumber { get; set; }
     }
 

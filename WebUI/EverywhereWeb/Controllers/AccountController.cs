@@ -187,6 +187,43 @@ namespace EverywhereWeb.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
+        [AllowAnonymous]
+        public ActionResult VerifyEmailCode()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/VerifyCode
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> VerifyEmailCode(VerifyEmailCodeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // The following code protects for brute force attacks against the two factor codes. 
+            // If a user enters incorrect codes for a specified amount of time then the user account 
+            // will be locked out for a specified amount of time. 
+            // You can configure the account lockout settings in IdentityConfig
+            var result = await SignInManager.TwoFactorSignInAsync("", model.EmailCode, isPersistent: true, rememberBrowser: true);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(model.EmailCode);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid code.");
+                    return View(model);
+            }
+
+        }
+
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]

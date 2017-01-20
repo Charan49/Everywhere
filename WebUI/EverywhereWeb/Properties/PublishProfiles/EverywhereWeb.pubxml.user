@@ -19,7 +19,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/17/2017 00:04:57</publishTime>
     </File>
     <File Include="bin/EverywhereWeb.dll">
-      <publishTime>01/18/2017 23:05:42</publishTime>
+      <publishTime>01/20/2017 17:35:43</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
       <publishTime>01/17/2017 00:04:57</publishTime>
@@ -325,7 +325,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/18/2017 17:36:40</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>01/18/2017 17:36:40</publishTime>
+      <publishTime>01/20/2017 17:32:47</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
       <publishTime>01/18/2017 18:25:16</publishTime>
@@ -342,6 +342,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Account/VerifyCode.cshtml">
       <publishTime>01/18/2017 19:47:46</publishTime>
     </File>
+    <File Include="Views/Account/VerifyEmailCode.cshtml">
+      <publishTime>01/20/2017 17:26:04</publishTime>
+    </File>
     <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
       <publishTime>01/17/2017 00:04:51</publishTime>
     </File>
@@ -352,7 +355,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/17/2017 00:04:51</publishTime>
     </File>
     <File Include="Views/Home/Dashboard.cshtml">
-      <publishTime>01/18/2017 23:02:21</publishTime>
+      <publishTime>01/20/2017 02:02:25</publishTime>
     </File>
     <File Include="Views/Home/RegisterService.cshtml">
       <publishTime>01/18/2017 22:59:10</publishTime>
@@ -382,7 +385,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/17/2017 00:04:52</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>01/18/2017 17:33:36</publishTime>
+      <publishTime>01/19/2017 00:01:24</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>01/17/2017 00:04:52</publishTime>
@@ -394,7 +397,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/17/2017 00:04:52</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/18/2017 23:05:43</publishTime>
+      <publishTime>01/20/2017 17:35:43</publishTime>
     </File>
   </ItemGroup>
 </Project>

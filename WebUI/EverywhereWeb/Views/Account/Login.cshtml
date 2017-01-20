@@ -96,6 +96,7 @@
                             }
                             @Html.Hidden("RedirectTo", Url.Action("Dashboard", "Home"))
                             @Html.Hidden("RedirectToConfirm", Url.Action("VerifyCode", "Account"))
+                            @Html.Hidden("EmailConfirm", Url.Action("VerifyEmailCode", "Account"))
                             @Html.Hidden("RedirectToPhone", Url.Action("ConfirmPhone", "Account"))
                         </div>
 
@@ -155,12 +156,18 @@
                         var url = $("#RedirectToPhone").val();
                         location.href = url;
                     }
-                    else if (jqXhr.statusText == "Unauthorized") {
-                        var url = $("#RedirectToConfirm").val();
-                        location.href = url;
-                    }
+                    //else if (jqXhr.statusText == "Unauthorized") {
+                    //    var url = $("#RedirectToConfirm").val();
+                    //    location.href = url;
+                    //}
                     else if (jqXhr.statusText == "Not Acceptable") {
                         var url = $("#RedirectToPhone").val();
+                        location.href = url;
+                    }
+                    else if (jqXhr.statusText == "Not Implemented") {
+                        sessionStorage.setItem('loginToken', jqXhr.responseJSON.token);
+                        sessionStorage.setItem('userName', jqXhr.responseJSON.name);
+                        var url = $("#EmailConfirm").val();
                         location.href = url;
                     }
                     else

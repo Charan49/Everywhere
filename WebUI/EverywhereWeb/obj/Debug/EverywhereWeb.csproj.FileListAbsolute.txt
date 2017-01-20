@@ -271,6 +271,6 @@ F:\Everywhere 1.0\WebUI\EverywhereWeb\bin\Microsoft.Owin.Security.OAuth.xml
 F:\Everywhere 1.0\WebUI\EverywhereWeb\bin\Microsoft.Owin.Security.Google.xml
 F:\Everywhere 1.0\WebUI\EverywhereWeb\bin\Microsoft.Owin.Security.Twitter.xml
 F:\Everywhere 1.0\WebUI\EverywhereWeb\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-F:\Everywhere 1.0\WebUI\EverywhereWeb\obj\Debug\EverywhereWeb.csprojResolveAssemblyReference.cache
 F:\Everywhere 1.0\WebUI\EverywhereWeb\obj\Debug\EverywhereWeb.dll
 F:\Everywhere 1.0\WebUI\EverywhereWeb\obj\Debug\EverywhereWeb.pdb
+F:\Everywhere 1.0\WebUI\EverywhereWeb\obj\Debug\EverywhereWeb.csprojResolveAssemblyReference.cache
