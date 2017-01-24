@@ -293,8 +293,10 @@ namespace Web.Controllers
                     throw new ApiDataException(1002, "Verification code expired...", HttpStatusCode.NotAcceptable);
                 }
                 emailAddress.AccountState = (byte)Models.Enums.AccountState.Active;
-                emailAddress.MobileConfirmationCode = string.Empty;
-                emailAddress.EmailVerificationCode = string.Empty;
+                if (code.codeType.Equals("mobile"))
+                    emailAddress.MobileConfirmationCode = string.Empty;
+                if(code.codeType.Equals("email"))
+                    emailAddress.EmailVerificationCode = string.Empty;
                 await db.SaveChangesAsync();
                 return Ok();
             }
