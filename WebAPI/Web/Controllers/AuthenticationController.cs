@@ -83,7 +83,7 @@ namespace Web.Controllers
                         };
                     if (string.IsNullOrEmpty(existingUser.EmailVerificationCode) && existingUser.UserType.Equals("User"))
                     {
-                        return Request.CreateResponse(HttpStatusCode.NotImplemented);
+                        return Request.CreateResponse(HttpStatusCode.NotImplemented, token);
                     }
                     return Request.CreateResponse(token);
 
