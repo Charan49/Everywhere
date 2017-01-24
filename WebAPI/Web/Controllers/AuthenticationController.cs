@@ -81,7 +81,7 @@ namespace Web.Controllers
                             id = existingUser.UserID.ToString(),
                             name = existingUser.FirstName + " " + existingUser.LastName
                         };
-                    if (string.IsNullOrEmpty(existingUser.EmailVerificationCode) && existingUser.UserType.Equals("User"))
+                    if (!string.IsNullOrEmpty(existingUser.EmailVerificationCode) && existingUser.UserType.Equals("User"))
                     {
                         return Request.CreateResponse(HttpStatusCode.NotImplemented, token);
                     }
@@ -157,6 +157,8 @@ namespace Web.Controllers
                                         "Best regards<br />" +
                                         "Team Everywhere<br />" +
                                         "www.Everywhere.live<br /> ";
+
+                    emailAddress.EmailVerificationCode = vEmailCode;
                 }
 
                 message.Subject = messageSubject;
@@ -175,7 +177,7 @@ namespace Web.Controllers
                 emailAddress.ConfirmationDueDate = DateTime.Now;
                 emailAddress.ModifiedDate = DateTime.Now;
                 
-                emailAddress.EmailVerificationCode = vEmailCode;
+                
                 await db.SaveChangesAsync();
                 return Ok();
             }
@@ -197,7 +199,7 @@ namespace Web.Controllers
             {
                 //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
 
-                string vEmailCode = GenerateCode.CreateRandomCode(4);
+                
                 MailMessage message = new MailMessage("test@test.com", model.email);
 
                 if (!string.IsNullOrEmpty(model.callbackURL))
@@ -208,7 +210,7 @@ namespace Web.Controllers
 
                 message.Body = "Hi " + emailAddress.FirstName + ",<br />" +
                                         "<br />" +
-                                        "To finish setting up your Everywhere account, we just need to make sure this email address is yours. Here is your email address verification code: <b>" + vEmailCode + "</b> Likewise we sent a phone number verification code to your mobile phone as a text message. <br />" +
+                                        "You requested to reset your Everywhere account password. We sent a phone number verification code to your mobile phone as a text message. <br />" +
                                         linkUrl + " <br />" +
                                         "If you didn't request this code, you can safely ignore this email. Someone else might have typed your email address by mistake. <br />" +
                                         "Best regards<br />" +
@@ -225,7 +227,7 @@ namespace Web.Controllers
                 emailAddress.ConfirmationDueDate = DateTime.Now;
                 emailAddress.ModifiedDate = DateTime.Now;
                 emailAddress.MobileConfirmationCode = vMobileCode;
-                emailAddress.EmailVerificationCode = vEmailCode;
+                
                 await db.SaveChangesAsync();
                 return Conflict();
             }
@@ -249,7 +251,7 @@ namespace Web.Controllers
                 //emailAddress.Password = Helper.PasswordHash.HashPassword(model.newPassword);
                 if (!string.IsNullOrEmpty(model.callbackURL))
                     linkUrl = "Please click on the given URL to change your password: " + model.callbackURL + "<br />";
-                string vEmailCode = GenerateCode.CreateRandomCode(4);
+                
                 MailMessage message = new MailMessage("test@test.com", model.email);
                 
                 message.Subject = "Everywhere password reset";
@@ -263,10 +265,10 @@ namespace Web.Controllers
                                         "www.Everywhere.live <br> ";
 
                 await SendEmail.sendMail(message);
-                
+                string vMobileCode = GenerateCode.CreateRandomCode(4);
+                await SMS.SendSMS(emailAddress.MobileNumber, vMobileCode);
                 emailAddress.ConfirmationDueDate = DateTime.Now;
                 emailAddress.ModifiedDate = DateTime.Now;
-                emailAddress.EmailVerificationCode = vEmailCode;
                 await db.SaveChangesAsync();
                 return Ok();
             }

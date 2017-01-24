@@ -101,4 +101,15 @@ namespace Web.Models
 
 
     }
+
+    public class JVerifyEmail
+    {
+        [Required]
+        [StringTrim]
+        public string emailcode { get; set; }
+
+        [StringTrim]
+        public string code { get; set; }
+
+    }
 }

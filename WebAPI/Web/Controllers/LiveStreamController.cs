@@ -35,36 +35,47 @@ namespace Web.Controllers
         private InterceptDB db = new InterceptDB();
 
         [Route("api/v1/livestream/start")]
-        [HttpGet]
-        public async Task<List<JLiveStream>> CreateLiveStreamUrls()
+        [HttpPost]
+        public async Task<List<JLiveStream>> CreateLiveStreamUrls([FromBody] JServiceName serviceNames)
         {
             var ruser = this.ApiUser().RUser;
-            var services = await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).ToListAsync();
+            List<UserService> uServices = new List<UserService>();
+            string[] values = serviceNames.serviceNames.Split(',');
+            for (int i = 0; i < values.Length; i++)
+            {
+                string sName = values[i].Trim();
+                if (!string.IsNullOrEmpty(sName))
+                    uServices.Add(await db.UserServices.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.Service.Name == sName && x.IsDeleted == false));
+            }
+
+
+            //var services = await db.UserServices.Where(x => x.UserGUID == ruser.SubjectID && x.IsDeleted == false).ToListAsync();
             var list = new List<JLiveStream>();
 
-            foreach (var entry in services)
+            foreach (var entry in uServices)
             {
                 if (entry.Service.Name == serviceFacebook)
                 {
                     //Create Facebook Live Stream
                     Facebook.FacebookClient client = new FacebookClient();
                     client.AccessToken = entry.LongToken;
-       
-                //dynamic ret = await client.GetTaskAsync(string.Format("oauth/access_token?grant_type=fb_exchange_token&fb_exchange_token={0}&client_id={1}&client_secret={2}", model.accessToken, client.AppId, client.AppSecret), new { });
+
+                    //dynamic ret = await client.GetTaskAsync(string.Format("oauth/access_token?grant_type=fb_exchange_token&fb_exchange_token={0}&client_id={1}&client_secret={2}", model.accessToken, client.AppId, client.AppSecret), new { });
 
 
 
                     dynamic ret = await client.PostTaskAsync("/me/live_videos", new { });
-
+                    string subUrl = ret.stream_url;
                     list.Add(new JLiveStream
                     {
                         serviceName = entry.Service.Name,
-                        streamId = ret.id,
+                        streamId = ret.id + subUrl.Substring(subUrl.IndexOf("?"), subUrl.Length - subUrl.IndexOf("?")),
                         streamUrl = ret.stream_url,
                         streamDate = DateTime.UtcNow
                     });
 
-                    entry.StreamID = ret.id;
+                    //entry.StreamID = ret.id;
+                    entry.StreamID = ret.id + subUrl.Substring(subUrl.IndexOf("?"), subUrl.Length - subUrl.IndexOf("?"));
                     entry.StreamURL = ret.stream_url;
                     entry.StreamDate = DateTime.UtcNow;
 

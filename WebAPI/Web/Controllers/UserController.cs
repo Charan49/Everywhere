@@ -106,10 +106,8 @@ namespace Web.Controllers
                     MailMessage message = new MailMessage("test@test.com", model.email);
                     message.Subject= "Everywhere signup confirmation";
                     message.Body = "Hi " + user.FirstName + ",<br />" +
-                                        "<br />" +
-                                        "Thanks for signing up to Everywhere. We sent a phone number verification code to your mobile phone as a text message.  Please complete the sign up by entering the code in app/web to complete the signup. <br />" +
-                                        linkUrl +" <br />"+
-                                        "You are then ready to live stream videos through Everywhere platform. <br />" +
+                                        "Welcome to everywhere. We just need to make sure that the email is yours. Here is your email verification code: <b>"+ vEmailCode + "</b> Please enter this code in everywhere app/web portal to verify your email. <br />" +
+                                        
                                         "Best regards<br />" +
                                         "Team Everywhere<br />" +
                                         "www.Everywhere.live<br /> ";
@@ -117,6 +115,7 @@ namespace Web.Controllers
                     string vMobileCode = GenerateCode.CreateRandomCode(4);
                     await SMS.SendSMS(model.mobilenumber,vMobileCode);
                     user.MobileConfirmationCode = vMobileCode;
+                    user.EmailVerificationCode = vEmailCode;
                     db.Users.Add(user);
                     db.SaveChanges();
 
@@ -144,7 +143,7 @@ namespace Web.Controllers
             User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
             if (emailAddress != null)
             {
-                string vEmailCode = GenerateCode.CreateRandomCode(4);
+                
 
                 if (!string.IsNullOrEmpty(model.callbackURL))
                     linkUrl = " Please click the link below to enter your verification codes: " + model.callbackURL + "<br />";
@@ -168,6 +167,41 @@ namespace Web.Controllers
                 emailAddress.ConfirmationDueDate = DateTime.Now;
                 emailAddress.ModifiedDate = DateTime.Now;
                 emailAddress.MobileConfirmationCode = vMobileCode;
+                
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
+        }
+
+        [AllowAnonymous]
+        [Route("api/v1/user/ResendEmailCode")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ResendEmailCode(JForgetPassword model)
+        {
+            string linkUrl = string.Empty;
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
+            if (emailAddress != null)
+            {
+                string vEmailCode = GenerateCode.CreateRandomCode(4);
+
+                MailMessage message = new MailMessage("test@test.com", model.email);
+                message.Subject = "Everywhere email code";
+
+                message.Body = "Hi " + emailAddress.FirstName + ",<br />" +
+                                       "<br />" +
+                                       "Welcome to everywhere. We just need to make sure that the email is yours. Here is your email verification codo: <b>" + vEmailCode + "</b> Please enter this code in everywhere app/web portal to verify your email. <br />" +
+
+                                       "Best regards<br />" +
+                                       "Team Everywhere<br />" +
+                                       "www.Everywhere.live<br /> ";
+                await SendEmail.sendMail(message);
+                emailAddress.ConfirmationDueDate = DateTime.Now;
+                emailAddress.ModifiedDate = DateTime.Now;
                 emailAddress.EmailVerificationCode = vEmailCode;
                 await db.SaveChangesAsync();
                 return Ok();
@@ -217,7 +251,35 @@ namespace Web.Controllers
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
         }
 
+        [AllowAnonymous]
+        [Route("api/v1/user/ConfirmEmail")]
+        [HttpPost]
+        public async Task<IHttpActionResult> VerifyEmail([FromBody] JVerifyEmail code)
+        {
+            var ruser = this.ApiUser().RUser;
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.UserGUID == ruser.SubjectID && x.EmailVerificationCode == code.emailcode);
 
+            if (emailAddress != null)
+            {
+                TimeSpan ts = DateTime.Now.Subtract(Convert.ToDateTime(emailAddress.ConfirmationDueDate));
+
+                if (Convert.ToInt32(ts.TotalDays) > 7)
+                {
+                    return NotFound();
+                    throw new ApiDataException(1002, "Verification code expired...", HttpStatusCode.NotAcceptable);
+                }
+                emailAddress.AccountState = (byte)Models.Enums.AccountState.Active;
+                if (code.code.Equals("email"))
+                    emailAddress.EmailVerificationCode = string.Empty;
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
+        }
 
         // PUT
         [Route("api/v1/user")]
