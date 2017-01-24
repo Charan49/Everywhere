@@ -282,7 +282,11 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> ConfirmEmail([FromBody] JConfirmEmail code)
         {
-            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.MobileConfirmationCode == code.mobilecode);
+            User emailAddress = null;
+            if (code.codeType.Equals("mobile"))
+                emailAddress = await db.Users.FirstOrDefaultAsync(x => x.MobileConfirmationCode == code.mobilecode);
+            if(code.codeType.Equals("email"))
+                emailAddress = await db.Users.FirstOrDefaultAsync(x => x.EmailVerificationCode == code.mobilecode);
             if (emailAddress != null)
             {
                 TimeSpan ts = DateTime.Now.Subtract(Convert.ToDateTime(emailAddress.ConfirmationDueDate));
