@@ -109,7 +109,7 @@ namespace Web.Models
         public string emailcode { get; set; }
 
         [StringTrim]
-        public string code { get; set; }
+        public string codeType { get; set; }
 
     }
 }
