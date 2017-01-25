@@ -269,7 +269,7 @@ namespace Web.Controllers
                     throw new ApiDataException(1002, "Verification code expired...", HttpStatusCode.NotAcceptable);
                 }
                 emailAddress.AccountState = (byte)Models.Enums.AccountState.Active;
-                if (code.code.Equals("email"))
+                if (code.codeType.Equals("email"))
                     emailAddress.EmailVerificationCode = string.Empty;
                 await db.SaveChangesAsync();
                 return Ok();
