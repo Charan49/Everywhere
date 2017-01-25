@@ -46,8 +46,8 @@ namespace Web.Controllers
             if (existingUser == null)
             {
                 var unconfirmed = await db.Users.FirstOrDefaultAsync(u => String.Compare(u.Email, loginInfo.email.Trim(), true) == 0 && u.AccountState == (int)Models.Enums.AccountState.UnconfirmedEmail);
-                if (string.IsNullOrEmpty(unconfirmed.MobileNumber))
-                    return Request.CreateResponse(HttpStatusCode.Found);
+                //if (string.IsNullOrEmpty(unconfirmed.MobileNumber))
+                //    return Request.CreateResponse(HttpStatusCode.Found);
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
                 throw new ApiException() { ErrorCode = (int)HttpStatusCode.Unauthorized, ErrorDescription = "User is not authorized" };
             }
@@ -286,9 +286,9 @@ namespace Web.Controllers
         {
             User emailAddress = null;
             if (code.codeType.Equals("mobile"))
-                emailAddress = await db.Users.FirstOrDefaultAsync(x => x.MobileConfirmationCode == code.mobilecode);
+                emailAddress = await db.Users.FirstOrDefaultAsync(x => x.MobileConfirmationCode == code.code);
             if(code.codeType.Equals("email"))
-                emailAddress = await db.Users.FirstOrDefaultAsync(x => x.EmailVerificationCode == code.mobilecode);
+                emailAddress = await db.Users.FirstOrDefaultAsync(x => x.EmailVerificationCode == code.code);
             if (emailAddress != null)
             {
                 TimeSpan ts = DateTime.Now.Subtract(Convert.ToDateTime(emailAddress.ConfirmationDueDate));

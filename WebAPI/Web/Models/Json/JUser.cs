@@ -94,7 +94,7 @@ namespace Web.Models
     {
         [Required]
         [StringTrim]
-        public string mobilecode { get; set; }
+        public string code { get; set; }
 
         [StringTrim]
         public string codeType { get; set; }
