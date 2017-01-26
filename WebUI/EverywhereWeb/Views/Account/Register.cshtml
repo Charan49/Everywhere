@@ -34,7 +34,7 @@
                 </ul>
 
                 <div class="navbar-right">
-                    <p class="navbar-text">Already have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");">Sign in</button>
+                    <p class="navbar-text">Already have an account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");">Sign in</button>
                 </div>
             </div>
             <!-- /.navbar-collapse -->
@@ -121,8 +121,8 @@
 
                                 @Html.Hidden("RedirectTo", Url.Action("VerifyCode", "Account"));
                                 @Html.Hidden("RedirectToLogin", Url.Action("Login", "Account"));
-                                <button type="submit" id="btnSignUP" class="btn btn-success cta btn-lg">Sign Up</button>
                                 <p class="text-center text-muted"><small>By clicking “Sign Up” I agree to Everywhere’s Terms of Service.</small></p>
+                                <button type="submit" id="btnSignUP" class="btn btn-success cta btn-lg">Sign Up</button>
                             }
 
 

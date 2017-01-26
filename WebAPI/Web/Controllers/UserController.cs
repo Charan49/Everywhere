@@ -135,6 +135,47 @@ namespace Web.Controllers
         }
 
         [AllowAnonymous]
+        [Route("api/v1/user/FetchMobile")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> FetchMobile(string email)
+        {
+            string linkUrl = string.Empty;
+            User emailAddress = await db.Users.FirstOrDefaultAsync(x => x.Email == email);
+            if (emailAddress != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.Created, emailAddress.MobileNumber);
+                
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Please try again");
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
+        }
+        [AllowAnonymous]
+        [Route("api/v1/user/UpdateMobile")]
+        [HttpPost]
+        public async Task<HttpResponseMessage> UpdateMobile([FromBody] JMobileDetail model)
+        {
+            string linkUrl = string.Empty;
+            User user = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
+            if (user != null)
+            {
+                user.MobileNumber = model.phone;
+                db.Entry(user).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return Request.CreateResponse(HttpStatusCode.Created,true);
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Please try again");
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
+        }
+
+
+
+        [AllowAnonymous]
         [Route("api/v1/user/ResendVerificationEmail")]
         [HttpPost]
         public async Task<IHttpActionResult> ResendVerificationEmail(JForgetPassword model)
@@ -153,9 +194,9 @@ namespace Web.Controllers
 
                 message.Body = "Hi " + emailAddress.FirstName + ",<br />" +
                                        "<br />" +
-                                       "Thanks for signing up to Everywhere. We sent a phone number verification code to your mobile phone as a text message.  Please complete the sign up by entering the code in app/web to complete the signup. <br />" +
+                                       "Thank you for signing up with Everywhere! Please enter the code that has been sent to your mobile number in the link below to complete the sign up. <br />" +
                                        linkUrl + " <br />" +
-                                       "You are then ready to live stream videos through Everywhere platform. <br />" +
+                                       "You are then ready to live stream videos through Everywhere. <br />" +
                                        "Best regards<br />" +
                                        "Team Everywhere<br />" +
                                        "www.Everywhere.live<br /> ";

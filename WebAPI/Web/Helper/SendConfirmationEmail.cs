@@ -112,7 +112,7 @@ namespace Web.Helper
             
             try
             {
-                var result = client.SendMessage(twilioPhoneNumber, cellNumber, "Your Everywhere verification code is: " + message);
+                var result = client.SendMessage(twilioPhoneNumber, cellNumber, "Your Everywhere verification code is  " + message);
             }
             catch (InvalidApiRequestException ex)
             {

@@ -32,7 +32,7 @@
                 </ul>
 
                 <div class="navbar-right">
-                    <p class="navbar-text">Already have an Account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");" >Sign in</button>
+                    <p class="navbar-text">Already have an account?</p> <button type="button" class="btn navbar-btn" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");" >Sign in</button>
                 </div>
             </div><!-- /.navbar-collapse -->
         </div>
@@ -63,7 +63,23 @@
                             }
                             <div class="row">
                                 <div class="col-sm-7">
-                                    <p class="text-justify small">A verification code has been sent to your mobile phone. Please check your text messages. It may take few minutes to receive the message.  If you still haven't  received the message please click on <a href="#" onclick="resendVerificationCode(event)"><u>Resend</u></a> the verification code.</p>
+                                    <p class="text-justify small">A verification code has been sent to your mobile phone. Please check your text messages. It may take few minutes to receive the message.  If you still haven't  received the message please click on <a href="#" onclick="CheckPhoneNumber(event)"><u>Check your phone number and resend</u></a>.</p>
+
+                                     
+                                    <div class="form-group" id="VerifyPhoneNumber" style="display:none;" >
+                                        @*<label for="uPass" class = "control-label" >PHONE NUMBER</label>*@
+                                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+                                        <div>
+                                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", id = "phone", placeholder = "Enter 10 digit mobile phone number" })
+                                        </div>
+                                        @*<label for="uPass">Password</label>
+            <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
+                                        <div>
+                                            <button type="button" class="btn btn-success cta btn-lg btn-block" onclick="UpdatePhoneNumberAndSendSMS(this)">Resend</button>
+                                            </div>
+                                        </div>
+
+
                                 </div>
                                 <div class="col-sm-5">
 
@@ -90,14 +106,67 @@
             </div>
         </div>
     </div>
+
+
+
 </section>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+
 <script type="text/javascript">
     var apiUrl = "";
     $(document).ready(function () {
         apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
 
     });
+
+
+    function CheckPhoneNumber(e) {
+        //var email = 'laxmana.charan@innovasolutions.com';
+        var email = sessionStorage.getItem('signUpEmail');
+        $.ajax({
+            url: apiUrl + "/api/v1/user/FetchMobile?email=" + email,
+            type: "GET",
+            crossDomain: true,
+            data: {},
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#phone').val(data);
+                $('#VerifyPhoneNumber').show();
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+
+    }
+
+    function UpdatePhoneNumberAndSendSMS(e) {
+        var email = sessionStorage.getItem('signUpEmail');
+        var phone = $('#phone').val();
+         $.ajax({
+             url: apiUrl + "/api/v1/user/UpdateMobile/",
+             type: "POST",
+             crossDomain: true,
+             data: JSON.stringify({ 'email': email, 'phone': phone }),
+             dataType: "json",
+             async: false,
+             contentType: "application/json; charset=utf-8",
+             success: function (data) {
+                 resendVerificationCode(e);
+             },
+             error: function (jqXhr, textStatus, errorThrown) {
+
+                 alert(jqXhr.statusText);
+             }
+         });
+
+    }
+
     function confirmEmail(e) {
         
         //$('#btnSignIn').click(function (e) {
@@ -133,6 +202,7 @@
         });
         //});
     }
+     
 
     function resendVerificationCode(e) {
         var cURL = 'https://web.everywhere.live' + $('#RedirectTo').val();
@@ -148,14 +218,14 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
 
-                e.preventDefault();
+                //e.preventDefault();
                 var url = $("#RedirectTo").val();
                 window.location.href = url;
 
             },
             error: function (jqXhr, textStatus, errorThrown) {
 
-                e.preventDefault();
+                //e.preventDefault();
                 if (jqXhr.statusText == "OK") {
                     alert("Verification code is sent to your mobile phone.");
                 }

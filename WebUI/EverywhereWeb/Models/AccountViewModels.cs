@@ -28,7 +28,11 @@ namespace EverywhereWeb.Models
         [Required]
         [Display(Name = "Mobile Code")]
         public string MobileCode { get; set; }
-        
+
+        [Required]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
     }
 
     public class VerifyEmailCodeViewModel
