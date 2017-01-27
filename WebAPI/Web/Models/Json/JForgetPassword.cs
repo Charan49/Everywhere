@@ -18,7 +18,21 @@ namespace Web.Models.Json
 
         public string type { get; set; }
     }
-    
+
+    public class JUpdateEmail
+    {
+        [Required]
+        [StringTrim]
+        [EmailAddress]
+        public string email { get; set; }
+
+        [Required]
+        [StringTrim]
+        [EmailAddress]
+        public string newemail { get; set; }
+
+    }
+
 
     public class JResetPasswordModel
     {

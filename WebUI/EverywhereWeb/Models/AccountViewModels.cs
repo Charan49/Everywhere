@@ -41,6 +41,10 @@ namespace EverywhereWeb.Models
         [Display(Name = "Email Code")]
         public string EmailCode { get; set; }
 
+        [Required]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
     }
 
     public class ForgotViewModel

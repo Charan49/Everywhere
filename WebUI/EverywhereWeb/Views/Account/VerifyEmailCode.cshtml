@@ -63,7 +63,22 @@
                             }
                             <div class="row">
                                 <div class="col-sm-7">
-                                    <p class="text-justify small">we need to make sure that the email is yours. We sent an email verification code to you my email. If you have not received click <a href="#" onclick="resendVerificationCode(event)"><u>here</u></a> to resend the code. Please enter the code here.</p>
+                                    <p class="text-justify small">we need to make sure that the email is yours. We sent an email verification code to your email. If you haven't received the email please click on <a href="#" onclick="CheckEmail(event)"><u>Check your email and resend.</u></a></p>
+
+                                    <div class="form-group" id="VerifyEmailId" style="display:none;">
+                                        @*<label for="uPass" class = "control-label" >PHONE NUMBER</label>*@
+                                        @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                                        <div>
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "email", placeholder = "" })
+                                        </div>
+                                        @*<label for="uPass">Password</label>
+            <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
+                                        <div>
+                                            <button type="button" class="btn btn-success cta btn-lg btn-block" onclick="UpdateEmailAndSendMail(this)">Resend</button>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                                 <div class="col-sm-5">
 
@@ -83,8 +98,8 @@
                             
                             
                         }
-                        @Html.Hidden("RedirectTo", Url.Action("VerifyCode", "Account"));
-                        @Html.Hidden("Home", Url.Action("Dashboard", "Home"));
+                        @Html.Hidden("RedirectTo", Url.Action("VerifyCode", "Account"))
+                        @Html.Hidden("Home", Url.Action("Dashboard", "Home"))
                         @*</form>*@
 
                     </div>
@@ -101,6 +116,40 @@
         apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["endpointAddress"]';
 
     });
+
+    function CheckEmail(e) {
+        //var email = 'laxmana.charan@innovasolutions.com';
+        var email = sessionStorage.getItem('signUpEmail');
+       
+        $('#email').val(email);
+        $('#VerifyEmailId').show();
+          
+
+    }
+    function UpdateEmailAndSendMail(e)
+    {
+        var email = sessionStorage.getItem('signUpEmail');
+        var newemail = $('#email').val();
+        $.ajax({
+            url: apiUrl + "/api/v1/user/UpdateEmail/",
+            type: "POST",
+            crossDomain: true,
+            data: JSON.stringify({ 'email': email, 'newemail': newemail }),
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                sessionStorage.setItem('signUpEmail', newemail);
+                resendVerificationCode(e, newemail);
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+
+                alert(jqXhr.statusText);
+            }
+        });
+
+    }
+
     function confirmEmail(e) {
         
         var token = sessionStorage.getItem('loginToken');
@@ -143,6 +192,7 @@
     }
 
     function resendVerificationCode(e) {
+        
         var email = sessionStorage.getItem('signUpEmail');
         $.ajax({
             url: apiUrl + "/api/v1/user/ResendEmailCode/",
@@ -161,7 +211,7 @@
             },
             error: function (jqXhr, textStatus, errorThrown) {
 
-                e.preventDefault();
+               // e.preventDefault();
                 if (jqXhr.statusText == "OK") {
                     alert("Verification code is sent to your email address.");
                 }

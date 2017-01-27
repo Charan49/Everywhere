@@ -173,6 +173,28 @@ namespace Web.Controllers
             }
         }
 
+      
+        [AllowAnonymous]
+        [Route("api/v1/user/UpdateEmail")]
+        [HttpPost]
+        public async Task<HttpResponseMessage> UpdateEmail([FromBody] JUpdateEmail model)
+        {
+            string linkUrl = string.Empty;
+            User user = await db.Users.FirstOrDefaultAsync(x => x.Email == model.email);
+            if (user != null)
+            {
+                user.Email = model.newemail;
+                db.Entry(user).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return Request.CreateResponse(HttpStatusCode.Created, true);
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Please try again");
+                throw new ApiException() { ErrorCode = (int)HttpStatusCode.NotFound, ErrorDescription = "Bad Request..." };
+            }
+        }
+
 
 
         [AllowAnonymous]
