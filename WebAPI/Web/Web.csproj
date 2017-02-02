@@ -357,6 +357,7 @@
     <Compile Include="Models\Json\JForgetPassword.cs" />
     <Compile Include="Models\Json\JLiveStream.cs" />
     <Compile Include="Models\Json\JLogin.cs" />
+    <Compile Include="Models\Json\JMobileDetail.cs" />
     <Compile Include="Models\Json\JRegister.cs" />
     <Compile Include="Models\Json\JService.cs" />
     <Compile Include="Models\Json\JTestUser.cs" />
