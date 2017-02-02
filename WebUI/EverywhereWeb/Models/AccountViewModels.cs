@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace EverywhereWeb.Models
 {
@@ -160,8 +161,9 @@ namespace EverywhereWeb.Models
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
-		[DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
-		public string Email { get; set; }
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
+        public string Email { get; set; }
+    }
 	public class ContactUsViewModel
     {
         [Required]
