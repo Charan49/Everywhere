@@ -37,9 +37,7 @@
 </div>
 
 <script type="text/javascript">
-    window.onload = function () {
-        $('#email').val(sessionStorage.getItem('signUpEmail'));
-    }
+    $(document).ready(function () { $('#email').val(sessionStorage.getItem('signUpEmail')); });
     function sendRequest(e) {
         
         
