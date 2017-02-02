@@ -7,6 +7,7 @@ namespace EverywhereWeb.Models
     {
         [Required]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
         public string Email { get; set; }
     }
 
@@ -30,9 +31,13 @@ namespace EverywhereWeb.Models
         public string MobileCode { get; set; }
 
         [Required]
-        [Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
+        [RegularExpression(@"^[\+]?[1 - 9]{1,3}\s?[0 - 9]{6,11}$", ErrorMessage = "Phone number provided is not valid.")]
+        //[RegularExpression(@"^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$", ErrorMessage = "Phone number provided is not valid.")]
+        //[RegularExpression(@"^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\- ]*$", ErrorMessage = "Phone number provided is not valid.")]
+        [Display(Name = "Mobile Phone Number")]
+        public string phone { get; set; }
 
+ 
     }
 
     public class VerifyEmailCodeViewModel
@@ -43,6 +48,7 @@ namespace EverywhereWeb.Models
 
         [Required]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
         public string Email { get; set; }
 
     }
@@ -51,12 +57,17 @@ namespace EverywhereWeb.Models
     {
         [Required]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
         public string Email { get; set; }
     }
 
     public class ConfirmPhoneModel
     {
         [Required]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Phone number provided is not valid.")]
+        //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Phone number provided is not valid.")]
+        [RegularExpression(@"^[\+]?[1 - 9]{1,3}\s?[0 - 9]{6,11}$", ErrorMessage = "Phone number provided is not valid.")]
+
         public string Mobile { get; set; }
     }
 
@@ -65,6 +76,7 @@ namespace EverywhereWeb.Models
         [Required]
         [Display(Name = "Email")]
         [EmailAddress]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
         public string Email { get; set; }
 
         [Required]
@@ -89,6 +101,7 @@ namespace EverywhereWeb.Models
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
         public string Email { get; set; }
 
         [Required]
@@ -113,8 +126,11 @@ namespace EverywhereWeb.Models
         public int Year { get; set; }
 
         [Required]
+        [RegularExpression(@"^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\- ]*$", ErrorMessage = "Phone number provided is not valid.")]
+        //[RegularExpression(@"^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$", ErrorMessage = "Phone number provided is not valid.")]
         [Display(Name = "Mobile Phone Number")]
-        public string PhoneNumber { get; set; }
+        public string mobilenumber { get; set; }
+
     }
 
     public class ResetPasswordViewModel
@@ -122,6 +138,7 @@ namespace EverywhereWeb.Models
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
         public string Email { get; set; }
 
         [Required]
@@ -143,6 +160,7 @@ namespace EverywhereWeb.Models
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
         public string Email { get; set; }
     }
 }

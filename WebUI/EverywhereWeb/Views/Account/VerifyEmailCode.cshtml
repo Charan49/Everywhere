@@ -52,7 +52,7 @@
                         {
                             @Html.AntiForgeryToken()
                             <div class="form-head">
-                                <h2 class="have-icon-verify">Verification Code</h2>
+                                <h2 class="have-icon-verify">Verify your email address</h2>
                             </div>
                             if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
                             {
@@ -63,8 +63,8 @@
                             }
                             <div class="row">
                                 <div class="col-sm-7">
-                                    <p class="text-justify small">we need to make sure that the email is yours. We sent an email verification code to your email. If you haven't received the email please click on <a href="#" onclick="CheckEmail(event)"><u>Check your email and resend.</u></a></p>
-
+                                    <p class="text-justify small">We need to make sure that the email is yours. We sent an email verification code to your email. If you haven't received the email please click on <a href="#" onclick="CheckEmail(event)"><u>Check your email and resend.</u></a></p>
+                                    @Html.ValidationSummary("", new { @class = "text-danger" })
                                     <div class="form-group" id="VerifyEmailId" style="display:none;">
                                         @*<label for="uPass" class = "control-label" >PHONE NUMBER</label>*@
                                         @Html.LabelFor(m => m.Email, new { @class = "control-label" })
@@ -89,7 +89,7 @@
                                         <input maxlength="4" type="text" class="form-control" id="txtCode" placeholder="1234">*@
                                     </div>
                                     <button type="submit" class="btn btn-success cta btn-lg btn-block">Verifiy</button>
-                                    <button type="button" id="btnSkip" class="btn btn-success cta btn-lg btn-block" onclick="skipToDashboard()">Skip</button>
+                                    <button type="button" id="btnSkip" class="btn btn-success cta btn-lg btn-block" onclick="skipToDashboard()">I will verify later</button>
                                     
                                     
                                 </div>
@@ -110,6 +110,7 @@
     </div>
 </section>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
 <script type="text/javascript">
     var apiUrl = "";
     $(document).ready(function () {
@@ -144,7 +145,7 @@
             },
             error: function (jqXhr, textStatus, errorThrown) {
 
-                alert(jqXhr.statusText);
+                alert("Email provided is not valid");
             }
         });
 

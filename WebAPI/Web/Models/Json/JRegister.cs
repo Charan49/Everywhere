@@ -27,7 +27,11 @@ namespace Web.Models
         public string location { get; set; }
         public string url { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Phone number is required")]
+        [Display(Name = "Mobile Phone Number")]
+        [RegularExpression(@"^[\+]?[1 - 9]{1,3}\s?[0 - 9]{6,11}$", ErrorMessage = "Phone number provided is not valid.")]
+        //[RegularExpression(@"^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\- ]*$", ErrorMessage = "Phone number provided is not valid.")]
+        //[RegularExpression(@"^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$", ErrorMessage = "Phone number provided is not valid.")]
         public string mobilenumber { get; set; }
         public void Trim()
         {

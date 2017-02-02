@@ -26,9 +26,10 @@ namespace Web.Models.Json
         [EmailAddress]
         public string email { get; set; }
 
-        [Required]
         [StringTrim]
-        [EmailAddress]
+        [Display(Name = "Email address")]
+        [Required(ErrorMessage = "Email address is required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string newemail { get; set; }
 
     }

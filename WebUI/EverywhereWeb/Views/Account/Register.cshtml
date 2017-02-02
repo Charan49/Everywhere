@@ -97,10 +97,13 @@
                                 </div>
                                 <div class="form-group">
                                     @*<label for="uPass" class = "control-label" >PHONE NUMBER</label>*@
-                                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+                                    @Html.LabelFor(m => m.mobilenumber, new { @class = "control-label" })
                                     <div>
-                                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", id = "phone", placeholder = "Enter 10 digit mobile phone number" })
+                                        @Html.TextBoxFor(m => m.mobilenumber, new { @class = "form-control", id = "phone", placeholder = "Enter 10 digit mobile phone number" })
                                     </div>
+
+
+
                                     @*<label for="uPass">Password</label>
                                         <input type="password" class="form-control" id="uPass" placeholder="6+ characters">*@
                                 </div>
