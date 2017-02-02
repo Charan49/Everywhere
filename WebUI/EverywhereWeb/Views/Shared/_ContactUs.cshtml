@@ -16,7 +16,7 @@
         @Html.ValidationSummary("", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(m => m.Subject, new { @class = "control-label" })
-            @Html.DropDownListFor(m => m.Subject, Model.SubjectList, "Select", new { @class = "form-control", id = "subject" })
+            @Html.DropDownListFor(m => m.Subject, Model.SubjectList, new { @class = "form-control", id = "subject" })
             
         </div>
         <div class="form-group">
@@ -37,6 +37,9 @@
 </div>
 
 <script type="text/javascript">
+    window.onload = function () {
+        $('#email').val(sessionStorage.getItem('signUpEmail'));
+    }
     function sendRequest(e) {
         
         
@@ -59,8 +62,7 @@
                 
             },
             error: function (jqXhr, textStatus, errorThrown) {
-                debugger
-                if (jqXhr.statusText == "OK") {
+                    if (jqXhr.statusText == "OK") {
                     e.preventDefault();
                     $('#btnCancel').click();
                     
@@ -68,11 +70,24 @@
                 else {
                     e.preventDefault();
                     $('#summary').show();
-                    e.stopPropagation();
+                    //e.stopPropagation();
+                    return true;
                 }
             }
         });
     }
+
+    $("#subject").change(function () {
+        $('#summary').hide();
+    });
+
+    $("#message").bind("keyup", function (event, ui) {
+        $('#summary').hide();
+    });
+
+    $("#email").bind("keyup", function (event, ui) {
+        $('#summary').hide();
+    });
 
     function getOS()
     {
