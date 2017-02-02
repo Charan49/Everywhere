@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EverywhereWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,6 +31,11 @@ namespace EverywhereWeb.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public PartialViewResult ContactUs()
+        {
+            return PartialView("~/Views/Shared/_ContactUs.cshtml", (new ContactUsViewModel()));
         }
     }
 }

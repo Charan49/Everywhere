@@ -1,0 +1,95 @@
+﻿@model EverywhereWeb.Models.ContactUsViewModel
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title text-success" id="myModalLabel">Cotact Us</h2>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("ContactUs", "Home", FormMethod.Post, new { role = "form", @class = "", id = "rForm", @onsubmit = "sendRequest(event)" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id="summary" hidden>
+            <div class="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong><img src="../images/icon-warning.png"></strong> <span class="text-danger">Please try again....</span>
+            </div>
+        </div>
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Subject, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.Subject, Model.SubjectList, "Select", new { @class = "form-control", id = "subject" })
+            
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Message, new { @class = "control-label" })
+            @Html.TextAreaFor(m => m.Message, new { @class = "form-control", id = "message" })
+            
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "john.s@company.co", id = "email" })
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="btnCancel" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    function sendRequest(e) {
+        
+        
+        var subject = $('#subject option:selected').text();
+        var message = $('#message').val();
+        var email = $('#email').val();
+        var browser = navigator.sayswho;
+        var os = getOS();
+        
+        $.ajax({
+            url: apiUrl + "/api/v1/contactus/",
+            type: "POST",
+            crossDomain: true,
+            data: JSON.stringify({ 'email': email, 'subject': subject, 'message': message, 'browser': browser[0], 'version': browser[1], 'os': os }),
+            dataType: "json",
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                debugger
+                if (jqXhr.statusText == "OK") {
+                    e.preventDefault();
+                    $('#btnCancel').click();
+                    
+                }
+                else {
+                    e.preventDefault();
+                    $('#summary').show();
+                    e.stopPropagation();
+                }
+            }
+        });
+    }
+
+    function getOS()
+    {
+        if (navigator.userAgent.indexOf("Win") != -1) return "Windows";
+        else if (navigator.userAgent.indexOf("Mac") != -1) return "Macintosh";
+        else if (navigator.userAgent.indexOf("Linux") != -1) return "Linux";
+        else if (navigator.userAgent.indexOf("Android") != -1) return "Android";
+        else if (navigator.userAgent.indexOf("like Mac") != -1) return "iOS";
+        else return "Unknown OS"
+    }
+
+    navigator.sayswho = (function () {
+        var N = navigator.appName, ua = navigator.userAgent, tem;
+        var M = ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+        if (M && (tem = ua.match(/version\/([\.\d]+)/i)) != null) M[2] = tem[1];
+        M = M ? [M[1], M[2]] : [N, navigator.appVersion, '-?'];
+        return M;
+    })();
+
+</script>

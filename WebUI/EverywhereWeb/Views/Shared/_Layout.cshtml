@@ -29,7 +29,19 @@
     @Scripts.Render("~/Scripts/bootstrap.min.js")
     
     @RenderSection("scripts", required: false)
-    <div id="cspio-credit"> <span>© Copyright © 2017 Intercept Technologies, Inc. | <a href="#"><u>How it works</u></a> | <a href="#"><u>Contact Us</u></a> | <a href="#"><u>Privacy Policy</u></a> | <a href="#"><u>Terms & Conditions</u></a></span> </div>
+    <div id="cspio-credit"> <span>© Copyright © 2017 Intercept Technologies, Inc. | <a href="#"><u>How it works</u></a> | <a role="button" class="link" data-toggle="modal" data-target="#contactForm"><u>Contact Us</u></a> | <a href="#"><u>Privacy Policy</u></a> | <a href="#"><u>Terms & Conditions</u></a></span> </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="contactForm" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                @{
+                    Html.RenderAction("ContactUs", "Home");
+                }
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 

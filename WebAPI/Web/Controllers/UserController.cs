@@ -256,8 +256,7 @@ namespace Web.Controllers
                 message.Subject = "Everywhere email code";
 
                 message.Body = "Hi " + emailAddress.FirstName + ",<br />" +
-                                       "<br />" +
-                                       "Welcome to everywhere. We just need to make sure that the email is yours. Here is your email verification codo: <b>" + vEmailCode + "</b> Please enter this code in everywhere app/web portal to verify your email. <br />" +
+                                       "Welcome to everywhere. We just need to make sure that the email is yours. Here is your email verification code: <b>" + vEmailCode + "</b>. Please enter this code in everywhere app/web portal to verify your email. <br />" +
 
                                        "Best regards<br />" +
                                        "Team Everywhere<br />" +

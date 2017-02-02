@@ -164,8 +164,9 @@
             var password = $('#uPass').val();
             sessionStorage.setItem('signUpEmail', email);
             var phone = null;
-            if ($('#phone').val() != "")
+            if ($('#phone').val() != "") {
                 phone = $(".selected-dial-code").text() + $('#phone').val();
+            
             var callbackURL = 'https://web.everywhere.live' + $("#RedirectTo").val();
 
             $.ajax({
@@ -196,7 +197,7 @@
                         location.href = url;
 
                     }
-                    if (jqXhr.statusText == "Found") {
+                    else if (jqXhr.statusText == "Found") {
                         alert('A User exists with this email with unconfirmed status. Please verify the account.');
                         var url = $("#RedirectTo").val();
                         location.href = url;

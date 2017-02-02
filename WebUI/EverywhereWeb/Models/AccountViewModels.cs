@@ -160,7 +160,35 @@ namespace EverywhereWeb.Models
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
-        [DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
+		[DataType(DataType.EmailAddress, ErrorMessage = "Email provided is not valid")]
+		public string Email { get; set; }
+	public class ContactUsViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Please select a subject")]
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
+
+        [Required(ErrorMessage = "Please write a message")]
+        [Display(Name = "Message")]
+        public string Message { get; set; }
+
+        public List<SelectListItem> SubjectList { get; set; }
+        public ContactUsViewModel()
+        {
+            SubjectList = new List<SelectListItem>();
+            SubjectList.Add(new SelectListItem() { Value = "1", Text = "Tell us how we can improve your experience" });
+            SubjectList.Add(new SelectListItem() { Value = "2", Text = "Issue in Sign up or Login or Reset password" });
+            SubjectList.Add(new SelectListItem() { Value = "3", Text = "Issue in Linking services" });
+            SubjectList.Add(new SelectListItem() { Value = "3", Text = "Issue in Scheduling live stream" });
+            SubjectList.Add(new SelectListItem() { Value = "3", Text = "Any other issue" });
+            SubjectList.Add(new SelectListItem() { Value = "3", Text = "I would like to delete my account" });
+            SubjectList.Add(new SelectListItem() { Value = "3", Text = "Business inquiry" });
+            
+        }
     }
 }

@@ -112,4 +112,22 @@ namespace Web.Models
         public string codeType { get; set; }
 
     }
+
+    public class ContactUsModel
+    {
+        [Required]
+        [EmailAddress]
+        public string email { get; set; }
+
+        [Required]
+        public string subject { get; set; }
+
+        [Required]
+        public string message { get; set; }
+
+        public string browser { get; set; }
+        public string version { get; set; }
+
+        public string os { get; set; }
+    }
 }

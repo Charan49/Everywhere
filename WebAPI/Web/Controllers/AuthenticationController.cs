@@ -375,6 +375,35 @@ namespace Web.Controllers
 
         }
 
+        [AllowAnonymous]
+        [Route("api/v1/contactus")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ContactUs([FromBody] ContactUsModel model)
+        {
+            
+            MailMessage message = new MailMessage("test@test.com", ConfigurationManager.AppSettings["mailAccount"].ToString());
+            message.Subject = "Support request from "+model.email+" - "+model.subject;
+            StringBuilder msgContainer = new StringBuilder();
+            msgContainer.AppendLine("<b>From:</b> " + model.email);
+            msgContainer.AppendLine("<b>Reason:</b> " + model.subject);
+            msgContainer.AppendLine("<b>Description:</b> " + model.message);
+            msgContainer.AppendLine();
+            msgContainer.AppendLine("<b>Technical details:</b> ");
+            msgContainer.AppendLine("<b>OS type:</b> " + model.os);
+            msgContainer.AppendLine("<b>Browser type:</b> " + model.browser);
+            msgContainer.AppendLine("<b>Browser version:</b> " + model.version);
+            message.Body = msgContainer.ToString().Replace("\r\n", "<br />");
+            try
+            {
+                await SendEmail.sendMail(message);
+                return Ok();
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
         private bool ValidateKey(JLogin login, User user)
         {
             switch (user.UserType)
