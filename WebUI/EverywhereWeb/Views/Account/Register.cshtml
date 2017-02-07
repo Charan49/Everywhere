@@ -164,7 +164,7 @@
             var password = $('#uPass').val();
             sessionStorage.setItem('signUpEmail', email);
             var phone = null;
-            if ($('#phone').val() != "") {
+            if ($('#phone').val() != "") 
                 phone = $(".selected-dial-code").text() + $('#phone').val();
             
             var callbackURL = 'https://web.everywhere.live' + $("#RedirectTo").val();

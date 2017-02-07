@@ -65,10 +65,7 @@ namespace EverywhereWeb.Models
     public class ConfirmPhoneModel
     {
         [Required]
-        [DataType(DataType.PhoneNumber, ErrorMessage = "Phone number provided is not valid.")]
-        //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Phone number provided is not valid.")]
-        [RegularExpression(@"^[\+]?[1 - 9]{1,3}\s?[0 - 9]{6,11}$", ErrorMessage = "Phone number provided is not valid.")]
-
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Phone number provided is not valid.")]
         public string Mobile { get; set; }
     }
 
@@ -127,8 +124,7 @@ namespace EverywhereWeb.Models
         public int Year { get; set; }
 
         [Required]
-        [RegularExpression(@"^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\- ]*$", ErrorMessage = "Phone number provided is not valid.")]
-        //[RegularExpression(@"^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$", ErrorMessage = "Phone number provided is not valid.")]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Phone number provided is not valid.")]
         [Display(Name = "Mobile Phone Number")]
         public string mobilenumber { get; set; }
 
