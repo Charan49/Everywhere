@@ -284,11 +284,21 @@ footer {border-top: 1px solid #77B300;padding: 2em 0; display: none}
 
 @media(max-width:420px){
 
+        #cspio-headline {
+        font-family: 'Pacifico';
+        font-weight: 400;
+        font-size: 42px;
+        color: #ffffff;
+        line-height: 1.00em;
+        margin-top: 4px;
+        display: none;
+    }
     
 }
 
 
 @media (max-width:640px){
+
 
 
 .visible-xs .col-xs-6, .visible-xs .col-xs-12 {padding-left: 10px; padding-right: 10px;}
