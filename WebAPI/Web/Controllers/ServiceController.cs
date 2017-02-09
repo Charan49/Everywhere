@@ -106,7 +106,7 @@ namespace Web.Controllers
             }
             else { IsTestUsers = false; }
 
-            var ret=await db.Services.Where(x => x.IsDeleted == false).Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString(), IsTestUsersExists=IsTestUsers }).ToListAsync();
+            var ret=await db.Services.Where(x => x.IsDeleted == false).Select(x => new JService { name = x.Name, ID = x.ServiceGUID, authenticationMethod = x.AuthMethod, serviceProviderInfo = x.ServiceProviderInfo, IsDeleted=x.IsDeleted.ToString(), IsTestUsersExists=IsTestUsers }).OrderBy(x => x.name) .ToListAsync();
             return ret;
             throw new ApiDataException(1002, "Service not found.", HttpStatusCode.NotFound);
         }

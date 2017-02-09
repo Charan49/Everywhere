@@ -215,7 +215,6 @@ namespace Web.Controllers
                 message.Subject = "Everywhere signup confirmation";
 
                 message.Body = "Hi " + emailAddress.FirstName + ",<br />" +
-                                       "<br />" +
                                        "Thank you for signing up with Everywhere! Please enter the code that has been sent to your mobile number in the link below to complete the sign up. <br />" +
                                        linkUrl + " <br />" +
                                        "You are then ready to live stream videos through Everywhere. <br />" +
@@ -253,7 +252,7 @@ namespace Web.Controllers
                 string vEmailCode = GenerateCode.CreateRandomCode(4);
 
                 MailMessage message = new MailMessage("test@test.com", model.email);
-                message.Subject = "Everywhere email code";
+                message.Subject = "Everywhere email verification";
 
                 message.Body = "Hi " + emailAddress.FirstName + ",<br />" +
                                        "Welcome to everywhere. We just need to make sure that the email is yours. Here is your email verification code: <b>" + vEmailCode + "</b>. Please enter this code in everywhere app/web portal to verify your email. <br />" +

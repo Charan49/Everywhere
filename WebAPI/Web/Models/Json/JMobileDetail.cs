@@ -17,6 +17,7 @@ namespace Web.Models.Json
       
         [Required(ErrorMessage = "Phone number is required")]
         [Display(Name = "Mobile Phone Number")]
+        [StringLength(13)]
         [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Phone number provided is not valid.")]
         public string phone { get; set; }
 

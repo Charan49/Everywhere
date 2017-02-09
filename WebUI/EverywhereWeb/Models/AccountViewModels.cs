@@ -36,6 +36,7 @@ namespace EverywhereWeb.Models
         //[RegularExpression(@"^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$", ErrorMessage = "Phone number provided is not valid.")]
         //[RegularExpression(@"^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\- ]*$", ErrorMessage = "Phone number provided is not valid.")]
         [Display(Name = "Mobile Phone Number")]
+        [StringLength(13)]
         public string phone { get; set; }
 
  
@@ -66,6 +67,7 @@ namespace EverywhereWeb.Models
     {
         [Required]
         [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Phone number provided is not valid.")]
+        [StringLength(13)]
         public string Mobile { get; set; }
     }
 

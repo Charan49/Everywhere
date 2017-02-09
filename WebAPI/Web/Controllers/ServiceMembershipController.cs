@@ -272,8 +272,8 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<JServiceMembership>> GetServiceMembershipWithGuid(Guid id)
         {
-
-            var ret = await db.UserServices.Where(x => x.UserGUID == id && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null ? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL, fbUserID = x.fbUserID }).ToListAsync();
+            var ret = await db.UserServices.Where(x => x.UserGUID == id && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null ? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL, fbUserID = x.fbUserID }).OrderBy(x => x.name).ToListAsync();
+            //var ret = await db.UserServices.Where(x => x.UserGUID == id && x.IsDeleted == false).Select(x => new JServiceMembership { name = x.Service.Name, id = x.ServiceGUID, authenticationMethod = x.Service.AuthMethod, serviceProviderInfo = x.Service.ServiceProviderInfo, streamId = x.StreamID, streamUrl = x.StreamURL, streamKey = x.StreamKey, streamDate = (x.StreamDate == null ? "" : x.StreamDate.ToString()), pictureUrl = x.PictureURL, fbUserID = x.fbUserID }).ToListAsync();
             return ret;
         }
 

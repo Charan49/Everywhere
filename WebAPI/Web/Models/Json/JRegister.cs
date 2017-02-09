@@ -30,6 +30,7 @@ namespace Web.Models
         [Required(ErrorMessage = "Phone number is required")]
         [Display(Name = "Mobile Phone Number")]
         [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Phone number provided is not valid.")]
+        [StringLength(13)]
         public string mobilenumber { get; set; }
         public void Trim()
         {
