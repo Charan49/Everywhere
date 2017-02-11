@@ -103,15 +103,7 @@ namespace Web.Controllers
                         linkUrl = " Please click the link below to enter your verification codes: " + model.url + "<br />";
 
 
-                    MailMessage message = new MailMessage("test@test.com", model.email);
-                    message.Subject= "Everywhere signup confirmation";
-                    message.Body = "Hi " + user.FirstName + ",<br />" +
-                                        "Welcome to everywhere. We just need to make sure that the email is yours. Here is your email verification code: <b>"+ vEmailCode + "</b> Please enter this code in everywhere app/web portal to verify your email. <br />" +
-                                        
-                                        "Best regards<br />" +
-                                        "Team Everywhere<br />" +
-                                        "www.Everywhere.live<br /> ";
-                    await SendEmail.sendMail(message);
+                  
                     string vMobileCode = GenerateCode.CreateRandomCode(4);
                     await SMS.SendSMS(model.mobilenumber,vMobileCode);
                     user.MobileConfirmationCode = vMobileCode;

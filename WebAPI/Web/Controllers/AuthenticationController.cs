@@ -83,6 +83,16 @@ namespace Web.Controllers
                         };
                     if (!string.IsNullOrEmpty(existingUser.EmailVerificationCode) && existingUser.UserType.Equals("User"))
                     {
+                        MailMessage message = new MailMessage("test@test.com", existingUser.Email);
+                        message.Subject = "Everywhere signup confirmation";
+                        message.Body = "Hi " + existingUser.FirstName + ",<br />" +
+                                            "Welcome to everywhere. We just need to make sure that the email is yours. Here is your email verification code: <b>" + existingUser.EmailVerificationCode + "</b> Please enter this code in everywhere app/web portal to verify your email. <br />" +
+
+                                            "Best regards<br />" +
+                                            "Team Everywhere<br />" +
+                                            "www.Everywhere.live<br /> ";
+                        await SendEmail.sendMail(message);
+
                         return Request.CreateResponse(HttpStatusCode.NotImplemented, token);
                     }
                     return Request.CreateResponse(token);
